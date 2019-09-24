@@ -12,7 +12,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 // Set cors
-const allowedOrigins = ['http://localhost:3000/', 'http://localhost:5000/', 'http://spedxchange.herokuapp.com/', 'https://spedxchange.com/'];
+const allowedOrigins = ['http://localhost:3000/', 'http://localhost:5000/', 'https://spedxchange.herokuapp.com/', 'https://spedxchange.com/'];
 app.use(
   cors({
     origin: function(origin, callback) {
