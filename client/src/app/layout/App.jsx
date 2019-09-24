@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import NavBar from '../layout/nav/navBar/NavBar';
 import SideBar from '../layout/nav/sideBar/SideBar';
 import { Container } from 'semantic-ui-react';
@@ -12,8 +13,21 @@ import SettingsDashboard from '../../feature/user/settings/SettingsDashboard';
 import QuestionForm from '../../feature/question/questionForm/QuestionForm';
 import TestComponent from '../../feature/testarea/TestComponent';
 import ModalManager from './modal/ModalManager';
+import { loadUser } from './auth/AuthActions';
+
+const actions = {
+  loadUser
+};
+
+const mapState = state => ({
+  auth: state.auth
+});
 
 class App extends Component {
+  componentDidMount() {
+    this.props.loadUser();
+  }
+
   render() {
     return (
       <Fragment>
@@ -46,4 +60,9 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(App)
+);

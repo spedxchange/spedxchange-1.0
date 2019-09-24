@@ -6,11 +6,9 @@ import App from './app/layout/App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { configureStore } from './app/store/ConfigureStore';
+import store from './app/store/Store';
 import ScrollToTop from './app/common/util/ScrollToTop';
 import ReduxToastr from 'react-redux-toastr';
-
-const store = configureStore();
 
 const rooEl = document.getElementById('root');
 
@@ -33,6 +31,7 @@ if (module.hot) {
     setTimeout(render);
   });
 }
+
 render();
 
 // If you want your app to work offline and load faster, you can change
