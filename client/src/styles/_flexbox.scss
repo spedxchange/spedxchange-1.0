@@ -1,0 +1,19 @@
+.flex-wrap,
+.flex-wrap.responsive {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  align-content: flex-start;
+  > * {
+    flex: 0 0 auto;
+    & .grow {
+      flex: 1 0 auto;
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .flex-wrap.responsive {
+    flex-direction: column;
+  }
+}

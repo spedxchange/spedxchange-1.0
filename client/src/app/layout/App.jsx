@@ -1,0 +1,49 @@
+import React, { Component, Fragment } from 'react';
+import NavBar from '../layout/nav/navBar/NavBar';
+import SideBar from '../layout/nav/sideBar/SideBar';
+import { Container } from 'semantic-ui-react';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import QuestionDashboard from '../../feature/question/questionDashboard/QuestionDashboard';
+import HomePage from '../../feature/home/HomePage';
+import QuestionDetail from '../../feature/question/questionDetail/QuestionDetail';
+import UserDashboard from '../../feature/user/userDashboard/UserDashboard';
+import UserDetail from '../../feature/user/userDetail/UserDetail';
+import SettingsDashboard from '../../feature/user/settings/SettingsDashboard';
+import QuestionForm from '../../feature/question/questionForm/QuestionForm';
+import TestComponent from '../../feature/testarea/TestComponent';
+import ModalManager from './modal/ModalManager';
+
+class App extends Component {
+  render() {
+    return (
+      <Fragment>
+        <ModalManager />
+        <Route exact path='/' component={HomePage} />
+        <Route
+          path='/(.+)'
+          render={() => (
+            <Fragment>
+              <NavBar />
+              <SideBar />
+              <Container className='main'>
+                <Container className='content'>
+                  <Switch key={this.props.location.key}>
+                    <Route exact path='/questions' component={QuestionDashboard} />
+                    <Route path='/questions/:id' component={QuestionDetail} />
+                    <Route path='/people' component={UserDashboard} />
+                    <Route path='/profile/:id' component={UserDetail} />
+                    <Route path='/settings' component={SettingsDashboard} />
+                    <Route path={['/createQuestion', '/manage/:id']} component={QuestionForm} />
+                    <Route path='/test' component={TestComponent} />
+                  </Switch>
+                </Container>
+              </Container>
+            </Fragment>
+          )}
+        />
+      </Fragment>
+    );
+  }
+}
+
+export default withRouter(App);

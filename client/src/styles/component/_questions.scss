@@ -1,0 +1,32 @@
+.ui.grid.questions-dashboard {
+  > .column {
+    padding-top: 0 !important;
+  }
+  .flex-item.grow.content {
+    padding-left: 1.5rem;
+  }
+
+  .flex-item.grow.content .info {
+    width: 100%;
+  }
+
+  .ui.mini.statistic {
+    width: 56px;
+    padding-bottom: 1rem;
+  }
+
+  h3,
+  .ui.mini.statistic .value {
+    font-size: 1.2rem !important;
+    line-height: 1em;
+  }
+
+  .ui.mini.statistic .label {
+    font-size: 9px;
+    font-weight: 400;
+  }
+
+  .ui.tag.label {
+    margin-right: 0.5rem;
+  }
+}

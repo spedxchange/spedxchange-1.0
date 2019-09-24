@@ -1,0 +1,69 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const QuestionSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  rating: {
+    type: Number,
+    default: 0
+  },
+  viewCount: {
+    type: Number,
+    default: 0
+  },
+  likeCount: {
+    type: Number,
+    default: 0
+  },
+  likes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ],
+  unlikes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ],
+  categories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'category'
+    }
+  ],
+  tags: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'tag'
+    }
+  ],
+  answers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'answer'
+    }
+  ],
+  created: {
+    type: Date,
+    default: Date.now
+  },
+  updated: {
+    type: Date,
+    default: Date.now
+  }
+}).index({ title: 'text', description: 'text' });
+
+module.exports = Question = mongoose.model('question', QuestionSchema);

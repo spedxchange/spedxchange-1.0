@@ -1,0 +1,105 @@
+/* Global Styles */
+:root {
+  --primary-color: #00796b;
+  --primary-color-hover: #005e50;
+  --secondary-color: #7b1fa2;
+  --secondary-color-hover: #5c197f;
+  --dark-color: #343a40;
+  --light-color: #f6f6f5;
+  --danger-color: #dc3545;
+  --success-color: #28a745;
+  --border-color: #a3a3a2;
+}
+
+body {
+  background-color: #fcfcfb !important;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-color-hover);
+  text-decoration: none;
+}
+
+h1:first-line {
+  line-height: 1em;
+}
+
+/*timepicker style*/
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list {
+  padding-left: 0;
+  padding-right: 0;
+  width: 100px;
+}
+
+.react-datepicker__input-container {
+  width: inherit;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+/*home page styles*/
+
+.masthead {
+  display: flex;
+  align-items: center;
+  background-image: linear-gradient(
+    135deg,
+    rgb(24, 42, 115) 0%,
+    rgb(33, 138, 174) 69%,
+    rgb(32, 167, 172) 89%
+  ) !important;
+  height: 100vh;
+}
+
+.masthead .ui.menu .ui.button,
+.ui.menu a.ui.inverted.button {
+  margin-left: 0.5em;
+}
+
+.masthead h1.ui.header {
+  font-size: 4em;
+  font-weight: normal;
+}
+
+.masthead h2 {
+  font-size: 1.7em;
+  font-weight: normal;
+}
+
+/* .footer.segment {
+    padding: 5em 0;
+  } */
+
+.secondary.inverted.pointing.menu {
+  border: none;
+}
+
+/*chat comments*/
+
+.ui.comments .comment .comments {
+  padding-bottom: 0 !important;
+  padding-left: 2em !important;
+}
+
+/* dropzone styles */
+.dropzone {
+  border: dashed 3px #eee;
+  border-radius: 5px;
+  padding-top: 30px;
+  text-align: center;
+  /* min-height: 236px; */
+}
+
+.dropzone--isActive {
+  border: dashed 3px green;
+}
