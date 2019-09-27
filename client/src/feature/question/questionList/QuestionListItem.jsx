@@ -23,7 +23,7 @@ class QuestionListItem extends Component {
               </Statistic>
             </div>
           </div>
-          <div className='flex-item grow content'>
+          <div className='flex-item grow info'>
             <h3>
               <a href='/'>{question.title}</a>
             </h3>

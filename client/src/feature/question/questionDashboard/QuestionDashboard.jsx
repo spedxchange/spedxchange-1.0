@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container } from 'semantic-ui-react';
+// import { Container } from 'semantic-ui-react';
 import { createQuestion, updateQuestion, deleteQuestion, loadQuestions } from '../questionActions';
 import PageLoader from '../../../app/layout/PageLoader';
 import QuestionList from '../questionList/QuestionList';
@@ -31,20 +31,14 @@ class QuestionDashboard extends Component {
     const { questions, loading } = this.props;
     if (loading) return <PageLoader />;
     return (
-      <Container className='questions-dashboard'>
-        <Container className='flex-wrap responsive'>
-          <div className='grow'>
-            <Container>
-              <QuestionList questions={questions} deleteQuestion={this.handleDeleteQuestion} />
-            </Container>
-          </div>
-          <div className='activity'>
-            <Container>
-              <QuestionActivity />
-            </Container>
-          </div>
-        </Container>
-      </Container>
+      <div className='questions-dashboard flex-wrap md'>
+        <div className='grow'>
+          <QuestionList questions={questions} deleteQuestion={this.handleDeleteQuestion} />
+        </div>
+        <div className='activity'>
+          <QuestionActivity />
+        </div>
+      </div>
     );
   }
 }

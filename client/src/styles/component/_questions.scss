@@ -1,29 +1,40 @@
-.ui.grid.questions-dashboard {
-  .flex-item.grow.content {
-    padding-left: 1.5rem;
+.questions-dashboard {
+  .votes {
+    background: #fff;
+    padding: 0.5rem 0;
+    border: 1px solid #e8e8e7;
   }
 
-  .flex-item.grow.content .info {
-    width: 100%;
+  .flex-item.grow.info {
+    padding-left: 1rem;
   }
 
   .ui.mini.statistic {
-    width: 56px;
+    width: 60px;
     padding-bottom: 1rem;
   }
 
   h3,
   .ui.mini.statistic .value {
     font-size: 1.2rem !important;
-    line-height: 1em;
+    text-transform: none;
+  }
+
+  .ui.mini.statistic .value {
+    font-weight: 600;
+    color: var(--primary-color);
   }
 
   .ui.mini.statistic .label {
-    font-size: 9px;
-    font-weight: 400;
+    font-size: 10px;
+    text-transform: none;
   }
 
   .ui.tag.label {
     margin-right: 0.5rem;
+  }
+
+  .activity {
+    width: 180px !important;
   }
 }

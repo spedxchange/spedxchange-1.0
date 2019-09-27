@@ -40,17 +40,17 @@ class App extends Component {
               <NavBar />
               <SideBar />
               <Container className='main'>
-                <Container className='content'>
+                <div className='content'>
                   <Switch key={this.props.location.key}>
                     <Route exact path='/questions' component={QuestionDashboard} />
                     <Route path='/questions/:id' component={QuestionDetail} />
-                    <Route path='/people' component={UserDashboard} />
+                    <Route exact path='/people' component={UserDashboard} />
                     <Route path='/profile/:id' component={UserDetail} />
-                    <Route path='/settings' component={SettingsDashboard} />
+                    <Route exact path='/settings' component={SettingsDashboard} />
                     <Route path={['/createQuestion', '/manage/:id']} component={QuestionForm} />
-                    <Route path='/test' component={TestComponent} />
+                    <Route exact path='/test' component={TestComponent} />
                   </Switch>
-                </Container>
+                </div>
               </Container>
             </Fragment>
           )}
