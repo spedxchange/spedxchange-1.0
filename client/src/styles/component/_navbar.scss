@@ -1,5 +1,5 @@
 .ui.inverted.top.fixed.menu.app-header {
-  background-color: #2e7d32 !important;
+  background-color: var(--primary-color) !important;
   height: 48px;
   .brand {
     padding: 0;
@@ -28,6 +28,7 @@
   }
   &:not(.vertical) .item > .button {
     margin-left: 0.5em;
+    padding: 0.5em 1em;
   }
 }
 
@@ -44,7 +45,7 @@
     height: 100%;
     width: calc((100% - 1125px) / 2);
     position: absolute;
-    background: #7b1fa2;
+    background: var(--secondary-color);
   }
 }
 
@@ -60,7 +61,7 @@
     height: 100%;
     width: calc((100% - 931px) / 2);
     position: absolute;
-    background: #7b1fa2;
+    background: var(--secondary-color);
   }
 }
 
@@ -76,7 +77,7 @@
     height: 100%;
     width: calc((100% - 721px) / 2);
     position: absolute;
-    background: #7b1fa2;
+    background: var(--secondary-color);
   }
 }
 
@@ -85,5 +86,25 @@
     > .container
     > .item:not(.right):not(.borderless):first-child {
     border-left: none;
+  }
+}
+
+.ui.text.menu.app-sidebar {
+  .active.item {
+    color: var(--primary-color);
+    font-weight: 600;
+    background: transparent;
+    border-radius: 0;
+    cursor: default;
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 4px;
+      height: 14px;
+      left: -12px;
+      top: 4px;
+      background: var(--primary-color);
+    }
   }
 }

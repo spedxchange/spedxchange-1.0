@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react';
-import QuestionList from '../questionList/QuestionList';
 import { connect } from 'react-redux';
+import { Container } from 'semantic-ui-react';
 import { createQuestion, updateQuestion, deleteQuestion, loadQuestions } from '../questionActions';
 import PageLoader from '../../../app/layout/PageLoader';
+import QuestionList from '../questionList/QuestionList';
 import QuestionActivity from '../questionActivity/QuestionActivity';
 
 const mapState = state => ({
@@ -31,14 +31,20 @@ class QuestionDashboard extends Component {
     const { questions, loading } = this.props;
     if (loading) return <PageLoader />;
     return (
-      <Grid className='questions-dashboard'>
-        <Grid.Column mobile={16} tablet={10} computer={12}>
-          <QuestionList questions={questions} deleteQuestion={this.handleDeleteQuestion} />
-        </Grid.Column>
-        <Grid.Column mobile={16} tablet={6} computer={4}>
-          <QuestionActivity />
-        </Grid.Column>
-      </Grid>
+      <Container className='questions-dashboard'>
+        <Container className='flex-wrap responsive'>
+          <div className='grow'>
+            <Container>
+              <QuestionList questions={questions} deleteQuestion={this.handleDeleteQuestion} />
+            </Container>
+          </div>
+          <div className='activity'>
+            <Container>
+              <QuestionActivity />
+            </Container>
+          </div>
+        </Container>
+      </Container>
     );
   }
 }

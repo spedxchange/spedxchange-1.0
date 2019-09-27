@@ -1,28 +1,17 @@
 /* Global Styles */
+/* green:  006646 */
+/* purple: 671c8e */
+
 :root {
-  --primary-color: #00796b;
+  --primary-color: #006646;
   --primary-color-hover: #005e50;
-  --secondary-color: #7b1fa2;
+  --secondary-color: #671c8e;
   --secondary-color-hover: #5c197f;
   --dark-color: #343a40;
   --light-color: #f6f6f5;
   --danger-color: #dc3545;
   --success-color: #28a745;
   --border-color: #a3a3a2;
-}
-
-body {
-  background-color: #fcfcfb !important;
-}
-
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--primary-color-hover);
-  text-decoration: none;
 }
 
 h1:first-line {
