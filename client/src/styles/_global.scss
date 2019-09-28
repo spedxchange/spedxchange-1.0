@@ -1,9 +1,44 @@
 /* Global Styles */
 /* green:  006646 */
 /* purple: 671c8e */
+/*---  Colors from semantic ---
+@black            : #1B1C1D;
+@blue             : #2196F3;
+@green            : #4CAF50;
+@grey             : #9E9E9E;
+@orange           : #FF9800;
+@pink             : #E91E63;
+@purple           : #9C27B0;
+@red              : #F44336;
+@teal             : #1de9b6;
+@yellow           : #FFEB3B;
+
+Light Colors
+@lightBlack       : #333333;
+@lightBlue        : #2979FF;
+@lightGreen       : #00E676;
+@lightOrange      : #FF9100;
+@lightPink        : #F50057;
+@lightPurple      : #D500F9;
+@lightRed         : #FF1744;
+@lightTeal        : #1DE9B6;
+@lightYellow      : #FFEA00;
+
+Neutrals
+@fullBlack        : #000000;
+@darkGrey         : #AAAAAA;
+@lightGrey        : #DCDDDE;
+@offWhite         : #FAFAFA;
+@darkWhite        : #F0F0F0;
+@white            : #FFFFFF;
+
+primary rgb: rgba(0, 102, 70, 1.0)
+*/
 
 :root {
   --primary-color: #006646;
+  --primary-rgba: rgba(0, 102, 70, 1);
+  --primary-clear: rgba(0, 102, 70, 0);
   --primary-color-hover: #005e50;
   --secondary-color: #671c8e;
   --secondary-color-hover: #5c197f;

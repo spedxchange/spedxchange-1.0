@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Menu } from 'semantic-ui-react';
-
-import { navItemClick } from '../navActions';
+import { navItemClick, toggleMobileNav } from '../navActions';
 import { openModal } from '../../modal/ModalActions';
 import { signOut } from '../../auth/AuthActions';
 
 const mapState = state => ({
   auth: state.auth,
-  activeItem: state.activeItem
+  activeNavItem: state.nav.activeNavItem,
+  isMobileNavOpen: state.nav.isMobileNavOpen
 });
 
 const actions = {
+  toggleMobileNav,
   navItemClick,
   openModal,
   signOut
@@ -19,64 +19,109 @@ const actions = {
 
 class MobileNav extends Component {
   handleItemClick = item => {
+    console.log('handleItemClick: isMobileNavOpen: ', this.props.isMobileNavOpen);
+    this.toggleNav();
     this.props.navItemClick(item);
   };
 
+  toggleNav = () => {
+    console.log('toggleNav: isMobileNavOpen: ', this.props.isMobileNavOpen);
+    this.props.toggleMobileNav(this.props.isMobileNavOpen);
+  };
+
   render() {
-    const { auth, activeItem } = this.props;
+    const { auth, activeNavItem, isMobileNavOpen } = this.props;
     const authenticated = auth.authenticated && auth.currentUser;
-    const menuItems = [
-      {
-        name: 'Questions',
-        link: '/questions'
-      },
-      {
-        name: 'Tags',
-        link: '/questions/tags'
-      },
-      {
-        name: 'Categories',
-        link: '/categories'
-      },
-      {
-        name: 'People',
-        link: '/people'
-      },
-      {
-        name: 'Resources',
-        link: '/resources'
-      },
-      {
+    const navItems = {
+      news: {
         name: 'Eye On SPED',
         link: '/news'
       },
-      {
+      resources: {
+        name: 'Resources',
+        link: '/resources'
+      },
+      scholarships: {
         name: 'Scholarships',
         link: '/scholarships'
       },
-      {
+      about: {
         name: 'About Us',
         link: '/about'
       },
-      {
+      contact: {
         name: 'Contact Us',
         link: '/contact'
+      },
+      questions: {
+        name: 'SPEDxchange',
+        link: '/questions'
+      },
+      categories: {
+        name: 'Categories',
+        link: '/categories'
+      },
+      tags: {
+        name: 'Tags',
+        link: '/tags'
+      },
+      people: {
+        name: 'People',
+        link: '/people'
+      },
+      jobs: {
+        name: 'Jobs',
+        link: '/jobs'
       }
-    ];
+    };
     return (
-      <Menu text vertical className='app-sidebar'>
-        <Menu.Item link name='About Us' active={activeItem === 'About Us'} onClick={() => handleItemClick('About Us')} />
-        <Menu.Item link name='Resources' active={activeItem === 'Resources'} onClick={() => handleItemClick('About Us')} />
-        <Menu.Item link name='Scholarships' active={activeItem === 'Scholarships'} onClick={() => handleItemClick('About Us')} />
-        <Menu.Item link name='Eye On SPED' active={activeItem === 'Eye On SPED'} onClick={() => handleItemClick('About Us')} />
-        <Menu.Item link name='Contact Us' active={activeItem === 'Contact Us'} onClick={() => handleItemClick('About Us')} />
-        <Menu.Item link name='Questions' active={activeItem === 'Questions'} onClick={() => handleItemClick('About Us')} />
-        <Menu.Item link name='Categories' active={activeItem === 'Categories'} onClick={() => handleItemClick('About Us')} className='indent' />
-        <Menu.Item link name='Tags' active={activeItem === 'Tags'} onClick={() => handleItemClick('About Us')} className='indent' />
-        <Menu.Item link name='People' active={activeItem === 'People'} onClick={() => handleItemClick('About Us')} className='indent' />
-        <Menu.Item link name='Jobs' active={activeItem === 'Jobs'} onClick={() => handleItemClick('About Us')} />
-        {authenticated && <Menu.Item link name='Jobs' active={activeItem === 'Jobs'} onClick={signOut} />}
-      </Menu>
+      <ul className={isMobileNavOpen ? 'nav-mobile open' : 'nav-mobile'}>
+        <li>
+          <span className={activeNavItem.name === navItems.news.name ? 'active' : null} onClick={() => this.handleItemClick(navItems.news)}>
+            Eye On SPED
+          </span>
+        </li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.resources)}>Resources</span>
+        </li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.scholarships)}>Scholarships</span>
+        </li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.about)}>About Us</span>
+        </li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.contact)}>Contact Us</span>
+        </li>
+        <li className='nav-spacer'></li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.questions)}>SPEDxchange</span>
+        </li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.categories)}>Categories</span>
+        </li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.tags)}>Tags</span>
+        </li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.people)}>People</span>
+        </li>
+        <li className='nav-spacer'></li>
+        <li>
+          <span onClick={() => this.handleItemClick(navItems.jobs)}>Jobs</span>
+        </li>
+        {!authenticated && (
+          <Fragment>
+            <li className='nav-spacer'></li>
+            <li>
+              <span>Login</span>
+            </li>
+            <li>
+              <span>Sign Up</span>
+            </li>
+          </Fragment>
+        )}
+      </ul>
     );
   }
 }

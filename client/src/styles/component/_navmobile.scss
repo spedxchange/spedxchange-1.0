@@ -1,0 +1,49 @@
+.nav-mobile {
+  position: absolute;
+  z-index: 1;
+  transition: all 0.4s ease-out;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  top: -550px;
+  width: 100%;
+  max-height: 100%;
+  overflow-y: scroll;
+  background-color: var(--primary-clear);
+  li {
+    transition: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    span {
+      display: block;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      &.active {
+        background-color: #4caf50;
+        color: white;
+      }
+    }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100&;
+      background-color: var(--primary-color);
+      li span {
+        padding-left: 3rem;
+      }
+    }
+  }
+  &.open {
+    background-color: var(--primary-rgba);
+    top: 48px;
+    li {
+      span {
+        &:hover:not(.active) {
+          background-color: #333;
+          color: white;
+        }
+      }
+    }
+  }
+}
