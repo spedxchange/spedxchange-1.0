@@ -39,8 +39,8 @@ class App extends Component {
           render={() => (
             <Fragment>
               <NavBar />
-              <MobileNav />
               <SideBar />
+              <MobileNav />
               <Container className='main'>
                 <div className='content'>
                   <Switch key={this.props.location.key}>
