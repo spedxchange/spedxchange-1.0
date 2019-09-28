@@ -18,15 +18,37 @@ const actions = {
 };
 
 class MobileNav extends Component {
+  constructor(props) {
+    super(props);
+    this.menuRef = React.createRef();
+  }
+
+  scrollToMenuRef = () => {
+    window.scrollTo(0, this.menuRef.offsetTop);
+  };
+
   handleItemClick = item => {
-    console.log('handleItemClick: isMobileNavOpen: ', this.props.isMobileNavOpen);
     this.toggleNav();
-    this.props.navItemClick(item);
+    switch (item) {
+      case 'login':
+        this.props.openModal('LoginModal');
+        break;
+
+      case 'signup':
+        this.props.openModal('RegisterModal');
+        break;
+
+      default:
+        this.props.navItemClick(item);
+        break;
+    }
   };
 
   toggleNav = () => {
-    console.log('toggleNav: isMobileNavOpen: ', this.props.isMobileNavOpen);
     this.props.toggleMobileNav(this.props.isMobileNavOpen);
+    if (!this.props.isMobileNavOpen) {
+      this.scrollToMenuRef();
+    }
   };
 
   render() {
@@ -75,7 +97,7 @@ class MobileNav extends Component {
       }
     };
     return (
-      <ul className={isMobileNavOpen ? 'nav-mobile open' : 'nav-mobile'}>
+      <ul ref={this.menuRef} className={isMobileNavOpen ? 'nav-mobile open' : 'nav-mobile'}>
         <li>
           <span className={activeNavItem.name === navItems.news.name ? 'active' : null} onClick={() => this.handleItemClick(navItems.news)}>
             Eye On SPED
@@ -114,10 +136,10 @@ class MobileNav extends Component {
           <Fragment>
             <li className='nav-spacer'></li>
             <li>
-              <span>Login</span>
+              <span onClick={() => this.handleItemClick('login')}>Login</span>
             </li>
             <li>
-              <span>Sign Up</span>
+              <span onClick={() => this.handleItemClick('signup')}>Sign Up</span>
             </li>
           </Fragment>
         )}
