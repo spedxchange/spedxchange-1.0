@@ -106,5 +106,10 @@
       top: 4px;
       background: var(--primary-color);
     }
+    &:first-of-type {
+      &:after {
+        top: -1px;
+      }
+    }
   }
 }

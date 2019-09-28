@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 
 export default class SideBar extends Component {
-  state = { activeItem: 'closTagsest' };
+  state = { activeItem: 'Questions' };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
@@ -11,6 +11,7 @@ export default class SideBar extends Component {
 
     return (
       <Menu text vertical className='app-sidebar'>
+        <Menu.Item link name='Home' active={activeItem === 'Home'} onClick={this.handleItemClick} />
         <Menu.Item link name='About Us' active={activeItem === 'About Us'} onClick={this.handleItemClick} />
         <Menu.Item link name='Resources' active={activeItem === 'Resources'} onClick={this.handleItemClick} />
         <Menu.Item link name='Scholarships' active={activeItem === 'Scholarships'} onClick={this.handleItemClick} />

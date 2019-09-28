@@ -6,7 +6,7 @@ class QuestionList extends Component {
     const { questions, deleteQuestion } = this.props;
     return (
       <Fragment>
-        <h1>Questions</h1>
+        <h1 className='primary'>Questions</h1>
         {questions && questions.map(question => <QuestionListItem key={question._id} question={question} deleteQuestion={deleteQuestion} />)}
       </Fragment>
     );

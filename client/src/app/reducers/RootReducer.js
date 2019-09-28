@@ -1,15 +1,17 @@
 import { combineReducers } from 'redux';
 import { reducer as FormReducer } from 'redux-form';
 import { reducer as TaostrReducer } from 'react-redux-toastr';
-import testReducer from '../../feature/testarea/TestReducer';
+import AuthReducer from '../layout/auth/AuthReducer';
+import NavReducer from '../../app/layout/nav/navReducer';
 import questionReducer from '../../feature/question/questionReducer';
 import ModalReducer from '../layout/modal/ModalReducer';
-import AuthReducer from '../layout/auth/AuthReducer';
 import asyncReducer from '../common/async/asyncReducer';
+import TestReducer from '../../feature/testarea/TestReducer';
 
 const rootReducer = combineReducers({
+  nav: NavReducer,
   form: FormReducer,
-  test: testReducer,
+  test: TestReducer,
   questions: questionReducer,
   modals: ModalReducer,
   auth: AuthReducer,

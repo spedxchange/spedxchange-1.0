@@ -14,6 +14,10 @@
   --border-color: #a3a3a2;
 }
 
+.primary {
+  color: var(--primary-color);
+}
+
 h1:first-line,
 h2:first-line {
   line-height: 1em;

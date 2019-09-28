@@ -1,6 +1,7 @@
-import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './TestConstants';
+import { INCREMENT_COUNTER, DECREMENT_COUNTER, TEST_ITEM_CLICK } from './TestConstants';
 import { asyncActionFinish } from '../../app/common/async/asyncActions';
 import { ASYNC_ACTION_START } from '../../app/common/async/asyncConstants';
+
 export const incrementCounter = () => {
   return {
     type: INCREMENT_COUNTER
@@ -32,5 +33,13 @@ export const decrementAsync = name => {
     await delay(1000);
     dispatch({ type: DECREMENT_COUNTER });
     dispatch(asyncActionFinish());
+  };
+};
+
+export const itemClick = item => {
+  console.log('item clicked: ', item);
+  return {
+    type: TEST_ITEM_CLICK,
+    payload: item.name
   };
 };
