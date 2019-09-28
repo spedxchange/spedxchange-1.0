@@ -1,14 +1,17 @@
 import { createReducer } from '../../common/util/ReducerUtil';
-import { UPDATE_ACTIVE_NAV_ITEM } from './navConstants';
+import { ACTIVATE_NAV_ITEM } from './navConstants';
 
 const initialState = {
-  activeNavItem: 'Questions'
+  activeNavItem: {
+    name: 'Questions',
+    link: '/questions'
+  }
 };
 
-const handleNavItemClick = (state, payload) => {
+const onNavItemClick = (state, payload) => {
   return { ...state, activeNavItem: payload };
 };
 
 export default createReducer(initialState, {
-  [UPDATE_ACTIVE_NAV_ITEM]: handleNavItemClick
+  [ACTIVATE_NAV_ITEM]: onNavItemClick
 });

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { incrementAsync, decrementAsync, itemClick } from './TestActions';
-import { Button, Menu } from 'semantic-ui-react';
+import { Button, Menu, List } from 'semantic-ui-react';
 import { openModal } from '../../app/layout/modal/ModalActions';
 import TestPlaceInput from './TestPlaceInput';
 import SimpleMap from './SimpleMap';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+
+import './test.scss';
 
 const mapState = state => ({
   data: state.test.data,
@@ -24,8 +26,8 @@ const actions = {
 class TestComponent extends Component {
   state = {
     latlng: {
-      lat: 41.8461,
-      lng: 87.8157
+      lat: 41.84,
+      lng: -87.82
     }
   };
 
@@ -56,6 +58,19 @@ class TestComponent extends Component {
       {
         name: 'About',
         link: 'about'
+      },
+      {
+        name: 'List',
+        items: [
+          {
+            name: 'one',
+            link: 'about'
+          },
+          {
+            name: 'two',
+            link: 'about'
+          }
+        ]
       }
     ];
 
@@ -72,6 +87,44 @@ class TestComponent extends Component {
         <SimpleMap key={this.state.latlng.lng} latlng={this.state.latlng} />
         <hr />
         <div>
+          <List celled>
+            {menuItems &&
+              menuItems.map(item => (
+                <List.Item>
+                  {item.name}
+                  {item.items && (
+                    <List.List celled>
+                      {item.items.map(subItem => (
+                        <List.Item>{subItem.name}</List.Item>
+                      ))}
+                    </List.List>
+                  )}
+                </List.Item>
+              ))}
+          </List>
+        </div>
+        <hr />
+        <div>
+          <ul className='nav-mobile'>
+            {menuItems &&
+              menuItems.map(item => (
+                <li>
+                  <span>{item.name}</span>
+                  {item.items && (
+                    <ul>
+                      {item.items.map(subItem => (
+                        <li>
+                          <span className={subItem.name === 'one' ? 'active' : null}>{subItem.name}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+          </ul>
+        </div>
+        <hr />
+        <div>
           <Menu text vertical>
             {menuItems && menuItems.map(item => <Menu.Item link key={item.name} name={item.name} active={activeItem === item.name} onClick={() => this.handleItemClick(item)} />)}
           </Menu>
@@ -80,6 +133,20 @@ class TestComponent extends Component {
     );
   }
 }
+/*
+<List celled ordered>
+    <List.Item>Cats</List.Item>
+    <List.Item>Horses</List.Item>
+    <List.Item>
+      Dogs
+      <List.List>
+        <List.Item>Labradoodles</List.Item>
+        <List.Item>Shiba Inu</List.Item>
+        <List.Item>Mastiff</List.Item>
+      </List.List>
+    </List.Item>
+  </List>
+    */
 
 export default connect(
   mapState,

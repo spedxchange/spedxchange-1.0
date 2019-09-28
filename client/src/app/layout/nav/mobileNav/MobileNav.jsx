@@ -25,6 +25,44 @@ class MobileNav extends Component {
   render() {
     const { auth, activeItem } = this.props;
     const authenticated = auth.authenticated && auth.currentUser;
+    const menuItems = [
+      {
+        name: 'Questions',
+        link: '/questions'
+      },
+      {
+        name: 'Tags',
+        link: '/questions/tags'
+      },
+      {
+        name: 'Categories',
+        link: '/categories'
+      },
+      {
+        name: 'People',
+        link: '/people'
+      },
+      {
+        name: 'Resources',
+        link: '/resources'
+      },
+      {
+        name: 'Eye On SPED',
+        link: '/news'
+      },
+      {
+        name: 'Scholarships',
+        link: '/scholarships'
+      },
+      {
+        name: 'About Us',
+        link: '/about'
+      },
+      {
+        name: 'Contact Us',
+        link: '/contact'
+      }
+    ];
     return (
       <Menu text vertical className='app-sidebar'>
         <Menu.Item link name='About Us' active={activeItem === 'About Us'} onClick={() => handleItemClick('About Us')} />
