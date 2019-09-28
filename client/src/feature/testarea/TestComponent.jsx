@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { incrementAsync, decrementAsync, itemClick } from './TestActions';
-import { Button, Menu, List } from 'semantic-ui-react';
+import { Button, Menu } from 'semantic-ui-react';
 import { openModal } from '../../app/layout/modal/ModalActions';
 import TestPlaceInput from './TestPlaceInput';
 import SimpleMap from './SimpleMap';
@@ -51,22 +51,27 @@ class TestComponent extends Component {
     const { data, incrementAsync, decrementAsync, openModal, loading, buttonName, activeItem } = this.props;
     const menuItems = [
       {
+        id: 'questions',
         name: 'Questions',
         link: 'questions',
         auth: true
       },
       {
+        id: 'about',
         name: 'About',
         link: 'about'
       },
       {
+        id: 'list',
         name: 'List',
         items: [
           {
+            id: 'one',
             name: 'one',
             link: 'about'
           },
           {
+            id: 'two',
             name: 'two',
             link: 'about'
           }
@@ -87,33 +92,15 @@ class TestComponent extends Component {
         <SimpleMap key={this.state.latlng.lng} latlng={this.state.latlng} />
         <hr />
         <div>
-          <List celled>
-            {menuItems &&
-              menuItems.map(item => (
-                <List.Item>
-                  {item.name}
-                  {item.items && (
-                    <List.List celled>
-                      {item.items.map(subItem => (
-                        <List.Item>{subItem.name}</List.Item>
-                      ))}
-                    </List.List>
-                  )}
-                </List.Item>
-              ))}
-          </List>
-        </div>
-        <hr />
-        <div>
           <ul className='nav-mobile'>
             {menuItems &&
               menuItems.map(item => (
-                <li>
+                <li key={item.id}>
                   <span>{item.name}</span>
                   {item.items && (
                     <ul>
                       {item.items.map(subItem => (
-                        <li>
+                        <li key={subItem.id}>
                           <span className={subItem.name === 'one' ? 'active' : null}>{subItem.name}</span>
                         </li>
                       ))}
@@ -133,20 +120,6 @@ class TestComponent extends Component {
     );
   }
 }
-/*
-<List celled ordered>
-    <List.Item>Cats</List.Item>
-    <List.Item>Horses</List.Item>
-    <List.Item>
-      Dogs
-      <List.List>
-        <List.Item>Labradoodles</List.Item>
-        <List.Item>Shiba Inu</List.Item>
-        <List.Item>Mastiff</List.Item>
-      </List.List>
-    </List.Item>
-  </List>
-    */
 
 export default connect(
   mapState,
