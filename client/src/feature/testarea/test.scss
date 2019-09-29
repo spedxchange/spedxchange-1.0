@@ -1,0 +1,59 @@
+.test-header {
+  background-color: var(--primary-color) !important;
+  color: rgba(255, 255, 255, 0.8);
+  height: 40px;
+  .brand {
+    height: 40px;
+    margin: 0 1.5rem 0 0;
+    img {
+      height: 40px;
+      width: auto;
+    }
+  }
+  .nav-content {
+    align-items: center;
+    justify-content: flex-end;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    button {
+      height: 40px;
+      width: 62px;
+      background: rgba(255, 255, 255, 0);
+      border: none;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.86rem;
+      font-weight: 500;
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 1);
+      }
+      &.search {
+        width: 40px;
+        img {
+          width: 1.33rem;
+          height: 1.33rem;
+          margin: 2px 0 0 0;
+        }
+      }
+      i.icon {
+        margin: 3px 0 0 0;
+      }
+    }
+    .user-menu {
+      padding: 0 0.75rem;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      img {
+        width: 1.33rem;
+        height: 1.33rem;
+      }
+      .text {
+        font-size: 0.86rem;
+        font-weight: 500;
+      }
+    }
+  }
+  > .flex-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}

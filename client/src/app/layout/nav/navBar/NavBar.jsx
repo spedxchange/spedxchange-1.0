@@ -27,8 +27,8 @@ class NavBar extends Component {
   };
 
   handleRegister = () => {
-    this.toggleNav();
-    // this.props.openModal('RegisterModal');
+    // this.toggleNav();
+    this.props.openModal('RegisterModal');
   };
 
   handleSignOut = () => {

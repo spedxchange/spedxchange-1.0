@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { incrementAsync, decrementAsync, itemClick } from './TestActions';
-import { Button, Menu } from 'semantic-ui-react';
+import { Button, Menu, Icon, Image, Dropdown } from 'semantic-ui-react';
 import { openModal } from '../../app/layout/modal/ModalActions';
 import TestPlaceInput from './TestPlaceInput';
 import SimpleMap from './SimpleMap';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-
+import { Link } from 'react-router-dom';
+import logo from '../../app/layout/nav/navBar/spedxchange-brand.svg';
 import './test.scss';
 
 const mapState = state => ({
@@ -82,6 +83,69 @@ class TestComponent extends Component {
     return (
       <div>
         <h1 className='brand'>Test Component</h1>
+        <hr />
+
+        <div className='test-header'>
+          <div className='flex-wrap'>
+            <Link className='brand' exact to='/'>
+              <img src={logo} alt='SPEDxchange' />
+            </Link>
+            <div className='flex-wrap grow nav-content'>
+              <button className='search'>
+                <Icon name='search' />
+              </button>
+              <button>Login</button>
+              <button>Sign Up</button>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div className='test-header'>
+          <div className='flex-wrap'>
+            <Link className='brand' exact to='/'>
+              <img src={logo} alt='SPEDxchange' />
+            </Link>
+            <div className='flex-wrap grow nav-content'>
+              <button className='search'>
+                <Icon name='search' />
+              </button>
+              <Menu.Item className='user-menu'>
+                <Image avatar spaced='right' src='/assets/img/user.png' />
+                <Dropdown pointing='top right' text='User Name'>
+                  <Dropdown.Menu>
+                    <Dropdown.Item text='Create Question' icon='plus' />
+                    <Dropdown.Item text='My Questions' icon='calendar' />
+                    <Dropdown.Item text='My Network' icon='users' />
+                    <Dropdown.Item text='My Profile' icon='user' />
+                    <Dropdown.Item as={Link} to='/settings' text='Settings' icon='settings' />
+                    <Dropdown.Item text='Sign Out' icon='power' />
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Menu.Item>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div className='test-header'>
+          <div className='flex-wrap'>
+            <Link className='brand' exact to='/'>
+              <img src={logo} alt='SPEDxchange' />
+            </Link>
+            <div className='flex-wrap grow nav-content'>
+              <button className='search'>
+                <Icon name='search' />
+              </button>
+              <button className='search'>
+                <Image avatar spaced='right' src='/assets/img/user.png' />
+              </button>
+            </div>
+          </div>
+        </div>
+
         <h3>answer {data}</h3>
         <Button name='increment' loading={buttonName === 'increment' && loading} onClick={e => incrementAsync(e.target.name)} positive content='add' />
         <Button name='decrement' loading={buttonName === 'decrement' && loading} onClick={e => decrementAsync(e.target.name)} negative content='sub' />

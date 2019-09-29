@@ -11,13 +11,10 @@ export const navItemClick = item => {
   };
 };
 
-export const toggleMobileNav = isMobileNavOpen => {
+export const toggleMobileNav = () => {
   return dispatch => {
     dispatch({
-      type: TOGGLE_MOBILE_NAV,
-      payload: {
-        isMobileNavOpen
-      }
+      type: TOGGLE_MOBILE_NAV
     });
   };
 };
