@@ -1,12 +1,11 @@
-import React from 'react';
-import { Menu, Button } from 'semantic-ui-react';
+import React, { Fragment } from 'react';
 
-const GuestMenu = ({ signIn, register }) => {
+const GuestMenu = ({ login, register }) => {
   return (
-    <Menu.Item position='right'>
-      <Button basic inverted content='Sign Up' onClick={register} />
-      <Button basic inverted content='Login' onClick={signIn} />
-    </Menu.Item>
+    <Fragment>
+      <button onClick={login}>Login</button>
+      <button onClick={register}>Sign Up</button>
+    </Fragment>
   );
 };
 

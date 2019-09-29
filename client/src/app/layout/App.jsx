@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import NavBar from '../layout/nav/navBar/NavBar';
 import SideBar from '../layout/nav/sideBar/SideBar';
 import MobileNav from '../layout/nav/mobileNav/MobileNav';
-import SearchBar from './nav/searchBar/SearchBar';
 import { Container } from 'semantic-ui-react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import QuestionDashboard from '../../feature/question/questionDashboard/QuestionDashboard';
@@ -41,7 +40,6 @@ class App extends Component {
             <Fragment>
               <NavBar />
               <SideBar />
-              <SearchBar />
               <MobileNav />
               <Container className='main'>
                 <div className='content'>

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Menu, Container } from 'semantic-ui-react';
-import { NavLink, withRouter } from 'react-router-dom';
-import GuestMenu from './menus/GuestMenu';
-import AuthMenu from './menus/AuthMenu';
+import { Link } from 'react-router-dom';
+import { Icon } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 import { toggleMobileNav } from '../navActions';
 import { openModal } from '../../modal/ModalActions';
 import { signOut } from '../../auth/AuthActions';
 
+import GuestMenu from './menus/GuestMenu';
+import AuthMenu from './menus/AuthMenu';
 import logo from './spedxchange-brand.svg';
 
 const actions = {
@@ -22,11 +23,11 @@ const mapState = state => ({
 });
 
 class NavBar extends Component {
-  handleSignIn = () => {
+  handleLogin = () => {
     this.props.openModal('LoginModal');
   };
 
-  handleRegister = () => {
+  handleSignUp = () => {
     // this.toggleNav();
     this.props.openModal('RegisterModal');
   };
@@ -44,14 +45,20 @@ class NavBar extends Component {
     const { auth } = this.props;
     const authenticated = auth.authenticated && auth.currentUser;
     return (
-      <Menu inverted fixed='top' className='app-header'>
-        <Container>
-          <Menu.Item as={NavLink} className='brand' exact to='/' header>
-            <img src={logo} alt='SPEDxchange' className='ui' />
-          </Menu.Item>
-          {authenticated ? <AuthMenu profile={auth.currentUser} signOut={this.handleSignOut} /> : <GuestMenu signIn={this.handleSignIn} register={this.handleRegister} />}
-        </Container>
-      </Menu>
+      <div className='app-header'>
+        <div className='flex-wrap'>
+          <Link className='brand' exact to='/'>
+            <img src={logo} alt='SPEDxchange' />
+          </Link>
+          <div className='flex-wrap grow nav-content'>
+            <button className='search'>
+              <Icon name='search' />
+            </button>
+            {authenticated ? <AuthMenu profile={auth.currentUser} signOut={this.handleSignOut} /> : <GuestMenu login={this.handleLogin} register={this.handleSignUp} />}
+          </div>
+          {authenticated && <div />}
+        </div>
+      </div>
     );
   }
 }
