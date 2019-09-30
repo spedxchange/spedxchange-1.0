@@ -1,34 +1,50 @@
 import { createReducer } from '../../common/util/ReducerUtil';
-import { SIGNOUT_USER, USER_LOADED, AUTH_ERROR } from './AuthContantants';
+import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, ACCOUNT_DELETED } from './AuthContantants';
 
 const initialState = {
+  token: localStorage.getItem('token'),
   authenticated: false,
+  loading: true,
   currentUser: null
 };
 
 const loadUser = (state, payload) => {
   return {
+    ...state,
     authenticated: true,
+    loading: false,
     currentUser: payload
   };
 };
 
-const authError = state => {
+const loginSuccess = (state, payload) => {
+  localStorage.setItem('token', payload.token);
   return {
-    authenticated: false,
-    currentUser: null
+    ...state,
+    ...payload,
+    authenticated: true,
+    loading: false
   };
 };
 
-const signoutUser = state => {
+const logoutUser = state => {
+  localStorage.removeItem('token');
   return {
+    ...state,
+    token: null,
     authenticated: false,
+    loading: false,
     currentUser: null
   };
 };
 
 export default createReducer(initialState, {
-  [SIGNOUT_USER]: signoutUser,
   [USER_LOADED]: loadUser,
-  [AUTH_ERROR]: authError
+  [REGISTER_SUCCESS]: loginSuccess,
+  [LOGIN_SUCCESS]: loginSuccess,
+  [REGISTER_FAIL]: logoutUser,
+  [AUTH_ERROR]: logoutUser,
+  [LOGIN_FAIL]: logoutUser,
+  [LOGOUT]: logoutUser,
+  [ACCOUNT_DELETED]: logoutUser
 });

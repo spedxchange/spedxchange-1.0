@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import './theme.css';
@@ -10,11 +10,21 @@ import { Provider } from 'react-redux';
 import store from './app/store/Store';
 import ScrollToTop from './app/common/util/ScrollToTop';
 import ReduxToastr from 'react-redux-toastr';
+import setAuthToken from './app/common/util/setAuthToken';
+import { loadUser } from './app/layout/auth/AuthActions';
 
 const rooEl = document.getElementById('root');
 
-let render = () => {
-  ReactDOM.render(
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
+
+const AppRoot = () => {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
+  return (
     <Provider store={store}>
       <BrowserRouter>
         <ScrollToTop>
@@ -22,18 +32,17 @@ let render = () => {
           <App />
         </ScrollToTop>
       </BrowserRouter>
-    </Provider>,
-    rooEl
+    </Provider>
   );
 };
 
 if (module.hot) {
   module.hot.accept('./app/layout/App', () => {
-    setTimeout(render);
+    setTimeout(ReactDOM.render(<AppRoot />, rooEl));
   });
 }
 
-render();
+ReactDOM.render(<AppRoot />, rooEl);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

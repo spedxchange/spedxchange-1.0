@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Container } from 'semantic-ui-react';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import NavBar from '../layout/nav/navBar/NavBar';
 import SideBar from '../layout/nav/sideBar/SideBar';
 import MobileNav from '../layout/nav/mobileNav/MobileNav';
-import { Container } from 'semantic-ui-react';
-import { Route, Switch, withRouter } from 'react-router-dom';
 import QuestionDashboard from '../../feature/question/questionDashboard/QuestionDashboard';
 import HomePage from '../../feature/home/HomePage';
 import QuestionDetail from '../../feature/question/questionDetail/QuestionDetail';
@@ -14,21 +14,12 @@ import SettingsDashboard from '../../feature/user/settings/SettingsDashboard';
 import QuestionForm from '../../feature/question/questionForm/QuestionForm';
 import TestComponent from '../../feature/testarea/TestComponent';
 import ModalManager from './modal/ModalManager';
-import { loadUser } from './auth/AuthActions';
-
-const actions = {
-  loadUser
-};
 
 const mapState = state => ({
   auth: state.auth
 });
 
 class App extends Component {
-  componentDidMount() {
-    this.props.loadUser();
-  }
-
   render() {
     return (
       <Fragment>
@@ -62,9 +53,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(
-  connect(
-    mapState,
-    actions
-  )(App)
-);
+export default withRouter(connect(mapState)(App));

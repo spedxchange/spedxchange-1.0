@@ -47,7 +47,7 @@ class NavBar extends Component {
     return (
       <div className='app-header'>
         <div className='flex-wrap'>
-          <Link className='brand' exact to='/'>
+          <Link className='brand' to='/'>
             <img src={logo} alt='SPEDxchange' />
           </Link>
           <div className='flex-wrap grow nav-content'>
