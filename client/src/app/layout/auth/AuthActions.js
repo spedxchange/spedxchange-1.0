@@ -11,6 +11,11 @@ export const loadUser = () => {
   return async (dispatch, getState) => {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
+    } else {
+      dispatch({
+        type: AUTH_ERROR
+      });
+      return;
     }
     try {
       const res = await axios.get('/api/auth');
