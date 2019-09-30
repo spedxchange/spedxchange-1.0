@@ -10,6 +10,7 @@
   max-height: 100%;
   overflow-y: scroll;
   background-color: var(--primary-clear);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
   li {
     transition: none !important;
     border-top: 1px solid rgba(255, 255, 255, 0.18);
@@ -34,18 +35,18 @@
       }
     }
     &.nav-spacer {
-      height: 2px;
+      height: 1px;
       border-top: none;
       background: rgba(255, 255, 255, 0.36);
     }
   }
   &.open {
-    background-color: var(--primary-rgba);
-    top: 43px;
+    background-color: var(--primary-color-dark);
+    top: 39px;
     li {
       span {
         &:hover:not(.active) {
-          background-color: #333;
+          background-color: var(--primary-color-darker);
           color: white;
         }
       }

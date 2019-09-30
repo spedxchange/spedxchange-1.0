@@ -33,7 +33,7 @@
         background: rgba(255, 255, 255, 0.1);
         color: rgba(255, 255, 255, 1);
       }
-      &.search {
+      &.square {
         width: 40px;
         img {
           width: 1.33rem;
@@ -43,6 +43,12 @@
         > i.icon {
           margin: 3px 0 0 0;
         }
+        &.mobile {
+          display: none;
+        }
+      }
+      &.guest {
+        display: block;
       }
     }
     .user-menu {
@@ -111,6 +117,14 @@
             }
           }
         }
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      button.square.mobile {
+        display: block;
+      }
+      button.guest {
+        display: none;
       }
     }
   }

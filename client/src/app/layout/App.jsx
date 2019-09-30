@@ -4,7 +4,6 @@ import { Container } from 'semantic-ui-react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import NavBar from '../layout/nav/navBar/NavBar';
 import SideBar from '../layout/nav/sideBar/SideBar';
-import MobileNav from '../layout/nav/mobileNav/MobileNav';
 import QuestionDashboard from '../../feature/question/questionDashboard/QuestionDashboard';
 import HomePage from '../../feature/home/HomePage';
 import QuestionDetail from '../../feature/question/questionDetail/QuestionDetail';
@@ -31,7 +30,6 @@ class App extends Component {
             <Fragment>
               <NavBar />
               <SideBar />
-              <MobileNav />
               <Container className='main'>
                 <div className='content'>
                   <Switch key={this.props.location.key}>

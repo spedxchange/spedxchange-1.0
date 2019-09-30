@@ -3,8 +3,12 @@ import React, { Fragment } from 'react';
 const GuestMenu = ({ login, register }) => {
   return (
     <Fragment>
-      <button onClick={login}>Login</button>
-      <button onClick={register}>Sign Up</button>
+      <button className='guest' onClick={login}>
+        Login
+      </button>
+      <button className='guest' onClick={register}>
+        Sign Up
+      </button>
     </Fragment>
   );
 };
