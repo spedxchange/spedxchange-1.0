@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
-import './theme.css';
+import './theme.scss';
 import './index.scss';
 import App from './app/layout/App';
 import * as serviceWorker from './serviceWorker';
