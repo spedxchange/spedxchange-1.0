@@ -47,10 +47,8 @@ app.use('/api/search', require('./routes/api/search'));
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
+  app.use('/static', express.static('client/build/static'));
   app.use(express.static('client/build'));
-  app.get('/static', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'static'));
-  });
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
