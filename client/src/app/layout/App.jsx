@@ -13,6 +13,7 @@ import SettingsDashboard from '../../feature/user/settings/SettingsDashboard';
 import QuestionForm from '../../feature/question/questionForm/QuestionForm';
 import TestComponent from '../../feature/testarea/TestComponent';
 import ModalManager from './modal/ModalManager';
+import SearchBar from '../../feature/search/searchBar/SearchBar';
 
 const mapState = state => ({
   auth: state.auth
@@ -30,6 +31,7 @@ class App extends Component {
             <Fragment>
               <NavBar />
               <SideBar />
+              <SearchBar />
               <Container className='main'>
                 <div className='content'>
                   <Switch key={this.props.location.key}>

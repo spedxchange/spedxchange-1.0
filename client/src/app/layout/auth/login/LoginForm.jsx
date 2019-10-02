@@ -11,7 +11,7 @@ const actions = {
 
 const LoginForm = ({ login, handleSubmit, error }) => {
   return (
-    <Form size='large' onSubmit={handleSubmit(login)} autoComplete='off'>
+    <Form onSubmit={handleSubmit(login)} autoComplete='off'>
       <Segment>
         <Field name='email' component={TextInput} type='text' placeholder='Email Address' />
         <Field name='password' component={TextInput} type='password' placeholder='password' />

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
-import { toggleMobileNav, navItemClick } from '../navActions';
+import { toggleMobileNav, toggleSearchBar, navItemClick } from '../navActions';
 import { openModal } from '../../modal/ModalActions';
 import { signOut } from '../../auth/AuthActions';
 
@@ -19,6 +19,7 @@ const mapState = state => ({
 });
 
 const actions = {
+  toggleSearchBar,
   toggleMobileNav,
   navItemClick,
   openModal,
@@ -81,7 +82,7 @@ class NavBar extends Component {
               <img src={logo} alt='SPEDxchange' />
             </Link>
             <div className='flex-wrap grow nav-content'>
-              <button className='square'>
+              <button className='square' onClick={this.props.toggleSearchBar}>
                 <Icon name='search' />
               </button>
               {authenticated ? <AuthMenu profile={auth.currentUser} signOut={this.handleSignOut} /> : <GuestMenu login={this.handleLogin} register={this.handleSignUp} />}
