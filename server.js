@@ -3,7 +3,9 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const path = require('path');
 const pagePath = path.join(__dirname, '/client/build/index.html');
-const filePath = path.join(__dirname, '/client/build/');
+const filePath = path.join(__dirname, '/client/build/static');
+
+console.log('filePath: ', filePath);
 
 const app = express();
 
@@ -46,12 +48,8 @@ app.use('/api/questions', require('./routes/api/questions'));
 app.use('/api/tags', require('./routes/api/tags'));
 app.use('/api/search', require('./routes/api/search'));
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  // Set static folders
-  app.use('/static', express.static(filePath));
-  app.use('*', express.static(pagePath));
-}
+app.use('/static', express.static(filePath));
+app.use('*', express.static(pagePath));
 
 const PORT = process.env.PORT || 5000;
 
