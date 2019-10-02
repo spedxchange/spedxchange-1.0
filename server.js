@@ -5,8 +5,6 @@ const path = require('path');
 const pagePath = path.join(__dirname, '/client/build/index.html');
 const filePath = path.join(__dirname, '/client/build/static');
 
-console.log('filePath: ', filePath);
-
 const app = express();
 
 // Connect Database
@@ -22,7 +20,7 @@ const allowedOrigins = [
   'http://localhost:5000/',
   'http://localhost:5000',
   'https://spedxchange.herokuapp.com/',
-  'https://spedxchange.herokuapp.com',
+  'http://spedxchange.herokuapp.com',
   'https://spedxchange.com/',
   'https://spedxchange.com'
 ];
