@@ -1,0 +1,29 @@
+.main-footer {
+  padding: 1rem 0;
+  margin-top: 1em;
+  background: var(--primary-color-darker);
+  color: rgba(255, 255, 255, 0.85);
+  h6 {
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+  }
+  a {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    &:hover {
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+  .legal {
+    margin: 1rem 0 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--primary-color);
+    font-size: 12px;
+    a {
+      display: inline-block;
+    }
+  }
+}
