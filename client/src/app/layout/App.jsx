@@ -15,6 +15,7 @@ import TestComponent from '../../feature/testarea/TestComponent';
 import ModalManager from './modal/ModalManager';
 import SearchBar from '../../feature/search/searchBar/SearchBar';
 import Appfooter from './footer/AppFooter';
+import NavMobile from './nav/navMobile/NavMobile';
 
 const mapState = state => ({
   auth: state.auth
@@ -47,6 +48,7 @@ class App extends Component {
                 </div>
               </Container>
               <Appfooter />
+              <NavMobile />
             </Fragment>
           )}
         />

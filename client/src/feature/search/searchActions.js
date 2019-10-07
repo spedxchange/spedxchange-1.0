@@ -1,7 +1,7 @@
-import { SubmissionError } from 'redux-form';
-
-import { SEARCH_RESULTS, SEARCH_ERROR } from './searchConstants';
-import { HEADER_JSON } from '../../app/api/apiConstants';
+import { SEARCH_RESULTS } from './searchConstants';
+// import { SubmissionError } from 'redux-form';
+// import { SEARCH_RESULTS, SEARCH_ERROR } from './searchConstants';
+// import { HEADER_JSON } from '../../app/api/apiConstants';
 
 // Search
 export const doSearch = q => {

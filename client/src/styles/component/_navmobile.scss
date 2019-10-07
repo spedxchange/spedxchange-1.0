@@ -1,53 +1,62 @@
 .nav-mobile {
-  position: absolute;
+  position: fixed;
   z-index: 1;
   transition: all 0.4s ease-out;
-  list-style-type: none;
   margin: 0;
   padding: 0;
-  top: -550px;
+  top: -100%;
   width: 100%;
-  max-height: 100%;
+  height: calc(100% - 39px);
+  background: transparent;
   overflow-y: scroll;
-  background-color: var(--primary-clear);
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
-  li {
-    transition: none !important;
+  overflow-x: hidden;
+  ul {
+    transition: all 0.4s ease-out;
+    list-style-type: none;
+    background-color: var(--primary-clear);
     border-top: 1px solid rgba(255, 255, 255, 0.18);
-    span {
-      display: block;
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      text-decoration: none;
-      &.active {
-        background-color: #4caf50;
-        color: white;
+    margin: 0;
+    padding: 0;
+    li {
+      transition: none !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      span {
+        display: block;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        text-decoration: none;
+        &.active {
+          background-color: #4caf50;
+          color: white;
+        }
       }
-    }
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      width: 100&;
-      background-color: var(--primary-color);
-      li span {
-        padding-left: 3rem;
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100&;
+        background-color: var(--primary-color);
+        li span {
+          padding-left: 3rem;
+        }
       }
-    }
-    &.nav-spacer {
-      height: 1px;
-      border-top: none;
-      background: rgba(255, 255, 255, 0.36);
+      &.nav-spacer {
+        height: 1px;
+        border-top: none;
+        background: rgba(255, 255, 255, 0.36);
+      }
     }
   }
   &.open {
-    background-color: var(--primary-color-dark);
     top: 39px;
-    li {
-      span {
-        &:hover:not(.active) {
-          background-color: var(--primary-color-darker);
-          color: white;
+    ul {
+      background-color: var(--primary-color-dark);
+      li {
+        span {
+          &:hover:not(.active) {
+            background-color: var(--primary-color-darker);
+            color: white;
+          }
         }
       }
     }
