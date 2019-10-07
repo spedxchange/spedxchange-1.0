@@ -38,3 +38,18 @@
     width: 180px !important;
   }
 }
+
+.question-head {
+  width: 100%;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px dotted var(--border-color);
+  .top {
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .bottom {
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}

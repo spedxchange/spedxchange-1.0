@@ -56,6 +56,8 @@ class TestComponent extends Component {
         <h1 className='brand'>Test Component</h1>
         <hr />
 
+        <hr />
+
         <div className='test-header'>
           <div className='flex-wrap'>
             <Link className='brand' to='/'>

@@ -3,6 +3,9 @@
   margin-top: 1em;
   background: var(--primary-color-darker);
   color: rgba(255, 255, 255, 0.85);
+  .flex-wrap {
+    justify-content: space-between;
+  }
   h6 {
     padding: 0;
     margin: 0;
