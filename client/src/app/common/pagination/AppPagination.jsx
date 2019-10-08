@@ -1,12 +1,28 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Pagination } from 'semantic-ui-react';
+import React from 'react';
 
-export class AppPagination extends Component {
-  render() {
-    const { activePage, boundaryRange, siblingRange, showEllipsis, showFirstAndLastNav, showPreviousAndNextNav, totalPages } = this.props;
-    return (
+const AppPagination = config => {
+  state = {
+    activePage: config.activePage || 1,
+    boundaryRange: config.boundaryRange || 0,
+    siblingRange: config.siblingRange || 2,
+    showEllipsis: config.showEllipsis || true,
+    showFirstAndLastNav: config.showFirstAndLastNav || false,
+    showPreviousAndNextNav: config.showPreviousAndNextNav || true,
+    totalPages: config.totalPages || 0
+  };
+
+  handlePaginationChange = (e, { activePage }) => {
+    this.setState({ activePage: activePage });
+  };
+
+  const { activePage, boundaryRange, siblingRange, showEllipsis, showFirstAndLastNav, showPreviousAndNextNav, totalPages } = this.state;
+
+  return (
+    totalPages > 1 && (
       <Pagination
+        className='questions'
+        pointing
+        secondary
         activePage={activePage}
         boundaryRange={boundaryRange}
         onPageChange={this.handlePaginationChange}
@@ -19,24 +35,8 @@ export class AppPagination extends Component {
         prevItem={showPreviousAndNextNav ? undefined : null}
         nextItem={showPreviousAndNextNav ? undefined : null}
       />
-    );
-  }
-}
+    )
+  );
+};
 
-const mapStateToProps = state => ({
-  ...state,
-  activePage: 5,
-  boundaryRange: 1,
-  siblingRange: 1,
-  showEllipsis: true,
-  showFirstAndLastNav: true,
-  showPreviousAndNextNav: true,
-  totalPages: 50
-});
-
-const mapDispatchToProps = {};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppPagination);
+export default AppPagination;
