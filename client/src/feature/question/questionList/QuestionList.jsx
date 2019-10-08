@@ -46,8 +46,6 @@ class QuestionList extends Component {
         {questions && questions.map(question => <QuestionListItem key={question._id} question={question} deleteQuestion={deleteQuestion} />)}
         <Pagination
           className='questions'
-          pointing
-          secondary
           activePage={activePage}
           boundaryRange={boundaryRange}
           onPageChange={this.handlePaginationChange}
