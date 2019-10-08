@@ -1,6 +1,8 @@
 import React from 'react';
 import { Segment, Container, Header, Icon, Button } from 'semantic-ui-react';
 
+import HomeMasthead from './HomeMasthead';
+
 const HomePage = ({ history }) => {
   return (
     <Segment inverted textAlign='center' vertical className='masthead'>
@@ -13,6 +15,7 @@ const HomePage = ({ history }) => {
           <Icon name='right arrow' inverted />
         </Button>
       </Container>
+      <HomeMasthead />
     </Segment>
   );
 };

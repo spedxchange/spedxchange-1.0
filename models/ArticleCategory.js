@@ -1,0 +1,23 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const ArticleCategorySchema = new Schema({
+  categoryName: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String
+  },
+  articleCount: {
+    type: Number
+  },
+  articles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'article'
+    }
+  ]
+}).index({ categoryName: 'text', description: 'text' });
+
+module.exports = ArticleCategory = mongoose.model('article-category', ArticleCategorySchema);

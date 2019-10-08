@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
-  url: {
+  slug: {
     type: String,
     required: true
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'author'
+    ref: 'user'
   },
   title: {
     type: String,
@@ -62,6 +62,22 @@ const ArticleSchema = new Schema({
         type: Date,
         default: Date.now
       }
+    }
+  ],
+  likeCount: {
+    type: Number,
+    default: 0
+  },
+  likes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ],
+  unlikes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
     }
   ],
   published: {
