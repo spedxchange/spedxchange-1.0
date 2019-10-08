@@ -56,7 +56,7 @@ const AppFooter = () => {
           </div>
         </div>
         <div className='flex-wrap sm legal'>
-          <div class='grow'>
+          <div className='grow'>
             <strong>SPEDxchange</strong> | 1740 Ridge Ave, Suite 500 | Evanston Il, 60201 | <a href='tel:1-224-300-7990'>224.300.7790</a>
           </div>
           <div>&copy; Copyright 2019 SPEDhunters, LLC</div>

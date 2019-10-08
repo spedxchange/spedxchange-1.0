@@ -4,8 +4,6 @@ import { reduxForm } from 'redux-form';
 import { search } from './searchActions';
 import { connect } from 'react-redux';
 
-import './search.scss';
-
 const actions = {
   search
 };

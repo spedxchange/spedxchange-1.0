@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container } from 'semantic-ui-react';
+import { Container, Button } from 'semantic-ui-react';
 
 import { openModal } from '../../app/layout/modal/ModalActions';
 
@@ -21,6 +21,9 @@ export class HomeMasthead extends Component {
           <br />
           that enable growth and discovery.
         </h1>
+        <Button>For Educators</Button>
+        <Button>For Students</Button>
+        <Button>For Schools</Button>
       </Container>
     );
   }

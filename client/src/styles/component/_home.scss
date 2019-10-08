@@ -33,3 +33,71 @@
     font-weight: 500;
   }
 }
+
+.hero-section {
+  text-align: center;
+  color: #fff;
+  padding: 3rem;
+  min-height: calc(100vh - 30px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background-image: url(/assets/img/bg-home.png),
+    linear-gradient(
+      135deg,
+      rgb(103, 28, 142) 0%,
+      rgb(0, 102, 70) 69%,
+      rgb(0, 127, 85) 89%
+    ) !important;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    @media only screen and (max-width: 680px) {
+      font-size: 1.5rem;
+    }
+  }
+  .actions {
+    .ui.button {
+      margin: 0.5rem;
+    }
+    @media only screen and (max-width: 680px) and (min-width: 563px) {
+      padding: 0 6rem;
+    }
+    @media only screen and (max-width: 662px) and (min-width: 531px) {
+      padding: 0 4.5rem;
+    }
+    @media only screen and (max-width: 530px) {
+      padding: 0;
+    }
+  }
+}
+
+.home-news {
+  min-height: calc(100vh - 30px);
+  padding-left: 2.5rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background-image: url("/assets/img/speducator-reading.jpg");
+  background-position: center;
+  background-size: cover;
+  > * {
+    width: 24rem;
+  }
+  h2 {
+    font-size: 3.2rem;
+    font-weight: 400;
+  }
+  p {
+    font-size: 1.2rem;
+  }
+  button {
+    width: auto !important;
+  }
+}

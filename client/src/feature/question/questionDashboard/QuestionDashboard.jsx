@@ -35,9 +35,6 @@ class QuestionDashboard extends Component {
         <div className='grow'>
           <QuestionList questions={questions} deleteQuestion={this.handleDeleteQuestion} />
         </div>
-        <div className='activity'>
-          <QuestionActivity />
-        </div>
       </div>
     );
   }
