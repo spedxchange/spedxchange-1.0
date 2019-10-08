@@ -32,7 +32,6 @@ class App extends Component {
           render={() => (
             <Fragment>
               <NavBar />
-              <SideBar />
               <SearchBar />
               <Container className='main'>
                 <div className='content'>
@@ -47,8 +46,9 @@ class App extends Component {
                   </Switch>
                 </div>
               </Container>
-              <Appfooter />
               <NavMobile />
+              <Appfooter />
+              <SideBar />
             </Fragment>
           )}
         />
