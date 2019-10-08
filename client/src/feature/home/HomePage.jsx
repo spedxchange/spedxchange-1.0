@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Container } from 'semantic-ui-react';
 
 import NavBar from '../../app/layout/nav/navBar/NavBar';
 import SearchBar from '../../feature/search/searchBar/SearchBar';
+import AppFooter from '../../app/layout/footer/AppFooter';
 
 // import { Segment, Container, Header, Icon, Button } from 'semantic-ui-react';
 
@@ -13,7 +14,7 @@ const HomePage = ({ history }) => {
     <>
       <NavBar />
       <SearchBar />
-      <section id='hero' className='hero-section'>
+      <section id='MastHead' className='hero-section'>
         <h1>
           We empower SPEDucation
           <br />
@@ -41,6 +42,21 @@ const HomePage = ({ history }) => {
         </p>
         <Button color='green'>Read Our Latest news...</Button>
       </section>
+      <section id='HomeShortage' class='home-shortage'>
+        <h2>How does the nationwide shortage of special education staff affect you?</h2>
+        <p>
+          <strong>Let’s do something about it together!</strong>
+        </p>
+        <p>
+          Our team is diverse, and we have over 30 years of special education staffing experience. Our sophisticated understanding of special education job placement and challenges
+          are successful. We are not recruiters, we are experts in the process of matching districts and open positions. We use our technology and social media community to make
+          that happen.
+        </p>
+        <Button color='purple'>Learn More!</Button>
+      </section>
+      <div className='footer-wrap'>
+        <AppFooter />
+      </div>
     </>
   );
 };
