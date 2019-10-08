@@ -1,136 +1,133 @@
 /*home page styles*/
-
-.masthead {
+.home-section {
+  padding: 4rem 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  background-image: linear-gradient(
-    135deg,
-    rgb(103, 28, 142) 0%,
-    rgb(0, 102, 70) 69%,
-    rgb(0, 127, 85) 89%
-  ) !important;
-  height: 100vh;
+  justify-content: center;
   .ui.container {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  .ui.huge.inverted.button:hover {
-    .right.arrow.inverted.icon {
-      color: #111;
-    }
-  }
-
-  .ui.menu .ui.button,
-  .ui.menu a.ui.inverted.button {
-    margin-left: 0.5em;
-  }
-  h1.ui.header {
-    font-size: 3em;
-    font-weight: 600;
-  }
-  h2 {
-    font-size: 1.5em;
-    font-weight: 500;
-  }
-}
-
-.hero-section {
-  text-align: center;
-  color: #fff;
-  padding: 3rem;
-  min-height: calc(100vh - 30px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  background-image: url(/assets/img/bg-home.png),
-    linear-gradient(
-      135deg,
-      rgb(103, 28, 142) 0%,
-      rgb(0, 102, 70) 69%,
-      rgb(0, 127, 85) 89%
-    ) !important;
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: cover;
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 400;
-    @media only screen and (max-width: 680px) {
-      font-size: 1.5rem;
-    }
-  }
-  .actions {
-    .ui.button {
-      margin: 0.5rem;
-    }
-    @media only screen and (max-width: 680px) and (min-width: 563px) {
-      padding: 0 6rem;
-    }
-    @media only screen and (max-width: 662px) and (min-width: 531px) {
-      padding: 0 4.5rem;
-    }
-    @media only screen and (max-width: 530px) {
-      padding: 0;
-    }
-  }
-}
-
-.home-news {
-  padding: 4rem 2rem;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  background-image: url("/assets/img/speducator-reading.jpg");
-  background-position: center;
-  background-size: cover;
-  > * {
-    width: 24rem;
-  }
-  h2 {
-    font-size: 3.2rem;
-    font-weight: 400;
-  }
-  p {
-    font-size: 1.2rem;
-  }
-  button {
-    width: auto !important;
-  }
-}
-
-.home-shortage {
-  text-align: center;
-  color: #fff;
-  padding: 4rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #008a3b;
-  h2 {
-    max-width: 720px;
-    font-weight: 400;
-    font-size: 3.2rem;
-  }
-  p {
-    max-width: 720px;
-    font-size: 1.2rem;
-  }
-  .ui.button {
-    width: auto !important;
-  }
-  @media (max-width: 768px) {
-    padding: 3rem 1.5rem;
-
     h2 {
-      font-size: 2.8rem;
+      font-size: 3.3rem;
+      font-weight: 400;
+      line-height: 1.2;
     }
-
     p {
-      font-size: 1rem;
+      font-size: 1.25rem;
+      line-height: 1.5;
+    }
+    @media only screen and (max-width: 1199px) and (min-width: 992px) {
+      h2 {
+        font-size: 3rem;
+      }
+      p {
+        font-size: 1.2rem;
+      }
+    }
+    @media only screen and (max-width: 991px) and (min-width: 768px) {
+      h2 {
+        font-size: 2.75rem;
+      }
+      p {
+        font-size: 1.1rem;
+      }
+    }
+    @media only screen and (max-width: 767px) {
+      h2 {
+        font-size: 2.5rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+  &.hero {
+    min-height: calc(100vh - 80px);
+    margin-top: 40px;
+    background-image: url(/assets/img/bg-home.png),
+      linear-gradient(135deg, rgb(103, 28, 142) 0%, rgb(0, 102, 70) 96%) !important;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: cover;
+    .ui.container {
+      text-align: center;
+      color: #fff;
+      h5 {
+        margin-bottom: 1.5rem;
+        @media only screen and (max-width: 680px) {
+          font-size: 1rem;
+        }
+      }
+      h2 {
+        @media only screen and (max-width: 680px) {
+          font-size: 2rem;
+        }
+      }
+      .actions {
+        max-width: 420px;
+        margin: 1.5rem auto 0 auto;
+        .ui.button {
+          margin: 0.5rem;
+        }
+      }
+    }
+  }
+  &.news {
+    background-image: url("/assets/img/speducator-reading.jpg");
+    background-position: center;
+    background-size: cover;
+    .ui.container {
+      color: #fff;
+      > * {
+        max-width: 24rem;
+      }
+    }
+  }
+  &.shortage {
+    background-color: #008a3b;
+    .ui.container {
+      color: #fff;
+      text-align: center;
+      > * {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+  }
+  &.resources {
+    background-color: #e3eff7;
+    .ui.container {
+      text-align: center;
+      .callout {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        .grow {
+          text-align: center;
+          margin-bottom: 1.5rem;
+          > * {
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          i {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+            color: #008a3b;
+          }
+          h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+          }
+          p {
+            font-size: 1rem;
+          }
+        }
+      }
     }
   }
 }

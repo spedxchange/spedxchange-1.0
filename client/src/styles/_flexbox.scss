@@ -10,6 +10,9 @@
   > .grow {
     flex: 1 1 auto;
   }
+  &.column {
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-width: 991px) {
