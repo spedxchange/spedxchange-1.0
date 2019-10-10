@@ -18,6 +18,10 @@ const UserSchema = new Schema({
   avatar: {
     type: String
   },
+  profile: {
+    type: Schema.Types.ObjectId,
+    ref: 'profile'
+  },
   created: {
     type: Date,
     default: Date.now

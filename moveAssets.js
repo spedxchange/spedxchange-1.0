@@ -1,5 +1,4 @@
 const fsx = require('fs-extra');
-const fs = require('fs');
 
 (async () => {
   const src = './client/public/static/media';

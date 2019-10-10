@@ -10,7 +10,8 @@ const ArticleCategorySchema = new Schema({
     type: String
   },
   articleCount: {
-    type: Number
+    type: Number,
+    default: 0
   },
   articles: [
     {
