@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
+  uid: {
+    type: String,
+    required: true
+  },
   slug: {
     type: String,
     required: true
@@ -21,6 +25,9 @@ const ArticleSchema = new Schema({
   content: {
     type: String,
     required: true
+  },
+  rawText: {
+    type: String
   },
   status: {
     type: String,
@@ -44,24 +51,8 @@ const ArticleSchema = new Schema({
   },
   comments: [
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'user'
-      },
-      content: {
-        type: String,
-        required: true
-      },
-      name: {
-        type: String
-      },
-      avatar: {
-        type: String
-      },
-      created: {
-        type: Date,
-        default: Date.now
-      }
+      type: Schema.Types.ObjectId,
+      ref: 'comment'
     }
   ],
   likeCount: {
@@ -91,6 +82,6 @@ const ArticleSchema = new Schema({
     type: Date,
     default: Date.now
   }
-});
+}).index({ title: 'text', summary: 'text', rawText: 'text' }, { weights: { title: 3, summary: 2, rawText: 1 } });
 
 module.exports = User = mongoose.model('article', ArticleSchema);

@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const CategorySchema = new Schema({
   categoryName: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   description: {
     type: String
@@ -18,6 +19,6 @@ const CategorySchema = new Schema({
       ref: 'question'
     }
   ]
-}).index({ categoryName: 'text', description: 'text' });
+}).index({ description: 'text' });
 
 module.exports = Category = mongoose.model('category', CategorySchema);

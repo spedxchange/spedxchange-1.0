@@ -28,7 +28,9 @@
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.1",
-    "request": "^2.88.0"
+    "node-html-parser": "^1.1.16",
+    "request": "^2.88.0",
+    "xmldom": "^0.1.27"
   },
   "devDependencies": {
     "concurrently": "^4.1.2",

@@ -1,4 +1,7 @@
 const connectDB = require('../config/db');
+const HTMLParser = require('node-html-parser');
+
+const RouteUtil = require('../routes/routeUtil');
 
 const Article = require('../models/Article');
 const ArticleTag = require('../models/ArticleTag');
@@ -6,13 +9,11 @@ const ArticleCategory = require('../models/ArticleCategory');
 
 const articles = require('./data/articles');
 
+const authorId = '5da13e497c9c133ac0f8c103';
+
 const convertDate = fsDate => {
-  // console.log('fsDate: ', fsDate);
-  // console.log('fsDate: ', fsDate._seconds);
   const info = fsDate._seconds;
-  // console.log('info: ', info);
   const sec = info.match(/(?<=data":).*?(?=})/)[0];
-  // console.log('sec: ', sec);
   return new Date(Number(sec) * 1000);
 };
 
@@ -25,12 +26,18 @@ const createArticle = async article => {
   const updated = article.updatedAt ? convertDate(article.updatedAt) : now;
   const published = article.publishDate ? convertDate(article.publishDate) : now;
 
+  const uid = RouteUtil.createUid();
+  const slug = RouteUtil.createSlug(article.title);
+  const rawTextParse = HTMLParser.parse(article.content);
+
   const articleData = {
-    slug: article.id,
+    uid: uid,
+    slug: slug,
     title: article.title,
     content: article.content,
+    rawText: rawTextParse.text,
     summary: article.summary,
-    author: '5d9e126bb05dea5aac8a835e',
+    author: authorId,
     photoURL: article.image || '',
     videoURL: article.video || '',
     status: article.status || 'Draft',

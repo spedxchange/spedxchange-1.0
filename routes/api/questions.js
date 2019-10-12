@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
+const RouteUtil = require('../routeUtil');
 
 const Question = require('../../models/Question');
+const Answer = require('../../models/Answer');
 const User = require('../../models/User');
 const Tag = require('../../models/Tag');
 const Category = require('../../models/Category');
@@ -34,12 +36,66 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route    GET api/questions/:uid/:slug
+// @desc     Get Question by Id
+// @access   Public
+router.get('/:uid/:slug', async (req, res) => {
+  try {
+    const question = await Question.find({
+      uid: req.params.uid,
+      slug: req.params.slug
+    })
+      .populate({
+        path: 'user',
+        select: ['displayName', 'avatar']
+      })
+      .populate({
+        path: 'categories',
+        select: 'categoryName'
+      })
+      .populate({
+        path: 'tags',
+        select: 'tagName'
+      })
+      .populate({
+        path: 'answers'
+      });
+
+    if (!question) {
+      return res.status(404).json({ msg: 'Question not found' });
+    }
+
+    res.json(question);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Question not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route    GET api/questions/:question_id
 // @desc     Get Question by Id
 // @access   Public
 router.get('/:question_id', async (req, res) => {
   try {
-    const question = await Question.findById(req.params.question_id).populate('user', 'tags', 'categorties', 'answers');
+    const question = await Question.findById(req.params.question_id)
+      .populate({
+        path: 'user',
+        select: ['displayName', 'avatar']
+      })
+      .populate({
+        path: 'categories',
+        select: 'categoryName'
+      })
+      .populate({
+        path: 'tags',
+        select: 'tagName'
+      })
+      .populate({
+        path: 'answers'
+      });
 
     if (!question) {
       return res.status(404).json({ msg: 'Question not found' });
@@ -66,7 +122,7 @@ router.post(
       check('title', 'Title is required.')
         .not()
         .isEmpty(),
-      check('description', 'Description is required.')
+      check('content', 'Content is required.')
         .not()
         .isEmpty()
     ]
@@ -77,26 +133,34 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    const { title, content, tags, category } = req.body;
+    const uid = RouteUtil.createUid();
+    const slug = RouteUtil.createSlug(req.body.title);
+
+    console.log('uid: ', uid);
+    console.log('slug: ', slug);
+
     try {
       const newQuestion = new Question({
         user: req.user.id,
-        title: req.body.title,
-        content: req.body.description
+        title: title,
+        content: content,
+        uid: uid,
+        slug: slug
       });
 
       // Save question
       const question = await newQuestion.save();
 
       // Handle tags
-      if (req.body.tags && req.body.tags.length > 0) {
+      if (tags && tags.length > 0) {
         let tag;
-        for (tag of req.body.tags) {
-          tag = tag.toLowerCase().trim();
-          let existingTag = await Tag.findOne({ tagName: tag });
+        for (tag of tags) {
+          tagName = tag.toLowerCase().trim();
+          let existingTag = await Tag.findOne({ tagName: tagName });
           if (!existingTag) {
-            // add new tag if it does nor exist
             const newTag = new Tag({
-              tagName: tag,
+              tagName: tagName,
               questionCount: 1,
               questions: question._id
             });
@@ -104,7 +168,6 @@ router.post(
             question.tags.push(createdTag._id);
             await question.save();
           } else {
-            // update existing tag
             existingTag.questions.push(question._id);
             existingTag.questionCount++;
             question.tags.push(existingTag._id);
@@ -114,31 +177,116 @@ router.post(
         }
       }
 
-      // Handle categories
-      if (req.body.categories && req.body.categories.length > 0) {
-        let category;
-        for (category of req.body.categories) {
-          category = category.toLowerCase().trim();
-          let existingCategory = await Category.findOne({ categoryName: category });
-          if (!existingCategory) {
-            // add new category if it does nor exist
-            const newCategory = new Category({
-              categoryName: category,
+      // Handle category
+      const qCategory = category ? category.toLowerCase().trim() : 'no category';
+      let existingCategory = await Category.findOne({ categoryName: qCategory });
+      if (!existingCategory) {
+        const newCategory = new Category({
+          categoryName: qCategory,
+          questionCount: 1,
+          questions: question._id
+        });
+        const createdCategory = await newCategory.save();
+        question.category = createdCategory._id;
+        await question.save();
+      } else {
+        existingCategory.questions.push(question._id);
+        existingCategory.questionCount++;
+        await existingCategory.save();
+        question.category = existingCategory._id;
+        await question.save();
+      }
+
+      res.json(question);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route    POST api/questions/admin/:user_id
+// @desc     Create Question for A User
+// @access   Private
+router.post(
+  '/admin/:user_id',
+  [
+    auth,
+    [
+      check('title', 'Title is required.')
+        .not()
+        .isEmpty(),
+      check('content', 'Content is required.')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { title, content, tags, category } = req.body;
+    const uid = RouteUtil.createUid();
+    const slug = RouteUtil.createSlug(title);
+
+    try {
+      const newQuestion = new Question({
+        user: req.params.user_id,
+        title: title,
+        content: content,
+        uid: uid,
+        slug: slug
+      });
+
+      // Save question
+      const question = await newQuestion.save();
+
+      // Handle tags
+      if (tags && tags.length > 0) {
+        let tag;
+        for (tag of tags) {
+          tagName = tag.toLowerCase().trim();
+          let existingTag = await Tag.findOne({ tagName: tagName });
+          if (!existingTag) {
+            const newTag = new Tag({
+              tagName: tagName,
               questionCount: 1,
               questions: question._id
             });
-            const createdCategory = await newCategory.save();
-            question.categories.push(createdCategory._id);
+            const createdTag = await newTag.save();
+            question.tags.push(createdTag._id);
             await question.save();
           } else {
-            // update existing category
-            existingCategory.questions.push(question._id);
-            existingCategory.questionCount++;
-            question.categories.push(existingCategory._id);
-            await existingCategory.save();
+            existingTag.questions.push(question._id);
+            existingTag.questionCount++;
+            question.tags.push(existingTag._id);
+            await existingTag.save();
             await question.save();
           }
         }
+      }
+
+      // Handle category
+      const qCategory = category ? category.toLowerCase().trim() : 'no category';
+      let existingCategory = await Category.findOne({ categoryName: qCategory });
+      if (!existingCategory) {
+        const newCategory = new Category({
+          categoryName: qCategory,
+          questionCount: 1,
+          questions: question._id
+        });
+        const createdCategory = await newCategory.save();
+        question.category = createdCategory._id;
+        await question.save();
+      } else {
+        existingCategory.questions.push(question._id);
+        existingCategory.questionCount++;
+        await existingCategory.save();
+        question.category = existingCategory._id;
+        await question.save();
       }
 
       res.json(question);
@@ -160,7 +308,7 @@ router.put(
       check('title', 'Title is required.')
         .not()
         .isEmpty(),
-      check('description', 'Description is required.')
+      check('content', 'Content is required.')
         .not()
         .isEmpty()
     ]
@@ -179,74 +327,11 @@ router.put(
         return res.status(404).json({ msg: 'Question not found' });
       }
 
-      const { title, description } = req.body;
+      const { title, content } = req.body;
 
-      if (title) question.title = title;
-      if (description) question.description = description;
-
-      // Handle tags
-      // Handle tags in seperate calls
-      /*
-      LOGIC:
-      New Tag array is passed in which may include conditions:
-        - New Tag to this question:
-          - If Tag exists in Tags:
-            - add question id to tag
-            - add tag questionCount + 1
-          - If Tag is not in Tags:
-            - Create new tag
-        - Existing Tag in question:
-          - No change
-        - Removed Tag:
-          - If Tag was only assigned to this question:
-
-
-      */
-
-      /*
-      if (tags && tags.length) {
-        let tag;
-        for (tag of tags) {
-          console.log('tag in loop: ', tag);
-          question.tags = [];
-          tag = tag.toLowerCase().trim();
-
-
-          let existingTag = await Tag.findOne({ tagName: tag });
-          if (!existingTag) {
-            // add new tag if it does not exist in tags
-            const newTag = new Tag({
-              tagName: tag,
-              questionCount: 1,
-              questions: question._id
-            });
-            const createdTag = await newTag.save();
-            question.tags.push({
-              tag: createdTag._id,
-              tagName: tag
-            });
-          } else {
-
-
-
-            // update existing tag if it existed in tags
-            const tagExists = existingTag.questions.find(tag => {
-              return tag.tagName === tag;
-            });
-
-            if (tagExists) {
-              existingTag.questions.push(question._id);
-              existingTag.questionCount++;
-              await existingTag.save();
-            }
-            question.tags.push({
-              tag: existingTag._id,
-              tagName: tag
-            });
-          }
-        }
-      }
-      */
+      question.title = title;
+      question.content = content;
+      question.slug = RouteUtil.createSlug(title);
 
       await question.save();
       res.json(question);
@@ -260,7 +345,7 @@ router.put(
 // @route    DELETE api/question/:question_id
 // @desc     Delete Question
 // @access   Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:question_id', auth, async (req, res) => {
   try {
     const question = await Question.findById(req.params.question_id);
 
@@ -270,11 +355,35 @@ router.delete('/:id', auth, async (req, res) => {
 
     // Check user
     if (question.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
+      const currentUser = await User.findById(req.user.id);
+      if (currentUser.role !== 'admin') {
+        return res.status(401).json({ msg: 'Authorization denied.' });
+      }
     }
 
-    // TODO: Handle orphaned categories and tags
+    // Handle orphaned category
+    const category = await Category.findById(question.category);
+    category.questionCount--;
+    category.questions.pull(question._id);
+    await category.save();
 
+    // Handle orphaned tags
+    const tags = question.tags;
+    if (tags && tags.length > 0) {
+      let tag;
+      for (tag of tags) {
+        let currentTag = await Tag.findById(tag._id);
+        currentTag.questionCount--;
+        if (currentTag.questionCount === 0) {
+          await currentTag.remove();
+        } else {
+          currentTag.questions.pull({ _id: question._id });
+          await currentTag.save();
+        }
+      }
+    }
+
+    // remove question
     await question.remove();
 
     res.json({ msg: 'Question removed' });
@@ -367,7 +476,7 @@ router.put('/unlike/:question_id', auth, async (req, res) => {
 });
 
 // @route    POST api/questions/answer/:question_id
-// @desc     Answer Question
+// @desc     Answer A Question
 // @access   Private
 router.post(
   '/answer/:question_id',
@@ -393,16 +502,19 @@ router.post(
         return res.status(404).json({ msg: 'Question not found' });
       }
 
-      const newAnswer = {
+      const newAnswer = new Answer({
         user: req.user.id,
+        question: question._id,
         displayName: user.displayName,
         avatar: user.avatar,
         content: req.body.content
-      };
+      });
 
-      question.answers.unshift(newAnswer);
+      await newAnswer.save();
+
+      question.answers.push(newAnswer._id);
       await question.save();
-      res.json(question.answers);
+      res.json(newAnswer);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -590,7 +702,7 @@ router.delete('/answer/:question_id/:answer_id', auth, async (req, res) => {
   }
 });
 
-// @route    GET api/questions/answer/:id
+// @route    GET api/questions/answer/:answer_id
 // @desc     Get Answer by Id
 // @access   Public
 router.get('/answer/:answer_id', async (req, res) => {
@@ -605,6 +717,48 @@ router.get('/answer/:answer_id', async (req, res) => {
     }
 
     res.json(answer);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Answer not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    PUT api/questions/tags/:question_id/:tags
+// @desc     Add Tag to Question
+// @access   Private
+router.put('/answer/tags/:question_id/:tag', auth, async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.question_id);
+
+    if (!question) {
+      return res.status(404).json({ msg: 'Question not found' });
+    }
+
+    const tag = req.params.tag.toLowerCase().trim();
+    existingTag = await Tag.find({ tagName: tag });
+    if (!existingTag) {
+      // add new tag if it does nor exist
+      const newTag = new Tag({
+        tagName: tag,
+        questionCount: 1,
+        questions: question._id
+      });
+      const createdTag = await newTag.save();
+      question.tags.push(createdTag._id);
+      await question.save();
+    } else {
+      // update existing tag
+      existingTag.questions.push(question._id);
+      existingTag.questionCount++;
+      question.tags.push(existingTag._id);
+      await existingTag.save();
+      await question.save();
+    }
+
+    res.json(question);
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') {

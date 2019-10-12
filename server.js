@@ -38,10 +38,10 @@ app.use(
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));
-app.use('/api/posts', require('./routes/api/posts'));
 app.use('/api/questions', require('./routes/api/questions'));
 app.use('/api/tags', require('./routes/api/tags'));
 app.use('/api/search', require('./routes/api/search'));
+app.use('/api/news', require('./routes/api/articles'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

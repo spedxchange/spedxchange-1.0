@@ -1,5 +1,6 @@
 {
-  "mongoURI": "mongodb+srv://spedapi:@Sp3dAdm1n$@cluster0-qamud.gcp.mongodb.net/spedhunters",
+  "mongoURI_DEV": "mongodb+srv://spedapi:@Sp3dAdm1n$@cluster0-qamud.gcp.mongodb.net/spedhunters",
+  "mongoURI": "mongodb+srv://spedxchange-admin:@SP3Dadm1n$@spedxchange-dsmnc.gcp.mongodb.net/spedxchange",
   "jwtSecret": "apitoken",
   "githubClientId": "3840e3645892fef96870",
   "githubSecret": "50845f9e063ca23125beb0c8359a4d410bc19071"

@@ -6,6 +6,14 @@ const QuestionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user'
   },
+  uid: {
+    type: String,
+    required: true
+  },
+  slug: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true
@@ -38,12 +46,10 @@ const QuestionSchema = new Schema({
       ref: 'user'
     }
   ],
-  categories: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'category'
-    }
-  ],
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'category'
+  },
   tags: [
     {
       type: Schema.Types.ObjectId,
@@ -64,6 +70,6 @@ const QuestionSchema = new Schema({
     type: Date,
     default: Date.now
   }
-}).index({ title: 'text', description: 'text' });
+}).index({ uid: 'text', slug: 'text', title: 'text', content: 'text' });
 
 module.exports = Question = mongoose.model('question', QuestionSchema);

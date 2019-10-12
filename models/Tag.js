@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const TagSchema = new Schema({
   tagName: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   description: {
     type: String
@@ -18,6 +19,6 @@ const TagSchema = new Schema({
       ref: 'question'
     }
   ]
-}).index({ tagName: 'text', description: 'text' });
+}).index({ description: 'text' });
 
 module.exports = Tag = mongoose.model('tag', TagSchema);

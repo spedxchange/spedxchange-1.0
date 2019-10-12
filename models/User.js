@@ -22,6 +22,10 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'profile'
   },
+  role: {
+    type: String,
+    default: 'reader'
+  },
   created: {
     type: Date,
     default: Date.now

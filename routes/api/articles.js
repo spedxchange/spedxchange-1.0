@@ -8,13 +8,33 @@ const User = require('../../models/User');
 const ArticleTag = require('../../models/ArticleTag');
 const ArticleCategory = require('../../models/ArticleCategory');
 
-// @route    GET api/articles
-// @desc     Get all Articles
+// @route    GET api/news
+// @desc     Get All Articles (Meta Only)
 // @access   Public
 router.get('/', async (req, res) => {
   try {
     const articles = await Article.find()
       .sort({ updated: -1 })
+      .select({ uid: 1, slug: 1, author: 1, title: 1, status: 1, published: 1, updated: 1 })
+      .populate({
+        path: 'author',
+        select: 'displayName'
+      });
+    res.json(articles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    GET api/news/latest
+// @desc     Get Latest Articles (10)
+// @access   Public
+router.get('/latest', async (req, res) => {
+  try {
+    const articles = await Article.find()
+      .sort({ updated: 1 })
+      .limit(10)
       .populate({
         path: 'author',
         select: ['displayName', 'avatar']
@@ -34,17 +54,32 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route    GET api/articles/:article_id
+// @route    GET api/news/:uid/:slug
 // @desc     Get Article by Id
 // @access   Public
-router.get('/:article_id', async (req, res) => {
+router.get('/:uid/:slug', async (req, res) => {
+  const findBy = {
+    uid: req.params.uid,
+    slug: req.params.slug
+  };
   try {
-    const article = await Article.findById(req.params.article_id).populate('user', 'tags', 'categorties', 'comments');
+    const article = await Article.find(findBy)
+      .populate({
+        path: 'author',
+        select: ['displayName', 'avatar']
+      })
+      .populate({
+        path: 'category',
+        select: 'categoryName'
+      })
+      .populate({
+        path: 'tags',
+        select: 'tagName'
+      });
 
     if (!article) {
       return res.status(404).json({ msg: 'Article not found' });
     }
-
     res.json(article);
   } catch (err) {
     console.error(err.message);
@@ -55,7 +90,97 @@ router.get('/:article_id', async (req, res) => {
   }
 });
 
-// @route    POST api/articles
+// @route    POST api/news/search
+// @desc     Search Articles by Search Term
+// @access   Public
+router.post('/search', async (req, res) => {
+  const { term } = req.body;
+  try {
+    /*
+    const articles = await Article.find({ $text: { $search: term } }, { score: { $meta: 'textScore' } })
+      .sort({ score: { $meta: 'textScore' } })
+      .select({ uid: 1, slug: 1, author: 1, title: 1, summary: 1, status: 1, published: 1, updated: 1 })
+      .populate({
+        path: 'author',
+        select: 'displayName'
+      });
+    */
+
+    /*
+    const articles = await Article.aggregate([
+      {
+        $match: {
+          $text: {
+            $search: term
+          }
+        }
+      },
+      {
+        $project: {
+          uid: 1,
+          slug: 1,
+          author: 1,
+          title: 1,
+          summary: 1,
+          status: 1,
+          published: 1,
+          updated: 1,
+          score: {
+            $meta: 'textScore'
+          }
+        }
+      },
+      {
+        $match: {
+          score: { $gt: 1.0 }
+        }
+      }
+    ]).sort({ score: { $meta: 'textScore' } });
+    */
+    const articles = await Article.aggregate([
+      {
+        $searchBeta: {
+          search: {
+            path: ['title', 'summary', 'rawText'],
+            query: term
+          },
+          highlight: {
+            path: ['title', 'summary', 'rawText']
+          }
+        }
+      },
+      {
+        $project: {
+          uid: 1,
+          slug: 1,
+          author: 1,
+          title: 1,
+          summary: 1,
+          status: 1,
+          published: 1,
+          updated: 1,
+          highlights: { $meta: 'searchHighlights' }
+        }
+      }
+    ]);
+
+    if (!articles) {
+      return res.status(404).json({ msg: `No Articles found with the term: "${term}".` });
+    }
+    res.json({
+      count: articles.length,
+      articles: articles
+    });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: `No Articles found with the term: "${term}".` });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    POST api/news
 // @desc     Create Article
 // @access   Private
 router.post(
@@ -155,7 +280,7 @@ router.post(
   }
 );
 
-// @route    PUT api/articles/:article_id
+// @route    PUT api/news/:article_id
 // @desc     Update Article
 // @access   Private
 router.put(
@@ -293,7 +418,7 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-// @route    PUT api/articles/like/:article_id
+// @route    PUT api/news/like/:article_id
 // @desc     Like Article
 // @access   Private
 router.put('/like/:article_id', auth, async (req, res) => {
@@ -332,7 +457,7 @@ router.put('/like/:article_id', auth, async (req, res) => {
   }
 });
 
-// @route    PUT api/articles/unlike/:article_id
+// @route    PUT api/news/unlike/:article_id
 // @desc     Unlike Article
 // @access   Private
 router.put('/unlike/:article_id', auth, async (req, res) => {
@@ -372,7 +497,7 @@ router.put('/unlike/:article_id', auth, async (req, res) => {
   }
 });
 
-// @route    POST api/articles/comment/:article_id
+// @route    POST api/news/comment/:article_id
 // @desc     Comment Article
 // @access   Private
 router.post(
@@ -416,7 +541,7 @@ router.post(
   }
 );
 
-// @route    PUT api/articles/comment/:article_id/:comment_id
+// @route    PUT api/news/comment/:article_id/:comment_id
 // @desc     Update Comment
 // @access   Private
 router.put(
@@ -472,7 +597,7 @@ router.put(
   }
 );
 
-// @route    PUT api/articles/comment/like/:article_id/:comment_id
+// @route    PUT api/news/comment/like/:article_id/:comment_id
 // @desc     Like Comment
 // @access   Private
 router.put('/comment/like/:article_id/:comment_id', auth, async (req, res) => {
@@ -519,7 +644,7 @@ router.put('/comment/like/:article_id/:comment_id', auth, async (req, res) => {
   }
 });
 
-// @route    PUT api/articles/comment/unlike/:article_id/:comment_id
+// @route    PUT api/news/comment/unlike/:article_id/:comment_id
 // @desc     Unlike Comment
 // @access   Private
 router.put('/comment/unlike/:article_id/:comment_id', auth, async (req, res) => {
@@ -564,7 +689,7 @@ router.put('/comment/unlike/:article_id/:comment_id', auth, async (req, res) => 
   }
 });
 
-// @route    DELETE api/articles/comment/:article_id/:comment_id
+// @route    DELETE api/news/comment/:article_id/:comment_id
 // @desc     Delete Comment
 // @access   Private
 router.delete('/comment/:article_id/:comment_id', auth, async (req, res) => {
@@ -596,7 +721,7 @@ router.delete('/comment/:article_id/:comment_id', auth, async (req, res) => {
   }
 });
 
-// @route    GET api/articles/comment/:id
+// @route    GET api/news/comment/:id
 // @desc     Get Comment by Id
 // @access   Public
 router.get('/comment/:comment_id', async (req, res) => {
