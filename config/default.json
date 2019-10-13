@@ -6,7 +6,7 @@
   "githubSecret": "50845f9e063ca23125beb0c8359a4d410bc19071",
   "AWSAccessKeyId": "AKIAIAN55KRS4XXUVQHA",
   "AWSSecretKey": "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",
-  "AWSBucketName": "spedhunters",
+  "AWSBucketName": "spedxchange",
   "AWSRegion": "us-east-2",
-  "AWSUploadURL": "https://s3-us-east-2.amazonaws.com/spedxchange/"
+  "AWSUploadURL": "https://s3-us-east-2.amazonaws.com/"
 }

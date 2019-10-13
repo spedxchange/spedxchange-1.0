@@ -1,22 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 const config = require('config');
+
+const auth = require('../../middleware/auth');
+const Document = require('../../models/Document');
+
+// S3
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 
 const AWSAccessKeyId = config.get('AWSAccessKeyId');
 const AWSSecretKey = config.get('AWSSecretKey');
 const AWSBucketName = config.get('AWSBucketName');
 const AWSRegion = config.get('AWSRegion');
-// const AWSUploadURL = config.get('AWSUploadURL');
-
-const auth = require('../../middleware/auth');
-const Document = require('../../models/Document');
-
-// const storage = multer.memoryStorage();
-// const multipleUpload = multer({ storage: storage }).array('file');
-// const upload = multer({ dest: 'upload/' }).single('file');
+const AWSUploadURL = config.get('AWSUploadURL');
 
 // @route    GET api/upload
 // @desc     Get all Documents & Routes
@@ -48,12 +46,69 @@ router.get('/:id', async (req, res) => {
 // @desc     Upload File
 // @access   Private
 router.post('/file', async (req, res) => {
-  // console.log('req: ', req);
-  // console.log('req.headers: ', req.headers);
-  console.log('req.body: ', req.body);
   try {
-    const file = req.file;
-    res.json({ test: 'complete', file: file });
+    const s3 = new aws.S3({
+      accessKeyId: AWSAccessKeyId,
+      secretAccessKey: AWSSecretKey,
+      region: AWSRegion
+    });
+
+    upload = multer({
+      storage: multerS3({
+        s3: s3,
+        bucket: AWSBucketName,
+        metadata: function(req, file, cb) {
+          cb(null, { fieldName: file.fieldname });
+        },
+        key: function(req, file, cb) {
+          cb(null, Date.now().toString());
+        }
+      })
+    });
+
+    const file = req.files.file;
+    const s3FileURL = AWSUploadURL;
+
+    // console.log('file: ', file);
+
+    const s3bucket = new AWS.S3({
+      accessKeyId: AWSAccessKeyId,
+      secretAccessKey: AWSSecretKey,
+      region: AWSRegion
+    });
+
+    const params = {
+      Bucket: AWSBucketName,
+      Key: file,
+      Body: file.data,
+      ContentType: file.mimetype,
+      ACL: 'public-read'
+    };
+
+    // console.log('params: ', params);
+
+    // Upload file to AWS S3
+    const fileData = await s3bucket.putObject(params);
+    console.log('fileData: ', fileData);
+
+    // Get file Signed URL
+    const urlParams = {
+      Bucket: AWSBucketName,
+      Key: file.name
+    };
+
+    const fileURL = await s3bucket.getSignedUrl('getObject', urlParams);
+
+    const fileRecord = new Document({
+      description: req.body.description || 'No description',
+      link: s3FileURL + file.name,
+      url: fileURL,
+      key: params.Key.name
+    });
+
+    await fileRecord.save();
+
+    res.json(fileRecord);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
