@@ -42,6 +42,7 @@ app.use('/api/questions', require('./routes/api/questions'));
 app.use('/api/tags', require('./routes/api/tags'));
 app.use('/api/search', require('./routes/api/search'));
 app.use('/api/news', require('./routes/api/articles'));
+app.use('/api/upload', require('./routes/api/upload'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

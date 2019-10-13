@@ -3,5 +3,10 @@
   "mongoURI": "mongodb+srv://spedxchange-admin:@SP3Dadm1n$@spedxchange-dsmnc.gcp.mongodb.net/spedxchange",
   "jwtSecret": "apitoken",
   "githubClientId": "3840e3645892fef96870",
-  "githubSecret": "50845f9e063ca23125beb0c8359a4d410bc19071"
+  "githubSecret": "50845f9e063ca23125beb0c8359a4d410bc19071",
+  "AWSAccessKeyId": "AKIAIAN55KRS4XXUVQHA",
+  "AWSSecretKey": "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",
+  "AWSBucketName": "spedhunters",
+  "AWSRegion": "us-east-2",
+  "AWSUploadURL": "https://s3-us-east-2.amazonaws.com/spedxchange/"
 }
