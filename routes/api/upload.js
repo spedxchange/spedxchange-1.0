@@ -14,7 +14,37 @@ const AWSAccessKeyId = config.get('AWSAccessKeyId');
 const AWSSecretKey = config.get('AWSSecretKey');
 const AWSBucketName = config.get('AWSBucketName');
 const AWSRegion = config.get('AWSRegion');
-const AWSUploadURL = config.get('AWSUploadURL');
+
+AWS.config.update({
+  accessKeyId: AWSAccessKeyId,
+  secretAccessKey: AWSSecretKey,
+  region: AWSRegion
+});
+
+const s3 = new AWS.S3({
+  accessKeyId: AWSAccessKeyId,
+  secretAccessKey: AWSSecretKey,
+  region: AWSRegion
+});
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: function(req, file, cb) {
+      const bucket = req.params.bucket ? req.params.bucket : AWSBucketName;
+      const folder = req.params.folder ? '/' + req.params.folder : '';
+      cb(null, bucket + folder);
+    },
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function(req, file, cb) {
+      console.log('req.params:', req.params || 'no params');
+      console.log('req.body:', req.body);
+      console.log('cb:', cb);
+      cb(null, Date.now().toString());
+    }
+  })
+}).array('file', 3);
 
 // @route    GET api/upload
 // @desc     Get all Documents & Routes
@@ -45,115 +75,15 @@ router.get('/:id', async (req, res) => {
 // @route    POST api/upload/file
 // @desc     Upload File
 // @access   Private
-router.post('/file', async (req, res) => {
-  try {
-    const s3 = new aws.S3({
-      accessKeyId: AWSAccessKeyId,
-      secretAccessKey: AWSSecretKey,
-      region: AWSRegion
-    });
+router.post('/file', upload, async (req, res) => {
+  res.send('File Uploaded');
+});
 
-    upload = multer({
-      storage: multerS3({
-        s3: s3,
-        bucket: AWSBucketName,
-        metadata: function(req, file, cb) {
-          cb(null, { fieldName: file.fieldname });
-        },
-        key: function(req, file, cb) {
-          cb(null, Date.now().toString());
-        }
-      })
-    });
-
-    const file = req.files.file;
-    const s3FileURL = AWSUploadURL;
-
-    // console.log('file: ', file);
-
-    const s3bucket = new AWS.S3({
-      accessKeyId: AWSAccessKeyId,
-      secretAccessKey: AWSSecretKey,
-      region: AWSRegion
-    });
-
-    const params = {
-      Bucket: AWSBucketName,
-      Key: file,
-      Body: file.data,
-      ContentType: file.mimetype,
-      ACL: 'public-read'
-    };
-
-    // console.log('params: ', params);
-
-    // Upload file to AWS S3
-    const fileData = await s3bucket.putObject(params);
-    console.log('fileData: ', fileData);
-
-    // Get file Signed URL
-    const urlParams = {
-      Bucket: AWSBucketName,
-      Key: file.name
-    };
-
-    const fileURL = await s3bucket.getSignedUrl('getObject', urlParams);
-
-    const fileRecord = new Document({
-      description: req.body.description || 'No description',
-      link: s3FileURL + file.name,
-      url: fileURL,
-      key: params.Key.name
-    });
-
-    await fileRecord.save();
-
-    res.json(fileRecord);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server Error');
-  }
-  /*
-  try {
-    const file = req.file;
-    const s3FileURL = AWSUploadURL;
-
-    const params = {
-      Bucket: AWSBucketName,
-      Key: file.originalname,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-      ACL: 'public-read'
-    };
-
-    console.log('start try');
-
-    // Upload the file
-    const fileData = await s3bucket.upload(params);
-
-    // Get the Signed Url
-    const urlParams = {
-      Bucket: AWSBucketName,
-      Key: file.originalname
-    };
-
-    const fileURL = await s3bucket.getSignedUrl('getObject', urlParams);
-
-    const fileRecord = new Document({
-      description: req.body.description,
-      link: s3FileURL + file.originalname,
-      url: fileURL,
-      key: params.Key
-    });
-
-    await fileRecord.save();
-
-    res.json(fileData);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server Error');
-  }
-  */
+// @route    POST api/upload/:bucket/:folder
+// @desc     Upload File
+// @access   Private
+router.post('/:bucket/:folder', upload, async (req, res) => {
+  res.send('Files Uploaded');
 });
 
 // @route    PUT api/upload/edit/:id

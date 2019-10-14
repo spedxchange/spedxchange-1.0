@@ -1,8 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-// const bodyParser = require('body-parser');
-const fileUpload = require('express-fileupload');
+const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 
@@ -10,10 +9,8 @@ const app = express();
 connectDB();
 
 // Init Middleware
-app.use(express.json({ extended: false }));
-app.use(fileUpload());
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set cors
 const allowedOrigins = [
