@@ -16,6 +16,7 @@ import ModalManager from './modal/ModalManager';
 import SearchBar from '../../feature/search/searchBar/SearchBar';
 import Appfooter from './footer/AppFooter';
 import NavMobile from './nav/navMobile/NavMobile';
+import NewsMain from '../../feature/news/main/NewsMain';
 
 const mapState = state => ({
   auth: state.auth
@@ -43,6 +44,7 @@ class App extends Component {
                     <Route exact path='/settings' component={SettingsDashboard} />
                     <Route path={['/createQuestion', '/manage/:id']} component={QuestionForm} />
                     <Route exact path='/test' component={TestComponent} />
+                    <Route exact path='/news' component={NewsMain} />
                   </Switch>
                 </div>
               </Container>

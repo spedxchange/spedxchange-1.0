@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createQuestion, updateQuestion, deleteQuestion, loadQuestions } from '../questionActions';
 import PageLoader from '../../../app/layout/PageLoader';
 import QuestionList from '../questionList/QuestionList';
-import QuestionActivity from '../questionActivity/QuestionActivity';
+// import QuestionActivity from '../questionActivity/QuestionActivity';
 
 const mapState = state => ({
   questions: state.questions,
