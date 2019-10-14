@@ -26,3 +26,19 @@
     flex-direction: column;
   }
 }
+
+// flex grid (wrap content)
+.flex-wrap-content {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+  > * {
+    flex: 0 0 auto;
+    margin: 0 0 1.5rem 0;
+  }
+}
