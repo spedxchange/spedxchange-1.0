@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { loadArticles } from '../newsActions';
@@ -15,12 +16,18 @@ const actions = {
 
 class NewsMain extends Component {
   componentDidMount() {
+    console.log('NewsMain: componentDidMount');
+    console.log('NewsMain: props: ', this.props);
     this.props.loadArticles();
   }
 
   createImageSrc = (uid, name) => {
     return `https://spedxchange.s3.us-east-2.amazonaws.com/news/${uid}/${name}-cover.jpg`;
   };
+
+  handleArticleClick(article) {
+    this.props.history.push({ pathname: `/news/${article.uid}/${article.slug}`, state: { articles: this.props.articles, loading: true } });
+  }
 
   render() {
     const { articles, loading } = this.props;
@@ -30,8 +37,8 @@ class NewsMain extends Component {
         <div className='flex-wrap-content'>
           {articles &&
             articles.map(article => (
-              <div className='article-card'>
-                <div class='image'>
+              <div key={article._id} className='article-card' onClick={() => this.handleArticleClick(article)}>
+                <div>
                   <img src={this.createImageSrc(article.uid, article.photoURL)} alt={article.photoURL} />
                 </div>
                 <h3>{article.title}</h3>
@@ -50,7 +57,9 @@ class NewsMain extends Component {
   }
 }
 
-export default connect(
-  mapState,
-  actions
-)(NewsMain);
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(NewsMain)
+);

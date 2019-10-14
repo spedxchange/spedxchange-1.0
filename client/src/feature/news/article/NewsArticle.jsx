@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadArticle } from './NewsArticleActions';
+import { loadArticle } from '../newsActions';
+import PageLoader from '../../../app/layout/PageLoader';
 
 const mapStateToProps = state => ({
-  currentArticle: state.article,
+  articles: state.news.articles,
+  currentArticle: state.news.currentArticle,
   loading: state.async.loading
 });
 
@@ -13,12 +15,23 @@ const mapDispatchToProps = {
 
 export class NewsArticle extends Component {
   componentDidMount() {
-    console.log('this.props: ', this.props);
+    console.log('NewsArticle: componentDidMount');
+    console.log('NewsArticle: props: ', this.props);
     this.props.loadArticle(this.props.match.params.uid, this.props.match.params.slug);
   }
   render() {
-    const { article, loading } = this.props;
-    return <div>article</div>;
+    const { currentArticle, loading } = this.props;
+    if (loading) return <PageLoader />;
+    return (
+      <>
+        {currentArticle && (
+          <>
+            <h1>{currentArticle.title}</h1>
+            <div dangerouslySetInnerHTML={{ __html: currentArticle.content }} />
+          </>
+        )}
+      </>
+    );
   }
 }
 
