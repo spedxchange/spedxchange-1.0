@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
   try {
     const articles = await Article.find()
       .sort({ updated: -1 })
-      .select({ uid: 1, slug: 1, author: 1, title: 1, photoURL: 1, status: 1, published: 1, updated: 1 })
+      .select({ uid: 1, slug: 1, author: 1, title: 1, photoURL: 1, summary: 1, published: 1, updated: 1 })
       .populate({
         path: 'author',
         select: 'displayName'

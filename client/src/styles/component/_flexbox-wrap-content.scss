@@ -5,7 +5,7 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
   > * {
@@ -16,7 +16,7 @@
 
 .article-card {
   border-top: 2px solid gray;
-  width: calc(100% / 3);
+  width: calc((100% / 3) - 18px);
   img {
     width: 100%;
   }

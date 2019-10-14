@@ -30,8 +30,10 @@ class NewsMain extends Component {
                   <img src={article.photoURL} alt='img' />
                 </div>
                 <h3>{article.title}</h3>
-                <div>{article.author.displayName}</div>
-                <div>{article.summary}</div>
+                <span>
+                  <em>{article.author.displayName}</em>
+                </span>
+                <p>{article.summary}</p>
               </div>
             ))}
         </div>
