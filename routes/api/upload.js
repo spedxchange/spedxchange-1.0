@@ -38,10 +38,23 @@ const upload = multer({
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
     key: function(req, file, cb) {
-      console.log('req.params:', req.params || 'no params');
-      console.log('req.body:', req.body);
-      console.log('cb:', cb);
-      cb(null, Date.now().toString());
+      cb(null, file.originalname);
+    }
+  })
+}).array('file', 3);
+
+const uploadNews = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: function(req, file, cb) {
+      const bucket = req.params.bucket ? req.params.bucket : AWSBucketName;
+      const folder = req.params.folder ? '/' + req.params.folder : '';
+      cb(null, 'spedxchange/' + bucket + folder);
+    },
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function(req, file, cb) {
+      cb(null, file.originalname);
     }
   })
 }).array('file', 3);
@@ -83,6 +96,13 @@ router.post('/file', upload, async (req, res) => {
 // @desc     Upload File
 // @access   Private
 router.post('/:bucket/:folder', upload, async (req, res) => {
+  res.send('Files Uploaded');
+});
+
+// @route    POST api/upload/news/:bucket/:folder
+// @desc     Upload File
+// @access   Private
+router.post('/news/:bucket/:folder', uploadNews, async (req, res) => {
   res.send('Files Uploaded');
 });
 

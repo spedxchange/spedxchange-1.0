@@ -1,10 +1,10 @@
 import { createReducer } from '../../app/common/util/ReducerUtil';
 import { FETCH_LATEST_NEWS } from './newsConstants';
 
-const initialState = {};
+const initialState = [];
 
 const fetchLatestArticles = (state, payload) => {
-  return { ...state, articles: payload };
+  return payload;
 };
 
 export default createReducer(initialState, {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import { loadArticles } from '../newsActions';
 import PageLoader from '../../../app/layout/PageLoader';
 
@@ -17,6 +17,11 @@ class NewsMain extends Component {
   componentDidMount() {
     this.props.loadArticles();
   }
+
+  createImageSrc = (uid, name) => {
+    return `https://spedxchange.s3.us-east-2.amazonaws.com/news/${uid}/${name}-cover.jpg`;
+  };
+
   render() {
     const { articles, loading } = this.props;
     if (loading) return <PageLoader />;
@@ -27,13 +32,16 @@ class NewsMain extends Component {
             articles.map(article => (
               <div className='article-card'>
                 <div class='image'>
-                  <img src={article.photoURL} alt='img' />
+                  <img src={this.createImageSrc(article.uid, article.photoURL)} alt={article.photoURL} />
                 </div>
                 <h3>{article.title}</h3>
-                <span>
-                  <em>{article.author.displayName}</em>
-                </span>
                 <p>{article.summary}</p>
+                <hr />
+                <div>
+                  <Icon color='teal' fitted name='tag' />
+                  <span>{article.category.categoryName}</span>
+                </div>
+                <hr />
               </div>
             ))}
         </div>

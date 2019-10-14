@@ -9,6 +9,7 @@ import ModalReducer from '../layout/modal/ModalReducer';
 import AsyncReducer from '../common/async/asyncReducer';
 import TestReducer from '../../feature/testarea/TestReducer';
 import NewsReducer from '../../feature/news/newsReducer';
+import NewsArticleReducer from '../../feature/news/article/NewsArticleReducer';
 
 const rootReducer = combineReducers({
   toastr: TaostrReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   search: SearchReducer,
   test: TestReducer,
   questions: QuestionReducer,
-  news: NewsReducer
+  news: NewsReducer,
+  article: NewsArticleReducer
 });
 
 export default rootReducer;

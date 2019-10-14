@@ -38,7 +38,7 @@ const createArticle = async article => {
     rawText: rawTextParse.text,
     summary: article.summary,
     author: authorId,
-    photoURL: article.image || '',
+    photoURL: article.imageData.title || '',
     videoURL: article.video || '',
     status: article.status || 'Draft',
     created: created,

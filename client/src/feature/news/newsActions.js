@@ -6,8 +6,8 @@ export const loadArticles = () => {
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
-      const news = await fetchLatestArticles();
-      dispatch({ type: FETCH_LATEST_NEWS, payload: news });
+      const articles = await fetchLatestArticles();
+      dispatch({ type: FETCH_LATEST_NEWS, payload: { articles } });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);

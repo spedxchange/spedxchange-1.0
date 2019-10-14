@@ -8,3 +8,12 @@ export const fetchLatestArticles = async () => {
     console.log('Error: ', error);
   }
 };
+
+export const fetchNewsArticle = async (uid, slug) => {
+  try {
+    const res = await axios.get(`/api/news/${uid}/${slug}`);
+    return res.data[0];
+  } catch (error) {
+    console.log('Error: ', error);
+  }
+};

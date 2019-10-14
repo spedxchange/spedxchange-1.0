@@ -17,6 +17,7 @@ import SearchBar from '../../feature/search/searchBar/SearchBar';
 import Appfooter from './footer/AppFooter';
 import NavMobile from './nav/navMobile/NavMobile';
 import NewsMain from '../../feature/news/main/NewsMain';
+import NewsArticle from '../../feature/news/article/NewsArticle';
 
 const mapState = state => ({
   auth: state.auth
@@ -45,6 +46,7 @@ class App extends Component {
                     <Route path={['/createQuestion', '/manage/:id']} component={QuestionForm} />
                     <Route exact path='/test' component={TestComponent} />
                     <Route exact path='/news' component={NewsMain} />
+                    <Route path='/news/:uid/:slug' component={NewsArticle} />
                   </Switch>
                 </div>
               </Container>
