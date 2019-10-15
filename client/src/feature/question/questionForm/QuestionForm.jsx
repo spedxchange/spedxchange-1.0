@@ -35,21 +35,12 @@ const actions = {
 const validate = combineValidators({
   title: isRequired({ message: 'Title is required' }),
   category: isRequired({ message: 'Category is required' }),
-  description: composeValidators(
-    isRequired({ message: 'Description is required' }),
-    hasLengthGreaterThan(6)({
-      message: 'Description needd to be at least 6 characters'
+  content: composeValidators(
+    isRequired({ message: 'Question content is required' }),
+    hasLengthGreaterThan(10)({
+      message: 'Question content must be at least 10 characters'
     })
-  )(),
-  city: isRequired({
-    message: 'City is required'
-  }),
-  venue: isRequired({
-    message: 'Venue is required'
-  }),
-  date: isRequired({
-    message: 'Date is required'
-  })
+  )()
 });
 
 const category = [

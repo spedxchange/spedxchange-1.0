@@ -5,8 +5,12 @@ const path = require('path');
 const app = express();
 
 // configure environment
-const dotenv = require('dotenv');
-dotenv.config();
+console.log('process: ', process.env.NODE_ENV);
+if (!process.env.NODE_ENV) {
+  console.log('do process...');
+  const dotenv = require('dotenv');
+  dotenv.config();
+}
 
 // Connect Database
 const connectDB = require('./config/db');
@@ -49,6 +53,7 @@ app.use('/api/tags', require('./routes/api/tags'));
 app.use('/api/search', require('./routes/api/search'));
 app.use('/api/news', require('./routes/api/articles'));
 app.use('/api/upload', require('./routes/api/upload'));
+app.use('/api/category', require('./routes/api/category'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
