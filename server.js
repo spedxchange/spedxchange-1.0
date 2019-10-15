@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 
+// configure environment
+const dotenv = require('dotenv');
+dotenv.config();
+
 // Connect Database
+const connectDB = require('./config/db');
 connectDB();
 
 // Init Middleware

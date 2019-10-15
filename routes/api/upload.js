@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const AWS = require('aws-sdk');
-const config = require('config');
 
 const auth = require('../../middleware/auth');
 const Document = require('../../models/Document');
@@ -10,10 +9,10 @@ const Document = require('../../models/Document');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 
-const AWSAccessKeyId = config.get('AWSAccessKeyId');
-const AWSSecretKey = config.get('AWSSecretKey');
-const AWSBucketName = config.get('AWSBucketName');
-const AWSRegion = config.get('AWSRegion');
+const AWSAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
+const AWSSecretKey = process.env.AWS_SECRET_ACCESS_KEY;
+const AWSBucketName = process.env.AWS_BUCKET_NAME;
+const AWSRegion = process.env.AWS_REGION;
 
 AWS.config.update({
   accessKeyId: AWSAccessKeyId,
