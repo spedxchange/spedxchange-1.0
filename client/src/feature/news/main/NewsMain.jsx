@@ -26,7 +26,7 @@ class NewsMain extends Component {
   };
 
   handleArticleClick(article) {
-    this.props.history.push({ pathname: `/news/${article.uid}/${article.slug}`, state: { articles: this.props.articles, loading: true } });
+    this.props.history.push({ pathname: `/news/${article.uid}/${article.slug}` });
   }
 
   render() {

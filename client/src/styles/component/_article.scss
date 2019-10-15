@@ -36,6 +36,16 @@
     margin: 0 0 0 1.5rem;
     padding: 0 0 0 1.5rem;
     border-left: 1px dotted var(--border-color);
+    section {
+      margin-bottom: 3rem;
+      .related {
+        a {
+          display: block;
+          margin-bottom: 1rem;
+          font-weight: 500;
+        }
+      }
+    }
   }
   .article {
     h1 {
@@ -79,5 +89,21 @@
         font-size: 0.67rem;
       }
     }
+  }
+}
+
+.section-head {
+  padding-left: 0.5rem;
+  border-left: 1rem solid var(--primary-color);
+  margin-bottom: 1.5rem;
+  line-height: 0.875;
+  &.purple {
+    border-left: 1rem solid var(--secondary-color);
+  }
+  &.yellow {
+    border-left: 1rem solid #ceb80e;
+  }
+  &.red {
+    border-left: 1rem solid #db4813;
   }
 }

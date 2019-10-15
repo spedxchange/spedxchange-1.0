@@ -2,7 +2,7 @@ import { createReducer } from '../../app/common/util/ReducerUtil';
 import { FETCH_LATEST_NEWS, FETCH_CURRENT_ARTICLE } from './newsConstants';
 
 const initialState = {
-  articles: [],
+  articles: null,
   currentArticle: null
 };
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
-import { loadArticle } from '../newsActions';
+import { loadArticle, loadArticles } from '../newsActions';
 import PageLoader from '../../../app/layout/PageLoader';
 
 const mapStateToProps = state => ({
@@ -11,14 +11,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  loadArticle
+  loadArticle,
+  loadArticles
 };
 
 export class NewsArticle extends Component {
   componentDidMount() {
-    console.log('NewsArticle: componentDidMount');
-    console.log('NewsArticle: props: ', this.props);
     this.props.loadArticle(this.props.match.params.uid, this.props.match.params.slug);
+    if (!this.props.articles) {
+      this.props.loadArticles();
+    }
   }
 
   handleSocialClick = type => {
@@ -32,13 +34,14 @@ export class NewsArticle extends Component {
     );
   };
   render() {
-    const { currentArticle, loading } = this.props;
+    const { articles, currentArticle, loading } = this.props;
     if (loading) return <PageLoader />;
     return (
       <>
         {currentArticle && (
           <div className='flex-wrap md article-wrap'>
             <div className='article grow'>
+              <h5 className='section-head'>Featured Story</h5>
               <div>
                 <h1>{currentArticle.title}</h1>
                 <div>
@@ -55,7 +58,32 @@ export class NewsArticle extends Component {
               </div>
               <div dangerouslySetInnerHTML={{ __html: currentArticle.content }} />
             </div>
-            <div className='tags'>tags</div>
+            <div className='tags'>
+              <section>
+                <h5 className='section-head red'>Related Headlines</h5>
+                <div className='related'>
+                  <div className='related'>
+                    {articles &&
+                      articles.slice(0, 5).map(article => (
+                        <a key={article._id} href='/'>
+                          {article.title}
+                        </a>
+                      ))}
+                  </div>
+                </div>
+              </section>
+              <section>
+                <h5 className='section-head purple'>Related Tags</h5>
+                <div className='related'>
+                  {currentArticle.tags &&
+                    currentArticle.tags.map(tag => (
+                      <a key={tag._id} href='/'>
+                        {tag.tagName}
+                      </a>
+                    ))}
+                </div>
+              </section>
+            </div>
           </div>
         )}
       </>
