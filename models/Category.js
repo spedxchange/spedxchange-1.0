@@ -11,7 +11,8 @@ const CategorySchema = new Schema({
     type: String
   },
   questionCount: {
-    type: Number
+    type: Number,
+    default: 0
   },
   questions: [
     {

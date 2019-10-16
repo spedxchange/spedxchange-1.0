@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 // @route    GET api/category/article
 // @desc     Get all Article Categories
 // @access   Public
-router.get('/', async (req, res) => {
+router.get('/article', async (req, res) => {
   try {
     const categories = await ArticleCategory.find();
     res.json(categories);

@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const connectDB = require('../config/db');
 const HTMLParser = require('node-html-parser');
 
@@ -34,6 +36,8 @@ const createArticle = async article => {
     uid: uid,
     slug: slug,
     title: article.title,
+    category: article.category,
+    tags: article.tags,
     content: article.content,
     rawText: rawTextParse.structuredText,
     summary: article.summary,
@@ -45,15 +49,48 @@ const createArticle = async article => {
     updated: updated,
     published: published
   };
+  // console.log('tags: ', article.tags);
+  // console.log('category: ', article.category);
+  // console.log('slug: ', slug);
 
   try {
     // Find Article
     const currentArticle = await Article.findOne({ slug: articleData.slug });
-    console.log('currentArticle: ', currentArticle);
-    currentArticle.content = article.content;
-    if (article.slug === 'what-is-a-sped-director-looking-for-in-a-first-year-staff-member') {
-      console.log('structuredText: ', article.rawText);
+
+    // Update Content
+    // currentArticle.content = article.content;
+
+    // Update Title
+    // currentArticle.content = article.title;
+
+    // handle category
+    const category = await ArticleCategory.findOneAndUpdate({ categoryName: articleData.category }, { categoryName: articleData.category }, { new: true, upsert: true });
+    category.articleCount++;
+    if (!category.articles) {
+      category.articles = [currentArticle._id];
+    } else {
+      category.articles.push(currentArticle._id);
     }
+    await category.save();
+    currentArticle.category = category._id;
+
+    // handle tags
+    currentArticle.tags = [];
+    let tag;
+    for (tag of articleData.tags) {
+      const tagName = tag.toLowerCase().trim();
+      const newTag = await ArticleTag.findOneAndUpdate({ tagName: tagName }, { tagName: tagName }, { new: true, upsert: true });
+      newTag.articleCount++;
+      if (!newTag.articles) {
+        newTag.articles = [currentArticle._id];
+      } else {
+        newTag.articles.push(currentArticle._id);
+      }
+      await newTag.save();
+      currentArticle.tags.push(newTag._id);
+    }
+
+    // Save Article
     await currentArticle.save();
   } catch (error) {
     console.log('Error: ', error);
