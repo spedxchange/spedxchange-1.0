@@ -7,12 +7,10 @@ const initialState = {
 };
 
 const fetchLatestArticles = (state, payload) => {
-  console.log('fetchLatestArticles: state: ', state);
   return { ...state, articles: payload };
 };
 
 const fetchCurrentArticle = (state, payload) => {
-  console.log('fetchCurrentArticle: state: ', state);
   return { ...state, currentArticle: payload };
 };
 

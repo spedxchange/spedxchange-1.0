@@ -1,5 +1,5 @@
+import axios from 'axios';
 import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS } from './questionConstants';
-import { fetchQuestions } from '../../app/api/questions';
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../app/common/async/asyncActions';
 import { toastr } from 'react-redux-toastr';
 
@@ -48,8 +48,9 @@ export const loadQuestions = () => {
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
-      const questions = await fetchQuestions();
-      dispatch({ type: FETCH_QUESTIONS, payload: { questions } });
+      const questions = await axios.get('/api/questions');
+      console.log('loadQuestions: questions: ', questions);
+      dispatch({ type: FETCH_QUESTIONS, payload: questions.data });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);

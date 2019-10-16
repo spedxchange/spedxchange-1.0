@@ -16,7 +16,7 @@ const deleteQuestion = (state, payload) => {
 };
 
 const fetchQuestions = (state, payload) => {
-  return payload.questions;
+  return payload;
 };
 
 export default createReducer(initialState, {
