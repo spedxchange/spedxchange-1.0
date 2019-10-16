@@ -21,7 +21,6 @@ export const loadArticle = (uid, slug) => {
     try {
       dispatch(asyncActionStart());
       const currentArticle = await axios.get(`/api/news/${uid}/${slug}`);
-      console.log('currentArticle: ', currentArticle);
       dispatch({ type: FETCH_CURRENT_ARTICLE, payload: currentArticle.data[0] });
       dispatch(asyncActionFinish());
     } catch (error) {

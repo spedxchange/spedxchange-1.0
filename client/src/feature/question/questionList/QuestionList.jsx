@@ -13,13 +13,7 @@ class QuestionList extends Component {
     totalPages: 20
   };
   handlePaginationChange = (e, { activePage }) => {
-    console.log('e: ', e);
-    console.log('e.target: ', e.target);
-    console.log('e.target.value: ', e.target.valueOf);
-    console.log('activePage: ', activePage);
-    console.log('props: ', this.props);
     this.setState({ activePage: activePage });
-    console.log('props: ', this.props);
   };
 
   render() {

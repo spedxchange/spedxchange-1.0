@@ -44,7 +44,6 @@ class TestComponent extends Component {
   };
 
   handleItemClick = item => {
-    console.log('activeItem: ', item);
     this.props.itemClick(item);
   };
 

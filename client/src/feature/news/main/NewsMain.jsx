@@ -16,8 +16,6 @@ const actions = {
 
 class NewsMain extends Component {
   componentDidMount() {
-    console.log('NewsMain: componentDidMount');
-    console.log('NewsMain: props: ', this.props);
     this.props.loadArticles();
   }
 

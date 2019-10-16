@@ -37,7 +37,6 @@ export const decrementAsync = name => {
 };
 
 export const itemClick = item => {
-  console.log('item clicked: ', item);
   return {
     type: TEST_ITEM_CLICK,
     payload: item.name

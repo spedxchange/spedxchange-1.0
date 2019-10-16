@@ -49,7 +49,6 @@ export const loadQuestions = () => {
     try {
       dispatch(asyncActionStart());
       const questions = await axios.get('/api/questions');
-      console.log('loadQuestions: questions: ', questions);
       dispatch({ type: FETCH_QUESTIONS, payload: questions.data });
       dispatch(asyncActionFinish());
     } catch (error) {
