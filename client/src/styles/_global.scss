@@ -110,3 +110,16 @@ h2:first-line {
 .dropzone--isActive {
   border: dashed 3px green;
 }
+
+// placeholder
+.ui.default.dropdown:not(.button) > .text,
+.ui.dropdown:not(.button) > .default.text {
+  color: #999;
+}
+
+// ask-question-modal
+.ask-question-modal {
+  .ui.button {
+    padding: 0.625rem 0.8rem 0.5rem 0.75rem;
+  }
+}

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { FETCH_QUESTION_CATAGORIES, FETCH_ARTICLE_CATAGORIES } from './categoryConstants';
+import { ASYNC_ACTION_START } from '../../async/asyncConstants';
 import { asyncActionFinish, asyncActionError } from '../../async/asyncActions';
 
 export const loadQuestionCategories = () => {

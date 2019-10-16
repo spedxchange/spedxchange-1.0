@@ -3,15 +3,18 @@ import React, { Component } from 'react';
 import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import { createQuestion, updateQuestion } from '../questionActions';
 import cuid from 'cuid';
 import TextInput from '../../../app/common/form/TextInput';
 import TextArea from '../../../app/common/form/TextArea';
 import SelectInput from '../../../app/common/form/SelectInput';
 import DateInput from '../../../app/common/form/DateInput';
+import EditorInput from '../../../app/common/form/Editor';
 import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
 import PlaceInput from '../../../app/common/form/PlaceInput';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { createQuestion, updateQuestion } from '../questionActions';
+import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
+import { openModal } from '../../../app/layout/modal/ModalActions';
 
 const mapState = (state, ownProps) => {
   const questionId = ownProps.match.params.id;
@@ -23,13 +26,17 @@ const mapState = (state, ownProps) => {
   }
 
   return {
-    initialValues: question
+    initialValues: question,
+    categories: state.category.questionCategories,
+    loading: state.async.loading
   };
 };
 
 const actions = {
   createQuestion,
-  updateQuestion
+  updateQuestion,
+  loadQuestionCategories,
+  openModal
 };
 
 const validate = combineValidators({
@@ -43,19 +50,30 @@ const validate = combineValidators({
   )()
 });
 
-const category = [
-  { key: 'drinks', text: 'Drinks', value: 'drinks' },
-  { key: 'culture', text: 'Culture', value: 'culture' },
-  { key: 'film', text: 'Film', value: 'film' },
-  { key: 'food', text: 'Food', value: 'food' },
-  { key: 'music', text: 'Music', value: 'music' },
-  { key: 'travel', text: 'Travel', value: 'travel' }
-];
+const category = [{ key: 'default', text: 'Select Category', value: null }];
 
 class QuestionForm extends Component {
   state = {
     cityLatLng: {},
     venueLatLng: {}
+  };
+
+  componentDidMount() {
+    this.props.openModal('AskQuestionModal');
+    this.props.loadQuestionCategories();
+  }
+
+  makeCategories = () => {
+    let categoryList = [];
+    let cat;
+    for (cat of this.props.categories) {
+      categoryList.push({
+        key: cat._id,
+        text: cat.categoryName,
+        value: cat._id
+      });
+    }
+    return categoryList;
   };
 
   onSubmit = values => {
@@ -102,7 +120,7 @@ class QuestionForm extends Component {
   };
 
   render() {
-    const { history, initialValues, invalid, submitting, pristine } = this.props;
+    const { history, initialValues, invalid, submitting, pristine, loading } = this.props;
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -110,8 +128,12 @@ class QuestionForm extends Component {
             <Header sub color='teal' content='Question Details' />
             <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
               <Field name='title' type='text' component={TextInput} placeholder='Question Name' />
-              <Field name='category' component={SelectInput} options={category} placeholder='Category' />
-              <Field type='text' name='description' component={TextArea} rows={5} placeholder='Description' />
+              {loading ? (
+                <Field name='category' component={SelectInput} options={category} placeholder='Category' />
+              ) : (
+                <Field name='category' component={SelectInput} options={this.makeCategories()} placeholder='Category' />
+              )}
+              <Field name='description' component={EditorInput} />
               <Header sub color='teal' content='Location Details' />
               <Field type='text' name='city' component={PlaceInput} options={{ types: ['(cities)'] }} onSelect={this.handleCitySelect} placeholder='City' />
               <Field
