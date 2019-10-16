@@ -40,10 +40,10 @@ class App extends Component {
                   <Switch key={this.props.location.key}>
                     <Route exact path='/questions' component={QuestionDashboard} />
                     <Route path='/questions/:id' component={QuestionDetail} />
+                    <Route path={['/question', '/edit/:id']} component={QuestionForm} />
                     <Route exact path='/people' component={UserDashboard} />
                     <Route path='/profile/:id' component={UserDetail} />
                     <Route exact path='/settings' component={SettingsDashboard} />
-                    <Route path={['/createQuestion', '/manage/:id']} component={QuestionForm} />
                     <Route exact path='/test' component={TestComponent} />
                     <Route exact path='/news' component={NewsMain} />
                     <Route path='/news/:uid/:slug' component={NewsArticle} />
