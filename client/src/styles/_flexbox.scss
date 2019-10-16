@@ -13,6 +13,12 @@
   &.column {
     flex-direction: column;
   }
+  &.between {
+    justify-content: space-between;
+  }
+  &.around {
+    justify-content: space-around;
+  }
 }
 
 @media only screen and (max-width: 991px) {

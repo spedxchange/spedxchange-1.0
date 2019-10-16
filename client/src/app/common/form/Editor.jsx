@@ -10,20 +10,13 @@ const EditorInput = () => {
   return (
     <Form.Field>
       <Editor
-        apiKey={process.env.TINY_MCE_KEY}
+        apiKey='twpt6v84p920kri6p37w1wk4258x70z5e2yjhikzlu6mysb6'
         initialValue=''
         init={{
           height: 200,
           menubar: false,
-          plugins: [
-            'advlist autolink lists link image charmap print preview anchor',
-            'searchreplace visualblocks code fullscreen',
-            'insertdatetime media table paste code help wordcount'
-          ],
-          toolbar:
-            'undo redo | formatselect | bold italic backcolor | \
-             alignleft aligncenter alignright alignjustify | \
-             bullist numlist outdent indent | removeformat | help'
+          plugins: ['autolink lists link image anchor searchreplace fullscreen media paste'],
+          toolbar: 'bold italic | link | bullist numlist | undo redo'
         }}
         onChange={handleEditorChange}
       />

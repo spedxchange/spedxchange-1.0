@@ -10,7 +10,6 @@ import QuestionDetail from '../../feature/question/questionDetail/QuestionDetail
 import UserDashboard from '../../feature/user/userDashboard/UserDashboard';
 import UserDetail from '../../feature/user/userDetail/UserDetail';
 import SettingsDashboard from '../../feature/user/settings/SettingsDashboard';
-import QuestionForm from '../../feature/question/questionForm/QuestionForm';
 import TestComponent from '../../feature/testarea/TestComponent';
 import ModalManager from './modal/ModalManager';
 import SearchBar from '../../feature/search/searchBar/SearchBar';
@@ -18,6 +17,8 @@ import Appfooter from './footer/AppFooter';
 import NavMobile from './nav/navMobile/NavMobile';
 import NewsMain from '../../feature/news/main/NewsMain';
 import NewsArticle from '../../feature/news/article/NewsArticle';
+// import QuestionForm from '../../feature/question/questionForm/QuestionForm';
+import QuestionTabs from '../../feature/question/questionForm/QuestionTabs';
 
 const mapState = state => ({
   auth: state.auth
@@ -40,7 +41,7 @@ class App extends Component {
                   <Switch key={this.props.location.key}>
                     <Route exact path='/questions' component={QuestionDashboard} />
                     <Route path='/questions/:id' component={QuestionDetail} />
-                    <Route path={['/question', '/edit/:id']} component={QuestionForm} />
+                    <Route path={['/question', '/edit/:id']} component={QuestionTabs} />
                     <Route exact path='/people' component={UserDashboard} />
                     <Route path='/profile/:id' component={UserDetail} />
                     <Route exact path='/settings' component={SettingsDashboard} />

@@ -19,7 +19,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tinymce/tinymce-react": "^3.3.2",
     "aws-sdk": "^2.548.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",

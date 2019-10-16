@@ -60,6 +60,11 @@ h2:first-line {
   line-height: 1em;
 }
 
+// text align
+.center {
+  text-align: center;
+}
+
 /* pagination */
 .ui.pagination.menu.questions {
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif !important;
@@ -119,7 +124,25 @@ h2:first-line {
 
 // ask-question-modal
 .ask-question-modal {
+  .description {
+    font-weight: 500;
+  }
+  .spacer {
+    display: inline-block;
+    margin: 0 auto;
+  }
   .ui.button {
     padding: 0.625rem 0.8rem 0.5rem 0.75rem;
+  }
+}
+
+.question-tabs {
+  .ui.secondary.menu {
+    justify-content: center;
+  }
+  .ui.segment {
+    border: none;
+    background: transparent;
+    box-shadow: none;
   }
 }

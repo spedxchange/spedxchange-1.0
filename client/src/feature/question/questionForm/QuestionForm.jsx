@@ -134,21 +134,7 @@ class QuestionForm extends Component {
                 <Field name='category' component={SelectInput} options={this.makeCategories()} placeholder='Category' />
               )}
               <Field name='description' component={EditorInput} />
-              <Header sub color='teal' content='Location Details' />
-              <Field type='text' name='city' component={PlaceInput} options={{ types: ['(cities)'] }} onSelect={this.handleCitySelect} placeholder='City' />
-              <Field
-                type='text'
-                name='venue'
-                component={PlaceInput}
-                options={{
-                  location: new google.maps.LatLng(this.state.cityLatLng),
-                  radius: 1000,
-                  types: ['establishment']
-                }}
-                onSelect={this.handleVenueSelect}
-                placeholder='Venue'
-              />
-              <Field type='text' name='date' component={DateInput} dateFormat='dd LLL yyyy h:mm a' showTimeSelect timeFormat='HH:mm' placeholder='Date' />
+              <Field type='text' name='tags' component={TextInput} placeholder='Date' />
               <Button type='submit' positive disabled={invalid || submitting || pristine}>
                 Submit
               </Button>

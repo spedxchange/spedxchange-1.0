@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Link } from 'react';
 import { Modal, Button, Icon, List } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
@@ -15,7 +15,7 @@ class AskQuestionModal extends Component {
         <Modal.Content scrolling>
           <Modal.Description>
             <p>You’re ready to ask a SPED-related question and the community is here to help! To get the best answers, follow these guidelines:</p>
-            <p>Before you ask, search the site to make sure your question hasn’t been answered</p>
+            <p>Before you ask, search the site to make sure your question hasn’t been answered.</p>
             <List ordered>
               <List.Item>Summarize the issue</List.Item>
               <List.Item>Describe approaches you’ve tried</List.Item>
@@ -24,6 +24,8 @@ class AskQuestionModal extends Component {
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
+          <span>Don't show this again.</span>
+          <span clasname='spacer'>&nbsp;</span>
           <Button color='green' size='medium' onClick={closeModal}>
             <Icon name='checkmark' />
             OK
