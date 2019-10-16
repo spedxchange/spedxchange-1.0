@@ -10,6 +10,7 @@ import AsyncReducer from '../common/async/asyncReducer';
 import TestReducer from '../../feature/testarea/TestReducer';
 import NewsReducer from '../../feature/news/newsReducer';
 import CategoryReducer from '../common/actions/category/categoryReducer';
+import QuestionFormReducer from '../../feature/question/questionForm/questionTabsReducer';
 
 const rootReducer = combineReducers({
   toastr: TaostrReducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   test: TestReducer,
   questions: QuestionReducer,
   news: NewsReducer,
-  category: CategoryReducer
+  category: CategoryReducer,
+  questionForm: QuestionFormReducer
 });
 
 export default rootReducer;

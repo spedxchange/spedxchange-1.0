@@ -1,0 +1,2 @@
+export const UPDATE_TAB = 'UPDATE_TAB';
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';

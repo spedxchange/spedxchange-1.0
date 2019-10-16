@@ -1,4 +1,4 @@
-import React, { Component, Link } from 'react';
+import React, { Component } from 'react';
 import { Modal, Button, Icon, List } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
