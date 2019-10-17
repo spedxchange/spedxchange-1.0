@@ -44,7 +44,7 @@ class NewsMain extends Component {
                 <hr />
                 <div>
                   <Icon color='teal' fitted name='tag' />
-                  <span>{article.category.categoryName}</span>
+                  <span>{article.category.text}</span>
                 </div>
                 <hr />
               </div>

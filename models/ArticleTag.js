@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ArticleTagSchema = new Schema({
-  tagName: {
+  text: {
     type: String,
     required: true,
     unique: true

@@ -13,7 +13,7 @@ import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan 
 import PlaceInput from '../../../app/common/form/PlaceInput';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { createQuestion, updateQuestion } from '../questionActions';
-import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
+import { loadQuestionCategories, loadQuestionTags } from '../../../app/common/actions/category/categoryActions';
 import { openModal } from '../../../app/layout/modal/ModalActions';
 
 const mapState = (state, ownProps) => {
@@ -36,6 +36,7 @@ const actions = {
   createQuestion,
   updateQuestion,
   loadQuestionCategories,
+  loadQuestionTags,
   openModal
 };
 
@@ -69,7 +70,7 @@ class QuestionForm extends Component {
     for (cat of this.props.categories) {
       categoryList.push({
         key: cat._id,
-        text: cat.categoryName,
+        text: cat.text,
         value: cat._id
       });
     }

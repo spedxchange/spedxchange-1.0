@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const connectDB = require('../config/db');
 const HTMLParser = require('node-html-parser');
 
@@ -9,7 +11,7 @@ const ArticleCategory = require('../models/ArticleCategory');
 
 const articles = require('./data/articles');
 
-const authorId = '5da13e497c9c133ac0f8c103';
+const authorId = '5da628b3d67d063c50518645';
 
 const convertDate = fsDate => {
   const info = fsDate._seconds;
@@ -35,7 +37,7 @@ const createArticle = async article => {
     slug: slug,
     title: article.title,
     content: article.content,
-    rawText: rawTextParse.text,
+    rawText: rawTextParse.structuredText,
     summary: article.summary,
     author: authorId,
     photoURL: article.imageData.title || '',
@@ -48,10 +50,10 @@ const createArticle = async article => {
 
   try {
     // upsert Article
-    const newArticle = await Article.findOneAndUpdate({ slug: article.id }, articleData, { new: true, upsert: true });
+    const newArticle = await Article.findOneAndUpdate({ slug: articleData.slug }, articleData, { new: true, upsert: true });
 
     // handle category
-    const category = await ArticleCategory.findOneAndUpdate({ categoryName: article.category }, { categoryName: article.category }, { new: true, upsert: true });
+    const category = await ArticleCategory.findOneAndUpdate({ text: article.category.trim() }, { text: article.category.trim() }, { new: true, upsert: true });
     category.articleCount++;
     if (!category.articles) {
       category.articles = [newArticle._id];
@@ -63,8 +65,10 @@ const createArticle = async article => {
     await newArticle.save();
 
     // handle tags
+    let tag;
     for (tag of article.tags) {
-      const newTag = await ArticleTag.findOneAndUpdate({ tagName: tag }, { tagName: tag }, { new: true, upsert: true });
+      tag = tag.toLowerCase().trim();
+      const newTag = await ArticleTag.findOneAndUpdate({ text: tag }, { text: tag }, { new: true, upsert: true });
       newTag.articleCount++;
       if (!newTag.articles) {
         newTag.articles = [newArticle._id];

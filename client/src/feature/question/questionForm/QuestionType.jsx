@@ -1,7 +1,13 @@
-import React from 'react';
-import { Form } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Form, Radio } from 'semantic-ui-react';
 
-const QuestionType = ({ options, handleCategorySelect, handleTabChange, categoryId }) => {
+const QuestionType = ({ options, handleCategorySelect }) => {
+  const [categoryId, setId] = useState(0);
+
+  const handleClick = id => {
+    handleCategorySelect(id);
+    setId(id);
+  };
   return (
     <div>
       <div className='text-center mb-3'>
@@ -16,7 +22,11 @@ const QuestionType = ({ options, handleCategorySelect, handleTabChange, category
             most relevant to your question.
           </p>
           {options &&
-            options.map(option => <Form.Radio key={option._id} name='category' label={option.categoryName} value={option._id} onChange={() => handleCategorySelect(option._id)} />)}
+            options.map(option => (
+              <Form.Field key={option._id}>
+                <Radio name='category' label={option.text} checked={categoryId === option._id} value={option._id} onChange={() => handleClick(option._id)} />
+              </Form.Field>
+            ))}
         </div>
         <div>
           <p>

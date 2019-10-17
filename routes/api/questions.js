@@ -23,11 +23,11 @@ router.get('/', async (req, res) => {
       })
       .populate({
         path: 'categories',
-        select: 'categoryName'
+        select: 'text'
       })
       .populate({
         path: 'tags',
-        select: 'tagName'
+        select: 'text'
       });
     res.json(questions);
   } catch (err) {
@@ -51,11 +51,11 @@ router.get('/:uid/:slug', async (req, res) => {
       })
       .populate({
         path: 'categories',
-        select: 'categoryName'
+        select: 'text'
       })
       .populate({
         path: 'tags',
-        select: 'tagName'
+        select: 'text'
       })
       .populate({
         path: 'answers'
@@ -87,11 +87,11 @@ router.get('/:question_id', async (req, res) => {
       })
       .populate({
         path: 'categories',
-        select: 'categoryName'
+        select: 'text'
       })
       .populate({
         path: 'tags',
-        select: 'tagName'
+        select: 'text'
       })
       .populate({
         path: 'answers'
@@ -156,11 +156,11 @@ router.post(
       if (tags && tags.length > 0) {
         let tag;
         for (tag of tags) {
-          tagName = tag.toLowerCase().trim();
-          let existingTag = await Tag.findOne({ tagName: tagName });
+          text = tag.toLowerCase().trim();
+          let existingTag = await Tag.findOne({ text: text });
           if (!existingTag) {
             const newTag = new Tag({
-              tagName: tagName,
+              text: text,
               questionCount: 1,
               questions: question._id
             });
@@ -179,10 +179,10 @@ router.post(
 
       // Handle category
       const qCategory = category ? category.toLowerCase().trim() : 'no category';
-      let existingCategory = await Category.findOne({ categoryName: qCategory });
+      let existingCategory = await Category.findOne({ text: qCategory });
       if (!existingCategory) {
         const newCategory = new Category({
-          categoryName: qCategory,
+          text: qCategory,
           questionCount: 1,
           questions: question._id
         });
@@ -248,11 +248,11 @@ router.post(
       if (tags && tags.length > 0) {
         let tag;
         for (tag of tags) {
-          tagName = tag.toLowerCase().trim();
-          let existingTag = await Tag.findOne({ tagName: tagName });
+          text = tag.toLowerCase().trim();
+          let existingTag = await Tag.findOne({ text: text });
           if (!existingTag) {
             const newTag = new Tag({
-              tagName: tagName,
+              text: text,
               questionCount: 1,
               questions: question._id
             });
@@ -271,10 +271,10 @@ router.post(
 
       // Handle category
       const qCategory = category ? category.toLowerCase().trim() : 'no category';
-      let existingCategory = await Category.findOne({ categoryName: qCategory });
+      let existingCategory = await Category.findOne({ text: qCategory });
       if (!existingCategory) {
         const newCategory = new Category({
-          categoryName: qCategory,
+          text: qCategory,
           questionCount: 1,
           questions: question._id
         });
@@ -738,11 +738,11 @@ router.put('/answer/tags/:question_id/:tag', auth, async (req, res) => {
     }
 
     const tag = req.params.tag.toLowerCase().trim();
-    existingTag = await Tag.find({ tagName: tag });
+    existingTag = await Tag.find({ text: tag });
     if (!existingTag) {
       // add new tag if it does nor exist
       const newTag = new Tag({
-        tagName: tag,
+        text: tag,
         questionCount: 1,
         questions: question._id
       });

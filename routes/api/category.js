@@ -4,15 +4,26 @@ const auth = require('../../middleware/auth');
 
 const Category = require('../../models/Category');
 const ArticleCategory = require('../../models/ArticleCategory');
-const Question = require('../../models/Question');
-const Article = require('../../models/Article');
+// const Question = require('../../models/Question');
+// const Article = require('../../models/Article');
 
-// @route    GET api/category
-// @desc     Get all Question Categories
+// @route    GET api/category/:type
+// @desc     Get all Categories by type
 // @access   Public
-router.get('/', async (req, res) => {
+router.get('/:type', async (req, res) => {
   try {
-    const categories = await Category.find();
+    let categories;
+    switch (req.params.type) {
+      case 'question':
+        categories = await Category.find();
+        break;
+      case 'article':
+        categories = await ArticleCategory.find();
+        break;
+      default:
+        return res.status(404).json({ msg: 'Category type error' });
+    }
+
     res.json(categories);
   } catch (err) {
     console.error(err.message);
@@ -20,126 +31,33 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route    GET api/category/article
-// @desc     Get all Article Categories
-// @access   Public
-router.get('/article', async (req, res) => {
-  try {
-    const categories = await ArticleCategory.find();
-    res.json(categories);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    POST api/category
-// @desc     Create Question Category
+// @route    POST api/category/:type
+// @desc     Create Category by type
 // @access   Private
-router.post('/', auth, async (req, res) => {
+router.post('/:type', auth, async (req, res) => {
   try {
-    const newCategory = new Category({
-      categoryName: req.body.categoryName,
-      description: req.body.description
-    });
+    let newCategory;
+    switch (req.params.type) {
+      case 'question':
+        newCategory = new Category({
+          text: req.body.text,
+          description: req.body.description
+        });
+        break;
+      case 'article':
+        newCategory = new ArticleCategory({
+          text: req.body.text,
+          description: req.body.description
+        });
+        break;
+      default:
+        return res.status(404).json({ msg: 'Category type error' });
+    }
     const category = await newCategory.save();
+
     res.json(category);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    POST api/category/article
-// @desc     Create Article Category
-// @access   Private
-router.post('/article', auth, async (req, res) => {
-  try {
-    const newCategory = new ArticleCategory({
-      categoryName: req.body.categoryName,
-      description: req.body.description
-    });
-    const category = await newCategory.save();
-    res.json(category);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    DELETE api/category/:id
-// @desc     Delete Question Category
-// @access   Private
-router.delete('/:id', auth, async (req, res) => {
-  try {
-    const category = await Category.findById(req.params.id);
-
-    if (!category) {
-      return res.status(404).json({ msg: 'Category not found' });
-    }
-    //get uncategorized id to replace category in article
-    let general = await Category.find({ categoryName: 'Uncategorized' });
-    if (!general) {
-      newCat = new Category({
-        categoryName: 'Uncategorized',
-        description: 'Uncategorized questions.'
-      });
-      general = await newCat.save();
-    }
-    // remove category from questions
-    for (let questionId of category.questions) {
-      let question = await Question.findById(questionId);
-      question.category = general._id;
-      await question.save();
-    }
-    // remove category
-    await category.remove();
-
-    res.json({ msg: 'Tag removed' });
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'Tag not found' });
-    }
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    DELETE api/category/article:id
-// @desc     Delete Article Category
-// @access   Private
-router.delete('/article/:id', auth, async (req, res) => {
-  try {
-    const category = await ArticleCategory.findById(req.params.id);
-
-    if (!category) {
-      return res.status(404).json({ msg: 'Category not found' });
-    }
-    //get uncategorized id to replace category in article
-    let general = await ArticleCategory.find({ categoryName: 'Uncategorized' });
-    if (!general) {
-      newCat = new ArticleCategory({
-        categoryName: 'Uncategorized',
-        description: 'Uncategorized posts.'
-      });
-      general = await newCat.save();
-    }
-    // remove category from articles
-    for (let articleId of category.articles) {
-      let article = await Article.findById(articleId);
-      article.category = general._id;
-      await article.save();
-    }
-
-    // remove category
-    await category.remove();
-
-    res.json({ msg: 'Tag removed' });
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'Tag not found' });
-    }
     res.status(500).send('Server Error');
   }
 });

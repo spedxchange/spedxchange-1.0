@@ -63,8 +63,12 @@ const createArticle = async article => {
     // Update Title
     // currentArticle.content = article.title;
 
+    // Update photoURL
+    currentArticle.photoURL = articleData.photoURL;
+
+    /*
     // handle category
-    const category = await ArticleCategory.findOneAndUpdate({ categoryName: articleData.category }, { categoryName: articleData.category }, { new: true, upsert: true });
+    const category = await ArticleCategory.findOneAndUpdate({ text: articleData.category }, { text: articleData.category }, { new: true, upsert: true });
     category.articleCount++;
     if (!category.articles) {
       category.articles = [currentArticle._id];
@@ -78,8 +82,8 @@ const createArticle = async article => {
     currentArticle.tags = [];
     let tag;
     for (tag of articleData.tags) {
-      const tagName = tag.toLowerCase().trim();
-      const newTag = await ArticleTag.findOneAndUpdate({ tagName: tagName }, { tagName: tagName }, { new: true, upsert: true });
+      const text = tag.toLowerCase().trim();
+      const newTag = await ArticleTag.findOneAndUpdate({ text: text }, { text: text }, { new: true, upsert: true });
       newTag.articleCount++;
       if (!newTag.articles) {
         newTag.articles = [currentArticle._id];
@@ -89,6 +93,7 @@ const createArticle = async article => {
       await newTag.save();
       currentArticle.tags.push(newTag._id);
     }
+    */
 
     // Save Article
     await currentArticle.save();

@@ -1,4 +1,4 @@
-import { UPDATE_TAB, UPDATE_CATEGORY } from './questionTabsConstants';
+import { UPDATE_TAB, UPDATE_CATEGORY } from './questionFormConstants';
 
 export const handleTabChange = tab => {
   return dispatch => {

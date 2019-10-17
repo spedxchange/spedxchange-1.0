@@ -1,37 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const Tag = require('../../models/Tag');
+const ArticleTag = require('../../models/ArticleTag');
 const Question = require('../../models/Question');
+const Article = require('../../models/Article');
 
-// @route    GET api/tags
-// @desc     Get all Tags
+// @route    GET api/tags/:type
+// @desc     Get all Tags by Type
 // @access   Public
-router.get('/', async (req, res) => {
+router.get('/:type', async (req, res) => {
   try {
-    const tags = await Tag.find().sort({ questionCount: -1 });
-    res.json(tags);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    GET api/tags/suggest
-// @desc     Get all Tags for TagInput
-// @access   Public
-router.get('/', async (req, res) => {
-  try {
-    const tags = await Tag.find().sort({ questionCount: -1 });
-    let suggestions = [];
-    let tag;
-    for (tag of tags) {
-      suggestions.push({
-        id: tag._id,
-        text: tagName
-      });
+    let tags;
+    switch (req.params.type) {
+      case 'question':
+        tags = await Tag.find().sort({ questionCount: -1 });
+        break;
+      case 'article':
+        tags = await ArticleTag.find().sort({ questionCount: -1 });
+        break;
+      default:
+        return res.status(404).json({ msg: 'Tag type error' });
     }
     res.json(tags);
   } catch (err) {
@@ -40,12 +30,22 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route    GET api/tags/:id
-// @desc     Get Tag by id
+// @route    GET api/tags/:type/:id
+// @desc     Get Tag by type & id
 // @access   Public
-router.get('/:id', async (req, res) => {
+router.get('/:type/:id', async (req, res) => {
   try {
-    const tag = await Tag.findById(req.params.id);
+    let tag;
+    switch (req.params.type) {
+      case 'question':
+        tag = await Tag.findById(req.params.id);
+        break;
+      case 'article':
+        tag = await ArticleTag.findById(req.params.id);
+        break;
+      default:
+        return res.status(404).json({ msg: 'Tag type error' });
+    }
 
     if (!tag) {
       return res.status(404).json({ msg: 'Tag not found' });
@@ -61,58 +61,79 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// @route    POST api/tags
-// @desc     Create Tag
+// @route    POST api/tags/:type
+// @desc     Create Tag by type
 // @access   Private
-router.post(
-  '/',
-  [
-    auth,
-    [
-      check('displayName', 'Name is required')
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+router.post('/:type', auth, async (req, res) => {
+  try {
+    let newTag;
+    console.log('start switch');
+    switch (req.params.type) {
+      case 'question':
+        newTag = new Tag({
+          text: req.body.text,
+          description: req.body.description
+        });
+        console.log('inside switch');
+        break;
+      case 'article':
+        newTag = new ArticleTag({
+          text: req.body.text,
+          description: req.body.description
+        });
+        break;
+      default:
+        return res.status(404).json({ msg: 'Tag type error' });
     }
+    console.log('end switch');
+    console.log('newTag: ', newTag);
 
-    try {
-      const newTag = new Tag({
-        name: req.body.name,
-        description: req.body.description,
-        questionCount: 0
-      });
+    const tag = await newTag.save();
 
-      const tag = await newTag.save();
-
-      res.json(tag);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
+    res.json(tag);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(err);
   }
-);
+});
 
-// @route    DELETE api/tags/:id
+// @route    DELETE api/tags/:type/:id
 // @desc     Delete Tag
 // @access   Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:type/:id', auth, async (req, res) => {
   try {
-    const tag = await Tag.findById(req.params.id);
+    let tag;
+    switch (req.params.type) {
+      case 'question':
+        tag = await Tag.findById(req.params.id);
 
-    if (!tag) {
-      return res.status(404).json({ msg: 'Tag not found' });
-    }
+        if (!tag) {
+          return res.status(404).json({ msg: 'Tag not found' });
+        }
 
-    // remove tag from questions
-    for (let questionId of tag.questions) {
-      let question = await Question.findById(questionId);
-      question.tags.pull({ _id: req.params.id });
-      await question.save();
+        // remove tag from questions
+        for (let questionId of tag.questions) {
+          let question = await Question.findById(questionId);
+          question.tags.pull({ _id: req.params.id });
+          await question.save();
+        }
+        break;
+      case 'article':
+        tag = await ArticleTag.findById(req.params.id);
+
+        if (!tag) {
+          return res.status(404).json({ msg: 'Tag not found' });
+        }
+
+        // remove tag from article
+        for (let articleId of tag.articles) {
+          let article = await Article.findById(articleId);
+          article.tags.pull({ _id: req.params.id });
+          await article.save();
+        }
+        break;
+      default:
+        return res.status(404).json({ msg: 'Tag type error' });
     }
 
     // remove tag

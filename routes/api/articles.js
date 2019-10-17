@@ -22,11 +22,11 @@ router.get('/', async (req, res) => {
       })
       .populate({
         path: 'category',
-        select: 'categoryName'
+        select: 'text'
       })
       .populate({
         path: 'tags',
-        select: 'tagName'
+        select: 'text'
       });
     res.json(articles);
   } catch (err) {
@@ -49,11 +49,11 @@ router.get('/latest', async (req, res) => {
       })
       .populate({
         path: 'category',
-        select: 'categoryName'
+        select: 'text'
       })
       .populate({
         path: 'tags',
-        select: 'tagName'
+        select: 'text'
       });
     res.json(articles);
   } catch (err) {
@@ -78,11 +78,11 @@ router.get('/:uid/:slug', async (req, res) => {
       })
       .populate({
         path: 'category',
-        select: 'categoryName'
+        select: 'text'
       })
       .populate({
         path: 'tags',
-        select: 'tagName'
+        select: 'text'
       });
 
     if (!article) {
@@ -231,11 +231,11 @@ router.post(
         let tag;
         for (tag of req.body.tags) {
           tag = tag.toLowerCase().trim();
-          let existingTag = await ArticleTag.findOne({ tagName: tag });
+          let existingTag = await ArticleTag.findOne({ text: tag });
           if (!existingTag) {
             // add new tag if it does nor exist
             const newTag = new Tag({
-              tagName: tag,
+              text: tag,
               articleCount: 1,
               articles: article._id
             });
@@ -258,11 +258,11 @@ router.post(
         let category;
         for (category of req.body.categories) {
           category = category.toLowerCase().trim();
-          let existingCategory = await ArticleCategory.findOne({ categoryName: category });
+          let existingCategory = await ArticleCategory.findOne({ text: category });
           if (!existingCategory) {
             // add new category if it does nor exist
             const newCategory = new Category({
-              categoryName: category,
+              text: category,
               articleCount: 1,
               articles: article._id
             });
@@ -351,18 +351,18 @@ router.put(
           tag = tag.toLowerCase().trim();
 
 
-          let existingTag = await ArticleTag.findOne({ tagName: tag });
+          let existingTag = await ArticleTag.findOne({ text: tag });
           if (!existingTag) {
             // add new tag if it does not exist in tags
             const newTag = new Tag({
-              tagName: tag,
+              text: tag,
               articleCount: 1,
               articles: article._id
             });
             const createdTag = await newTag.save();
             article.tags.push({
               tag: createdTag._id,
-              tagName: tag
+              text: tag
             });
           } else {
 
@@ -370,7 +370,7 @@ router.put(
 
             // update existing tag if it existed in tags
             const tagExists = existingTag.articles.find(tag => {
-              return tag.tagName === tag;
+              return tag.text === tag;
             });
 
             if (tagExists) {
@@ -380,7 +380,7 @@ router.put(
             }
             article.tags.push({
               tag: existingTag._id,
-              tagName: tag
+              text: tag
             });
           }
         }

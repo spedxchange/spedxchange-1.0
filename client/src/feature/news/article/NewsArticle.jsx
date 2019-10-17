@@ -78,7 +78,7 @@ export class NewsArticle extends Component {
                   {currentArticle.tags &&
                     currentArticle.tags.map(tag => (
                       <a key={tag._id} href='/'>
-                        {tag.tagName}
+                        {tag.text}
                       </a>
                     ))}
                 </div>

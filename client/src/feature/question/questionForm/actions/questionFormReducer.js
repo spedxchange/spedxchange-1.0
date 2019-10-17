@@ -1,5 +1,5 @@
-import { createReducer } from '../../../app/common/util/ReducerUtil';
-import { UPDATE_TAB, UPDATE_CATEGORY } from './questionTabsConstants';
+import { createReducer } from '../../../../app/common/util/ReducerUtil';
+import { UPDATE_TAB, UPDATE_CATEGORY } from './questionFormConstants';
 
 const initialState = {
   tags: null,

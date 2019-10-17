@@ -2,29 +2,34 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 
+import { openModal } from '../../../app/layout/modal/ModalActions';
+
 import QuestionType from './QuestionType';
 
 import PageLoader from '../../../app/layout/PageLoader';
-import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
-import { handleTabChange, handleCategorySelect } from './questionTabsActions';
+import { loadQuestionCategoriesAndTags } from '../../../app/common/actions/category/categoryActions';
+import { handleTabChange, handleCategorySelect } from './actions/questionFormActions';
 
 const mapStateToProps = state => ({
   tags: state.questionForm.tags,
   activeTabIndex: state.questionForm.activeTabIndex,
   categoryId: state.questionForm.categoryId,
   categories: state.category.questionCategories,
+  suggestedTags: state.category.questionTags,
   loading: state.async.loading
 });
 
 const mapDispatchToProps = {
+  loadQuestionCategoriesAndTags,
   handleTabChange,
-  loadQuestionCategories,
-  handleCategorySelect
+  handleCategorySelect,
+  openModal
 };
 
 export class QuestionTabs extends Component {
   componentDidMount() {
-    this.props.loadQuestionCategories();
+    this.props.openModal('AskQuestionModal');
+    this.props.loadQuestionCategoriesAndTags();
   }
 
   render() {
