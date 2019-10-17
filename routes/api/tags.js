@@ -19,6 +19,27 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route    GET api/tags/suggest
+// @desc     Get all Tags for TagInput
+// @access   Public
+router.get('/', async (req, res) => {
+  try {
+    const tags = await Tag.find().sort({ questionCount: -1 });
+    let suggestions = [];
+    let tag;
+    for (tag of tags) {
+      suggestions.push({
+        id: tag._id,
+        text: tagName
+      });
+    }
+    res.json(tags);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route    GET api/tags/:id
 // @desc     Get Tag by id
 // @access   Public

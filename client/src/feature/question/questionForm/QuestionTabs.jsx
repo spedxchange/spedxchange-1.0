@@ -11,8 +11,8 @@ import { handleTabChange, handleCategorySelect } from './questionTabsActions';
 const mapStateToProps = state => ({
   tags: state.questionForm.tags,
   activeTabIndex: state.questionForm.activeTabIndex,
+  categoryId: state.questionForm.categoryId,
   categories: state.category.questionCategories,
-  categoryId: state.category.categoryId,
   loading: state.async.loading
 });
 
@@ -28,7 +28,7 @@ export class QuestionTabs extends Component {
   }
 
   render() {
-    const { loading, categories, activeTabIndex, handleCategorySelect, handleTabChange } = this.props;
+    const { loading, categories, categoryId, activeTabIndex, handleCategorySelect, handleTabChange } = this.props;
     if (loading) return <PageLoader />;
     return (
       <div className='question-tabs'>
@@ -42,7 +42,7 @@ export class QuestionTabs extends Component {
           <>
             <QuestionType options={categories} handleCategorySelect={handleCategorySelect} handleTabChange={handleTabChange} />
             <div className='text-center mt-3'>
-              <Button color='green' className={this.props.categoryId ? 'disabled' : null} onClick={() => handleTabChange(1)}>
+              <Button color='green' disabled={!categoryId ? true : false} onClick={() => handleTabChange(1)}>
                 next
               </Button>
             </div>
