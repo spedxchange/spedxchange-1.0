@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Radio } from 'semantic-ui-react';
 
+import TagInput from '../../../app/common/form/TagInput';
+
 const QuestionType = ({ options, handleCategorySelect }) => {
   const [categoryId, setId] = useState(0);
 
@@ -10,17 +12,15 @@ const QuestionType = ({ options, handleCategorySelect }) => {
   };
   return (
     <div>
-      <div className='text-center mb-3'>
+      <div className='text-center mb-5'>
         <h3 className='m-0'>What type of question do you have?</h3>
         <p>We’ll help you find the best way to get your answer.</p>
       </div>
-      <div className='flex-wrap around sm'>
-        <div>
-          <p>
-            Select a SPED discipline that is
-            <br />
-            most relevant to your question.
-          </p>
+      <div>
+        <h5>
+          <strong>1. </strong>Select a SPED discipline that is most relevant to your question.
+        </h5>
+        <div className='columns'>
           {options &&
             options.map(option => (
               <Form.Field key={option._id}>
@@ -28,14 +28,12 @@ const QuestionType = ({ options, handleCategorySelect }) => {
               </Form.Field>
             ))}
         </div>
-        <div>
-          <p>
-            Add tags to help the right people
-            <br />
-            find and answer your question.
-          </p>
-          <input type='text' name='tags' />
-        </div>
+      </div>
+      <div>
+        <h5>
+          <strong>2. </strong>Add tags to help the right people find and answer your question.
+        </h5>
+        <TagInput />
       </div>
     </div>
   );

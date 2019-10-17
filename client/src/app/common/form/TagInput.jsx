@@ -1,17 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { WithOutContext as ReactTags } from 'react-tag-input';
+import { Form } from 'semantic-ui-react';
 
-const mapStateToProps = state => ({});
+const TagInput = ({ placeholder, handleTagsUpdate }) => {
+  const [tags, updateTags] = useState(0);
 
-const mapDispatchToProps = {};
+  const handleDelete = i => {
+    updateTags(tags.filter((tag, index) => index !== i));
+    handleTagsUpdate(tags);
+  };
 
-export class TagInput extends Component {
-  render() {
-    return <div></div>;
-  }
-}
+  const handleAddition = tag => {
+    updateTags([...tags, tag]);
+    handleTagsUpdate(tags);
+  };
+  return (
+    <Form.Field>
+      <ReactTags tags={tags} placeholder={placeholder} handleDelete={handleDelete} handleAddition={handleAddition} />
+    </Form.Field>
+  );
+};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TagInput);
+export default TagInput;
