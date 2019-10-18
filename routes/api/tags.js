@@ -7,6 +7,29 @@ const ArticleTag = require('../../models/ArticleTag');
 const Question = require('../../models/Question');
 const Article = require('../../models/Article');
 
+// @route    GET api/tags/:type/suggestions
+// @desc     Get all Tags for suggestions
+// @access   Public
+router.get('/:type/suggestions', async (req, res) => {
+  try {
+    let tags;
+    switch (req.params.type) {
+      case 'question':
+        tags = await Tag.find({}, { text: 1 }).sort({ text: 1 });
+        break;
+      case 'article':
+        tags = await ArticleTag.find({}, { text: 1 }).sort({ text: 1 });
+        break;
+      default:
+        return res.status(404).json([]);
+    }
+    res.json(tags);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route    GET api/tags/:type
 // @desc     Get all Tags by Type
 // @access   Public
@@ -49,6 +72,34 @@ router.get('/:type/:id', async (req, res) => {
 
     if (!tag) {
       return res.status(404).json({ msg: 'Tag not found' });
+    }
+
+    res.json(tag);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Tag not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    GET api/tags/:type/:id
+// @desc     Get Tag by type & id
+// @access   Public
+router.get('/name/:type/:text', async (req, res) => {
+  const { type, text } = req.params;
+  try {
+    let tag;
+    switch (type) {
+      case 'question':
+        tag = await Tag.findOne({ text: text }, { text: 1 });
+        break;
+      case 'article':
+        tag = await ArticleTag.findOne({ text: text }, { text: 1 });
+        break;
+      default:
+        return res.status(404).json({ msg: 'Tag type error' });
     }
 
     res.json(tag);

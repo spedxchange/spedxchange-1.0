@@ -9,7 +9,7 @@ export const loadQuestionCategoriesAndTags = () => {
     try {
       dispatch(asyncActionStart());
       const categories = await axios.get('/api/category/question');
-      const tags = await axios.get('/api/tags/question');
+      const tags = await axios.get('/api/tags/question/suggestions');
       dispatch({
         type: FETCH_QUESTION_ALL,
         payload: {
@@ -61,7 +61,7 @@ export const loadArticleCategoriesAndTags = () => {
     try {
       dispatch(asyncActionStart());
       const categories = await axios.get('/api/category/article');
-      const tags = await axios.get('/api/tags/article');
+      const tags = await axios.get('/api/tags/article/suggestions');
       dispatch({
         type: FETCH_ARTICLE_ALL,
         payload: {

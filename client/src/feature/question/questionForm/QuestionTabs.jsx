@@ -7,8 +7,8 @@ import { openModal } from '../../../app/layout/modal/ModalActions';
 import QuestionType from './QuestionType';
 
 import PageLoader from '../../../app/layout/PageLoader';
-import { loadQuestionCategoriesAndTags } from '../../../app/common/actions/category/categoryActions';
-import { handleTabChange, handleCategorySelect } from './actions/questionFormActions';
+import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
+import { handleTabChange, handleSelectCategory, handleSelectTags } from './actions/questionFormActions';
 
 const mapStateToProps = state => ({
   tags: state.questionForm.tags,
@@ -20,20 +20,21 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  loadQuestionCategoriesAndTags,
+  loadQuestionCategories,
   handleTabChange,
-  handleCategorySelect,
+  handleSelectCategory,
+  handleSelectTags,
   openModal
 };
 
 export class QuestionTabs extends Component {
   componentDidMount() {
     this.props.openModal('AskQuestionModal');
-    this.props.loadQuestionCategoriesAndTags();
+    this.props.loadQuestionCategories();
   }
 
   render() {
-    const { loading, categories, categoryId, activeTabIndex, handleCategorySelect, handleTabChange } = this.props;
+    const { loading, categories, categoryId, activeTabIndex, handleTabChange, handleSelectCategory, handleSelectTags } = this.props;
     if (loading) return <PageLoader />;
     return (
       <div className='question-tabs'>
@@ -45,7 +46,7 @@ export class QuestionTabs extends Component {
         </div>
         {activeTabIndex === 0 && (
           <>
-            <QuestionType options={categories} handleCategorySelect={handleCategorySelect} handleTabChange={handleTabChange} />
+            <QuestionType options={categories} handleSelectTags={handleSelectTags} handleSelectCategory={handleSelectCategory} handleTabChange={handleTabChange} />
             <div className='text-center mt-3'>
               <Button color='green' disabled={!categoryId ? true : false} onClick={() => handleTabChange(1)}>
                 next

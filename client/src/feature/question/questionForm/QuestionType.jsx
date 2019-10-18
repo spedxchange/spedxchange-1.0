@@ -3,18 +3,18 @@ import { Form, Radio } from 'semantic-ui-react';
 
 import TagInput from '../../../app/common/form/TagInput';
 
-const QuestionType = ({ options, handleCategorySelect }) => {
+const QuestionType = ({ options, handleSelectCategory, handleSelectTags }) => {
   const [categoryId, setId] = useState(0);
 
   const handleClick = id => {
-    handleCategorySelect(id);
+    handleSelectCategory(id);
     setId(id);
   };
   return (
     <div>
       <div className='text-center mb-5'>
-        <h3 className='m-0'>What type of question do you have?</h3>
-        <p>We’ll help you find the best way to get your answer.</p>
+        <h2 className='m-0'>What type of question do you have?</h2>
+        <p className='mt-2'>We’ll help you find the best way to get your answer.</p>
       </div>
       <div>
         <h5>
@@ -29,11 +29,11 @@ const QuestionType = ({ options, handleCategorySelect }) => {
             ))}
         </div>
       </div>
-      <div>
+      <div className='mt-3'>
         <h5>
           <strong>2. </strong>Add tags to help the right people find and answer your question.
         </h5>
-        <TagInput />
+        <TagInput handleSelectTags={handleSelectTags} placeholder='e.g. (behavior program iep)' />
       </div>
     </div>
   );
