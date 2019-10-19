@@ -65,6 +65,13 @@ h2:first-line {
   text-align: center;
 }
 
+.gutter {
+  margin: 0 1.5rem;
+  padding: 0;
+  border-left: 1px dotted var(--border-color);
+  height: 100%;
+}
+
 /* pagination */
 .ui.pagination.menu.questions {
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif !important;

@@ -24,16 +24,16 @@ class QuestionCategoryPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapState = state => ({
   categories: state.category.questionCategories,
   loading: state.async.loading
 });
 
-const mapDispatchToProps = {
+const actions = {
   loadQuestionCategories
 };
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapState,
+  actions
 )(QuestionCategoryPage);

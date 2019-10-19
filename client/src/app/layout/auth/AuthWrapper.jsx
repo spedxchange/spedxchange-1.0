@@ -5,7 +5,7 @@ export const UserIsAuthenticated = connectedReduxRedirect({
   wrapperDisplayName: 'UserIsAuthenticated',
   allowRedirectBack: true,
   redirectPath: '/ask',
-  authenticatedSelector: state => state.auth.authenticated && state.auth.currentUser,
+  authenticatedSelector: state => (state.auth.loading ? true : state.auth.authenticated),
   redirectAction: newLoc => dispatch => {
     dispatch(openModal('UnauthModal'));
   }

@@ -17,8 +17,8 @@ import Appfooter from './footer/AppFooter';
 import NavMobile from './nav/navMobile/NavMobile';
 import NewsMain from '../../feature/news/main/NewsMain';
 import NewsArticle from '../../feature/news/article/NewsArticle';
-// import QuestionForm from '../../feature/question/questionForm/QuestionForm';
-import QuestionTabs from '../../feature/question/questionForm/QuestionTabs';
+import QuestionForm from '../../feature/question/questionForm/QuestionForm';
+// import QuestionTabs from '../../feature/question/questionForm/QuestionTabs';
 
 import { UserIsAuthenticated } from './auth/AuthWrapper';
 import QuestionCategoryPage from '../../feature/question/categories/QuestionCategoryPage';
@@ -45,7 +45,7 @@ class App extends Component {
                     <Route exact path='/questions' component={QuestionDashboard} />
                     <Route path='/questions/:id' component={QuestionDetail} />
                     <Route path='/categories' component={QuestionCategoryPage} />
-                    <Route path={['/ask', '/ask/:id']} component={UserIsAuthenticated(QuestionTabs)} />
+                    <Route path={['/ask', '/ask/:id']} component={UserIsAuthenticated(QuestionForm)} />
                     <Route exact path='/people' component={UserDashboard} />
                     <Route path='/profile/:id' component={UserDetail} />
                     <Route exact path='/settings' component={SettingsDashboard} />

@@ -25,10 +25,9 @@ export class UnauthModal extends Component {
   render() {
     const { openModal } = this.props;
     return (
-      <Modal size='mini' open={true} onClose={this.handleCloseModal}>
-        <Modal.Header>You Need to Be Signed In</Modal.Header>
+      <Modal size='mini' className='unauth-modal' open={true} onClose={this.handleCloseModal}>
+        <Modal.Header>You must be logged in to ask a question on SPEDxchange.</Modal.Header>
         <Modal.Description>
-          <p>Please login or sign up to see this page</p>
           <Button.Group widths={3}>
             <Button fluid color='teal' onClick={() => openModal('LoginModal', { fromAuth: true })}>
               Login
