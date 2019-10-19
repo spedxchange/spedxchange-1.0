@@ -4,8 +4,8 @@ import { reduxForm, Field } from 'redux-form';
 import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
 import { Form, Button } from 'semantic-ui-react';
 import TextInput from '../../../app/common/form/TextInput';
-import TextArea from '../../../app/common/form/TextArea';
-import EditorInput from '../../../app/common/form/EditorInput';
+// import TextArea from '../../../app/common/form/TextArea';
+// import EditorInput from '../../../app/common/form/EditorInput';
 import { createQuestion, updateQuestion } from '../questionActions';
 import { handleEditorUpdate } from './actions/questionFormActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
@@ -46,6 +46,8 @@ const validate = combineValidators({
 
 class QuestionForm extends Component {
   onSubmit = values => {
+    console.log('values: ', values);
+    /*
     if (this.props.initialValues.id) {
       this.props.updateQuestion(values);
       this.props.history.push(`/seminars/${this.props.initialValues.id}`);
@@ -56,6 +58,7 @@ class QuestionForm extends Component {
       this.props.createQuestion(newSeminar);
       this.props.history.push(`/seminars/${newSeminar.id}`);
     }
+    */
   };
 
   render() {
@@ -80,7 +83,7 @@ class QuestionForm extends Component {
               }}
             />
             <Field name='tags' type='text' component={TextInput} placeholder='Tags' />
-            <Button type='submit' positive disabled={invalid || submitting || pristine}>
+            <Button type='submit' positive>
               Submit
             </Button>
             <Button type='button' onClick={initialValues.id ? () => history.push(`/question/${initialValues.id}`) : () => history.push('/question')}>
@@ -97,4 +100,4 @@ class QuestionForm extends Component {
 export default connect(
   mapState,
   actions
-)(reduxForm({ form: 'seminarForm', validate })(QuestionForm));
+)(reduxForm({ form: 'seminarForm' })(QuestionForm));

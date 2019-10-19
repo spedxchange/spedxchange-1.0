@@ -30,6 +30,8 @@ const updateTags = (state, payload) => {
 };
 
 const updateEditor = (state, payload) => {
+  // console.log('updateEditor: state: ', state);
+  // console.log('updateEditor: payload: ', payload);
   return {
     ...state,
     editorValue: payload
