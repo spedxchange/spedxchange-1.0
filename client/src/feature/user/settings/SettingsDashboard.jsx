@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
-import { Route, Redirect, Switch } from 'react-router';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import SettingsNav from './SettingsNav';
 import BasicPage from './BasicPage';
 import AboutPage from './AboutPage';

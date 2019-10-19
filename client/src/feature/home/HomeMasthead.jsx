@@ -4,9 +4,9 @@ import { Container, Button } from 'semantic-ui-react';
 
 import { openModal } from '../../app/layout/modal/ModalActions';
 
-const mapStateToProps = state => ({});
+const mapState = state => ({});
 
-const mapDispatchToProps = {
+const actions = {
   openModal
 };
 
@@ -30,6 +30,6 @@ export class HomeMasthead extends Component {
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapState,
+  actions
 )(HomeMasthead);

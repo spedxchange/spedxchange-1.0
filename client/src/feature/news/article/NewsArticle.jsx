@@ -4,13 +4,13 @@ import { Icon } from 'semantic-ui-react';
 import { loadArticle, loadArticles } from '../newsActions';
 import PageLoader from '../../../app/layout/PageLoader';
 
-const mapStateToProps = state => ({
+const mapState = state => ({
   articles: state.news.articles,
   currentArticle: state.news.currentArticle,
   loading: state.async.loading
 });
 
-const mapDispatchToProps = {
+const actions = {
   loadArticle,
   loadArticles
 };
@@ -92,6 +92,6 @@ export class NewsArticle extends Component {
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapState,
+  actions
 )(NewsArticle);

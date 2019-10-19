@@ -16,16 +16,21 @@ import { createQuestion, updateQuestion } from '../questionActions';
 import { loadQuestionCategories, loadQuestionTags } from '../../../app/common/actions/category/categoryActions';
 import { openModal } from '../../../app/layout/modal/ModalActions';
 
+import { createUid } from '../../../app/common/util/createUid';
+import { createSlug } from '../../../app/common/util/createSlug';
+
 const mapState = (state, ownProps) => {
   const questionId = ownProps.match.params.id;
+  const uid = createUid();
 
-  let question = {};
+  let question = { uid: uid };
 
   if (questionId && state.questions.length > 0) {
     question = state.questions.filter(question => question.id === questionId)[0];
   }
 
   return {
+    auth: state.auth,
     initialValues: question,
     categories: state.category.questionCategories,
     loading: state.async.loading
@@ -81,13 +86,12 @@ class QuestionForm extends Component {
     values.venueLatLng = this.state.venueLatLng;
     if (this.props.initialValues.id) {
       this.props.updateQuestion(values);
-      this.props.history.push(`/questions/${this.props.initialValues.id}`);
+      this.props.history.push(`/questions/${this.props.initialValues.uid}/${this.props.initialValues.id}`);
     } else {
       const newQuestion = {
         ...values,
-        id: cuid(),
-        hostPhotoURL: 'assets/img/user.png',
-        hostedBy: 'Bob'
+        slug: createSlug(values.title),
+        user: 'assets/img/user.png'
       };
       this.props.createQuestion(newQuestion);
       this.props.history.push(`/questions/${newQuestion.id}`);

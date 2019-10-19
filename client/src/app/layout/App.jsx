@@ -4,7 +4,7 @@ import { Container } from 'semantic-ui-react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import NavBar from '../layout/nav/navBar/NavBar';
 import SideBar from '../layout/nav/sideBar/SideBar';
-import QuestionDashboard from '../../feature/question/questionDashboard/QuestionDashboard';
+import QuestionDashboard from '../../feature/question/dashboard/QuestionDashboard';
 import HomePage from '../../feature/home/HomePage';
 import QuestionDetail from '../../feature/question/questionDetail/QuestionDetail';
 import UserDashboard from '../../feature/user/userDashboard/UserDashboard';
@@ -19,6 +19,9 @@ import NewsMain from '../../feature/news/main/NewsMain';
 import NewsArticle from '../../feature/news/article/NewsArticle';
 // import QuestionForm from '../../feature/question/questionForm/QuestionForm';
 import QuestionTabs from '../../feature/question/questionForm/QuestionTabs';
+
+import { UserIsAuthenticated } from './auth/AuthWrapper';
+import QuestionCategoryPage from '../../feature/question/categories/QuestionCategoryPage';
 
 const mapState = state => ({
   auth: state.auth
@@ -41,7 +44,8 @@ class App extends Component {
                   <Switch key={this.props.location.key}>
                     <Route exact path='/questions' component={QuestionDashboard} />
                     <Route path='/questions/:id' component={QuestionDetail} />
-                    <Route path={['/question', '/edit/:id']} component={QuestionTabs} />
+                    <Route path='/categories' component={QuestionCategoryPage} />
+                    <Route path={['/ask', '/ask/:id']} component={UserIsAuthenticated(QuestionTabs)} />
                     <Route exact path='/people' component={UserDashboard} />
                     <Route path='/profile/:id' component={UserDetail} />
                     <Route exact path='/settings' component={SettingsDashboard} />

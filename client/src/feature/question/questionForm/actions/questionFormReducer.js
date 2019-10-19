@@ -3,14 +3,14 @@ import { UPDATE_TAB, UPDATE_CATEGORY, UPDATE_TAGS } from './questionFormConstant
 
 const initialState = {
   tags: null,
-  activeTabIndex: 0,
+  activeQuestionTab: 0,
   categoryId: null
 };
 
 const updateTab = (state, payload) => {
   return {
     ...state,
-    activeTabIndex: payload
+    activeQuestionTab: payload
   };
 };
 

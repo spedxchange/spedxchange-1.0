@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { FETCH_QUESTION_CATAGORIES, FETCH_ARTICLE_CATAGORIES, FETCH_QUESTION_ALL, FETCH_QUESTION_TAGS, FETCH_ARTICLE_TAGS, FETCH_ARTICLE_ALL } from './categoryConstants';
-import { ASYNC_ACTION_START } from '../../async/asyncConstants';
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../async/asyncActions';
 
 // Load Question Categories and Tags
@@ -29,7 +28,7 @@ export const loadQuestionCategoriesAndTags = () => {
 export const loadQuestionCategories = () => {
   return async dispatch => {
     try {
-      dispatch({ type: ASYNC_ACTION_START, payload: 'question-categories' });
+      dispatch(asyncActionStart());
       const categories = await axios.get('/api/category/question');
       dispatch({ type: FETCH_QUESTION_CATAGORIES, payload: categories.data });
       dispatch(asyncActionFinish());
@@ -44,7 +43,7 @@ export const loadQuestionCategories = () => {
 export const loadQuestionTags = () => {
   return async dispatch => {
     try {
-      dispatch({ type: ASYNC_ACTION_START, payload: 'question-tags' });
+      dispatch(asyncActionStart());
       const categories = await axios.get('/api/tags/question');
       dispatch({ type: FETCH_QUESTION_TAGS, payload: categories.data });
       dispatch(asyncActionFinish());
@@ -81,7 +80,7 @@ export const loadArticleCategoriesAndTags = () => {
 export const loadArticleCategories = () => {
   return async dispatch => {
     try {
-      dispatch({ type: ASYNC_ACTION_START, payload: 'article-categories' });
+      dispatch(asyncActionStart());
       const categories = await axios.get('/api/category/article');
       dispatch({ type: FETCH_ARTICLE_CATAGORIES, payload: categories.data });
       dispatch(asyncActionFinish());
@@ -96,7 +95,7 @@ export const loadArticleCategories = () => {
 export const loadArticleTags = () => {
   return async dispatch => {
     try {
-      dispatch({ type: ASYNC_ACTION_START, payload: 'article-tags' });
+      dispatch(asyncActionStart());
       const categories = await axios.get('/api/tags/article');
       dispatch({ type: FETCH_ARTICLE_TAGS, payload: categories.data });
       dispatch(asyncActionFinish());

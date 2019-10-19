@@ -3,8 +3,7 @@ import { Form, Radio } from 'semantic-ui-react';
 
 /*
 options = {
-    key: 'key',
-    key: 'key',
+     key: 'key',
     label: 'field2',
     data: [{
         key: 'uniqueKey1',
@@ -18,11 +17,11 @@ options = {
 }
 */
 
-const RadioGroupInput = ({ input, classes, options }) => {
+const RadioGroupInput = ({ input, options }) => {
   return (
-    <div className={classes}>
-      {options &&
-        options.map(option => (
+    <>
+      {options.data &&
+        options.data.map(option => (
           <Form.Field key={option.data[option.key]}>
             <Radio
               {...input}
@@ -33,7 +32,7 @@ const RadioGroupInput = ({ input, classes, options }) => {
             />
           </Form.Field>
         ))}
-    </div>
+    </>
   );
 };
 

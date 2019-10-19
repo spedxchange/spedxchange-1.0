@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { loadArticles } from '../newsActions';
@@ -35,7 +35,7 @@ class NewsMain extends Component {
         <div className='flex-wrap-content'>
           {articles &&
             articles.map(article => (
-              <div key={article._id} className='article-card' onClick={() => this.handleArticleClick(article)}>
+              <div key={article._id} className='column-3' onClick={() => this.handleArticleClick(article)}>
                 <div>
                   <img src={this.createImageSrc(article.uid, article.photoURL)} alt={article.photoURL} />
                 </div>

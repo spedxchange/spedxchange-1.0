@@ -29,7 +29,7 @@ const RegisterForm = ({ handleSubmit, registeredUser, error, invalid, subbmittin
               {error}
             </Label>
           )}
-          <Button diabled={invalid || subbmitting} fluid size='large' color='teal'>
+          <Button disabled={invalid || subbmitting} fluid size='large' color='teal'>
             Register
           </Button>
         </Segment>

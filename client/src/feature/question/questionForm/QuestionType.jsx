@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Form, Radio } from 'semantic-ui-react';
+import React from 'react';
+import { Field } from 'redux-form';
 
 import TagInput from '../../../app/common/form/TagInput';
+import RadioGroupInput from '../../../app/common/form/RadioGroupInput';
 
-const QuestionType = ({ options, handleSelectCategory, handleSelectTags }) => {
-  const [categoryId, setId] = useState(0);
-
-  const handleClick = id => {
-    handleSelectCategory(id);
-    setId(id);
+const QuestionType = ({ categories }) => {
+  const options = {
+    key: '_id',
+    label: 'text',
+    data: categories
   };
   return (
     <div>
@@ -21,19 +21,14 @@ const QuestionType = ({ options, handleSelectCategory, handleSelectTags }) => {
           <strong>1. </strong>Select a SPED discipline that is most relevant to your question.
         </h5>
         <div className='columns'>
-          {options &&
-            options.map(option => (
-              <Form.Field key={option._id}>
-                <Radio name='category' label={option.text} checked={categoryId === option._id} value={option._id} onChange={() => handleClick(option._id)} />
-              </Form.Field>
-            ))}
+          <Field name='category' options={options} component={RadioGroupInput} />
         </div>
       </div>
       <div className='mt-3'>
         <h5>
           <strong>2. </strong>Add tags to help the right people find and answer your question.
         </h5>
-        <TagInput handleSelectTags={handleSelectTags} placeholder='e.g. (behavior program iep)' />
+        <Field name='tags' component={TagInput} />
       </div>
     </div>
   );

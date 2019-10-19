@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import QuestionListItem from './QuestionListItem';
 import { Button, Pagination } from 'semantic-ui-react';
 
@@ -17,14 +18,16 @@ class QuestionList extends Component {
   };
 
   render() {
-    const { questions, deleteQuestion } = this.props;
+    const { history, questions, deleteQuestion } = this.props;
     const { activePage, boundaryRange, siblingRange, showEllipsis, showFirstAndLastNav, showPreviousAndNextNav, totalPages } = this.state;
     return (
       <Fragment>
         <div className='question-head'>
           <div className='flex-wrap top'>
             <h1>Questions</h1>
-            <Button color='green'>Ask Question</Button>
+            <Button color='green' onClick={() => history.push('/ask')}>
+              Ask Question
+            </Button>
           </div>
           <div className='flex-wrap bottom'>
             <div>count</div>
@@ -57,4 +60,4 @@ class QuestionList extends Component {
   }
 }
 
-export default QuestionList;
+export default withRouter(QuestionList);

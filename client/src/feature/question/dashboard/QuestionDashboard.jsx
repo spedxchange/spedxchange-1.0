@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Container } from 'semantic-ui-react';
-import { createQuestion, updateQuestion, deleteQuestion, loadQuestions } from '../questionActions';
+import { createQuestion, updateQuestion, loadQuestions } from '../questionActions';
 import PageLoader from '../../../app/layout/PageLoader';
-import QuestionList from '../questionList/QuestionList';
-// import QuestionActivity from '../questionActivity/QuestionActivity';
+import QuestionList from '../list/QuestionList';
 
 const mapState = state => ({
   questions: state.questions,
@@ -14,7 +12,6 @@ const mapState = state => ({
 const actions = {
   createQuestion,
   updateQuestion,
-  deleteQuestion,
   loadQuestions
 };
 
@@ -23,17 +20,13 @@ class QuestionDashboard extends Component {
     this.props.loadQuestions();
   }
 
-  handleDeleteQuestion = id => {
-    this.props.deleteQuestion(id);
-  };
-
   render() {
     const { questions, loading } = this.props;
     if (loading) return <PageLoader />;
     return (
       <div className='questions-dashboard flex-wrap md'>
         <div className='grow'>
-          <QuestionList questions={questions} deleteQuestion={this.handleDeleteQuestion} />
+          <QuestionList questions={questions} />
         </div>
       </div>
     );
