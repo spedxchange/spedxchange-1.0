@@ -5,14 +5,12 @@ import { Form, Label } from 'semantic-ui-react';
 class EditorInput extends Component {
   constructor(props) {
     super(props);
-    console.log('EditorInput: props: ', this.props);
     this.state = { content: '' };
     this.handleEditorChange = this.handleEditorChange.bind(this);
   }
 
   handleChange(val) {
     if (val) {
-      console.log('this.props.input.value: ', this.props.input.value);
       this.setState({ value: val });
       this.props.change(val);
     }
@@ -20,10 +18,6 @@ class EditorInput extends Component {
 
   handleEditorChange(content, editor) {
     this.setState({ content });
-  }
-
-  handleInputChange(e) {
-    console.log('e: ', e);
   }
 
   blur = async () => {
@@ -37,7 +31,7 @@ class EditorInput extends Component {
       meta: { touched, error }
     } = this.props;
     return (
-      <>
+      <div className='editor-input-wrap'>
         <Form.Field>
           <input {...input} className='hidden-text-input' type='text' value={this.state.content} ref={ref => (this.inputRef = ref)} />
           {touched && error && (
@@ -54,11 +48,15 @@ class EditorInput extends Component {
             height: 200,
             menubar: false,
             elementpath: false,
-            plugins: ['lists link image anchor searchreplace fullscreen media paste'],
-            toolbar: 'bold italic | link | bullist numlist | undo redo'
+            plugins: ['lists link searchreplace fullscreen paste'],
+            toolbar: 'fullscreen | bold italic underline strikethrough | bullist numlist | link ',
+            default_link_target: '_blank',
+            link_assume_external_targets: true,
+            link_title: false,
+            target_list: false
           }}
         />
-      </>
+      </div>
     );
   }
 }
