@@ -5,6 +5,7 @@ import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan 
 import { Form, Button } from 'semantic-ui-react';
 import TextInput from '../../../app/common/form/TextInput';
 import TextArea from '../../../app/common/form/TextArea';
+import EditorInput from '../../../app/common/form/EditorInput';
 import { createQuestion, updateQuestion } from '../questionActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
 import QuestionHints from './QuestionHints';
@@ -59,7 +60,7 @@ class QuestionForm extends Component {
         <div className='grow question-form'>
           <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
             <Field name='title' type='text' component={TextInput} placeholder='Question Title' />
-            <Field name='content' type='text' component={TextArea} rows={5} placeholder='Question Description' />
+            <Field name='content' type='text' component={EditorInput} onChange={e => console.log(e.target.getContent())} />
             <Field name='tags' type='text' component={TextInput} placeholder='Tags' />
             <Button type='submit' positive disabled={invalid || submitting || pristine}>
               Submit

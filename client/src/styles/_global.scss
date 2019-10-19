@@ -72,6 +72,11 @@ h2:first-line {
   height: 100%;
 }
 
+// tinyMCE branding
+.tox-statusbar__branding {
+  display: none !important;
+}
+
 /* pagination */
 .ui.pagination.menu.questions {
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif !important;
