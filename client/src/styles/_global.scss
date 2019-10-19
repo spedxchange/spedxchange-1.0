@@ -77,6 +77,11 @@ h2:first-line {
   display: none !important;
 }
 
+// hidden inputs
+.hidden-text-input {
+  position: absolute;
+}
+
 /* pagination */
 .ui.pagination.menu.questions {
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif !important;
