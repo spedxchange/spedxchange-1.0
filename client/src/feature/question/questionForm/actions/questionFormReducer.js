@@ -1,10 +1,11 @@
 import { createReducer } from '../../../../app/common/util/ReducerUtil';
-import { UPDATE_TAB, UPDATE_CATEGORY, UPDATE_TAGS } from './questionFormConstants';
+import { UPDATE_TAB, UPDATE_CATEGORY, UPDATE_TAGS, UPDATE_EDITOR } from './questionFormConstants';
 
 const initialState = {
   tags: null,
   activeQuestionTab: 0,
-  categoryId: null
+  categoryId: null,
+  editorValue: ''
 };
 
 const updateTab = (state, payload) => {
@@ -28,8 +29,16 @@ const updateTags = (state, payload) => {
   };
 };
 
+const updateEditor = (state, payload) => {
+  return {
+    ...state,
+    editorValue: payload
+  };
+};
+
 export default createReducer(initialState, {
   [UPDATE_TAB]: updateTab,
   [UPDATE_CATEGORY]: updateCategory,
-  [UPDATE_TAGS]: updateTags
+  [UPDATE_TAGS]: updateTags,
+  [UPDATE_EDITOR]: updateEditor
 });

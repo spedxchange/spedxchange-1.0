@@ -7,8 +7,10 @@ import TextInput from '../../../app/common/form/TextInput';
 import TextArea from '../../../app/common/form/TextArea';
 import EditorInput from '../../../app/common/form/EditorInput';
 import { createQuestion, updateQuestion } from '../questionActions';
+import { handleEditorUpdate } from './actions/questionFormActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
 import QuestionHints from './QuestionHints';
+import { Editor } from '@tinymce/tinymce-react';
 
 const mapState = (state, ownProps) => {
   const questionId = ownProps.match.params.id;
@@ -19,12 +21,14 @@ const mapState = (state, ownProps) => {
   }
 
   return {
-    initialValues: question
+    initialValues: question,
+    editorValue: state.editorValue
   };
 };
 
 const actions = {
   loadQuestionCategories,
+  handleEditorUpdate,
   createQuestion,
   updateQuestion
 };
@@ -35,7 +39,7 @@ const validate = combineValidators({
   content: composeValidators(
     isRequired({ message: 'Question Description is required' }),
     hasLengthGreaterThan(12)({
-      message: 'Description needd to be at least 12 characters'
+      message: 'Description needs to be at least 12 characters'
     })
   )()
 });
@@ -43,16 +47,17 @@ const validate = combineValidators({
 class QuestionForm extends Component {
   onSubmit = values => {
     if (this.props.initialValues.id) {
-      this.props.updateSeminar(values);
+      this.props.updateQuestion(values);
       this.props.history.push(`/seminars/${this.props.initialValues.id}`);
     } else {
       const newSeminar = {
         ...values
       };
-      this.props.createSeminar(newSeminar);
+      this.props.createQuestion(newSeminar);
       this.props.history.push(`/seminars/${newSeminar.id}`);
     }
   };
+
   render() {
     const { history, initialValues, invalid, submitting, pristine } = this.props;
     return (
@@ -60,7 +65,7 @@ class QuestionForm extends Component {
         <div className='grow question-form'>
           <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
             <Field name='title' type='text' component={TextInput} placeholder='Question Title' />
-            <Field name='content' type='text' component={EditorInput} onChange={e => console.log(e.target.getContent())} />
+            <Field name='content' type='text' component={Editor} apiKey='twpt6v84p920kri6p37w1wk4258x70z5e2yjhikzlu6mysb6' onEditorChange={this.props.handleEditorUpdate} />
             <Field name='tags' type='text' component={TextInput} placeholder='Tags' />
             <Button type='submit' positive disabled={invalid || submitting || pristine}>
               Submit
