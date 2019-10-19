@@ -65,7 +65,20 @@ class QuestionForm extends Component {
         <div className='grow question-form'>
           <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
             <Field name='title' type='text' component={TextInput} placeholder='Question Title' />
-            <Field name='content' type='text' component={Editor} apiKey='twpt6v84p920kri6p37w1wk4258x70z5e2yjhikzlu6mysb6' onEditorChange={this.props.handleEditorUpdate} />
+            <Field
+              name='content'
+              component={Editor}
+              apiKey='twpt6v84p920kri6p37w1wk4258x70z5e2yjhikzlu6mysb6'
+              onEditorChange={this.props.handleEditorUpdate}
+              initialValue=''
+              init={{
+                height: 200,
+                menubar: false,
+                elementpath: false,
+                plugins: ['lists link image anchor searchreplace fullscreen media paste'],
+                toolbar: 'bold italic | link | bullist numlist | undo redo'
+              }}
+            />
             <Field name='tags' type='text' component={TextInput} placeholder='Tags' />
             <Button type='submit' positive disabled={invalid || submitting || pristine}>
               Submit
