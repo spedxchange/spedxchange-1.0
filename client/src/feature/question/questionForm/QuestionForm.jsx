@@ -33,36 +33,25 @@ const actions = {
   updateQuestion
 };
 
-const validate = combineValidators({
-  title: isRequired({ message: 'Title is required' }),
-  category: isRequired({ message: 'Category is required' }),
-  content: composeValidators(
-    isRequired({ message: 'Question Description is required' }),
-    hasLengthGreaterThan(12)({
-      message: 'Description needs to be at least 12 characters'
-    })
-  )()
-});
-
 class QuestionForm extends Component {
   onSubmit = values => {
     console.log('values: ', values);
     /*
     if (this.props.initialValues.id) {
       this.props.updateQuestion(values);
-      this.props.history.push(`/seminars/${this.props.initialValues.id}`);
+      this.props.history.push(`/ask/${this.props.initialValues.id}`);
     } else {
-      const newSeminar = {
+      const newQuestion = {
         ...values
       };
-      this.props.createQuestion(newSeminar);
-      this.props.history.push(`/seminars/${newSeminar.id}`);
+      this.props.createQuestion(newQuestion);
+      this.props.history.push(`/ask/${newQuestion.id}`);
     }
     */
   };
 
   render() {
-    const { history, initialValues, invalid, submitting, pristine } = this.props;
+    const { history, initialValues } = this.props;
     return (
       <div className='flex-wrap sm'>
         <div className='grow question-form'>
@@ -86,7 +75,7 @@ class QuestionForm extends Component {
             <Button type='submit' positive>
               Submit
             </Button>
-            <Button type='button' onClick={initialValues.id ? () => history.push(`/question/${initialValues.id}`) : () => history.push('/question')}>
+            <Button type='button' onClick={initialValues.id ? () => history.push(`/ask/${initialValues.id}`) : () => history.push('/ask')}>
               Cancel
             </Button>
           </Form>
@@ -100,4 +89,4 @@ class QuestionForm extends Component {
 export default connect(
   mapState,
   actions
-)(reduxForm({ form: 'seminarForm' })(QuestionForm));
+)(reduxForm({ form: 'questionForm' })(QuestionForm));
