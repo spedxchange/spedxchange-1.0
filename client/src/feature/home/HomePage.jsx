@@ -46,7 +46,7 @@ const HomePage = ({ history }) => {
             We have extensive informations related to special education. Get valuable insights from our social media, blogs, and unique content from our partners and our community.
           </p>
           <p>
-            <span class='text-warning'>Sign up</span> today and you will also have access to exclusive content.
+            <span className='text-warning'>Sign up</span> today and you will also have access to exclusive content.
           </p>
           <Button color='purple'>Read Our Latest news...</Button>
         </Container>
@@ -73,24 +73,24 @@ const HomePage = ({ history }) => {
           <p>Check out what you can do by becoming a SPEDhunters member today!</p>
           <div className='flex-wrap sm callout'>
             <div className='grow'>
-              <i class='icon-present text-primary'></i>
+              <i className='icon-present text-primary'></i>
               <h3>Latest SPED Trends</h3>
               <p>We offer free specialized content that will help special education staff.</p>
             </div>
             <div className='grow'>
-              <i class='icon-lock-open text-primary'></i>
+              <i className='icon-lock-open text-primary'></i>
               <h3>Alerts &amp; Notification</h3>
               <p>Let us do the work based on your preferences. We'll keep you up-to-date!</p>
             </div>
           </div>
           <div className='flex-wrap sm callout'>
             <div className='grow'>
-              <i class='icon-camera'></i>
+              <i className='icon-camera'></i>
               <h3>Career Portfolio</h3>
               <p>Get organized for a successful job search, discovery, relocation, and hiring process.</p>
             </div>
             <div className='grow'>
-              <i class='icon-screen-smartphone'></i>
+              <i className='icon-screen-smartphone'></i>
               <h3>Job Matching</h3>
               <p>Better understand the job market and openings across the united states.</p>
             </div>

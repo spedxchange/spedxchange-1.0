@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Icon, List } from 'semantic-ui-react';
+import { Modal, Form, Checkbox, Button, Icon, List } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import { closeModal } from './ModalActions';
@@ -7,6 +7,15 @@ import { closeModal } from './ModalActions';
 const actions = { closeModal };
 
 class AskQuestionModal extends Component {
+  handleShowCheckbox = () => {
+    let expireDate = new Date();
+    expireDate.setDate(expireDate.getDate() + 30);
+    if (localStorage.hideAskModal) {
+      localStorage.removeItem('hideAskModal');
+    } else {
+      localStorage.setItem('hideAskModal', expireDate);
+    }
+  };
   render() {
     const { closeModal } = this.props;
     return (
@@ -18,14 +27,15 @@ class AskQuestionModal extends Component {
             <p>Before you ask, search the site to make sure your question hasn’t been answered.</p>
             <List ordered>
               <List.Item>Summarize the issue</List.Item>
+              <List.Item>State your goals</List.Item>
               <List.Item>Describe approaches you’ve tried</List.Item>
-              <List.Item>When appropriate, give examples</List.Item>
             </List>
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <span>Don't show this again.</span>
-          <span clasname='spacer'>&nbsp;</span>
+          <Form>
+            <Form.Field control={Checkbox} label={{ children: `Don't show this again.` }} onClick={this.handleShowCheckbox} />
+          </Form>
           <Button color='green' size='medium' onClick={closeModal}>
             <Icon name='checkmark' />
             OK

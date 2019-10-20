@@ -9,13 +9,6 @@ class EditorInput extends Component {
     this.handleEditorChange = this.handleEditorChange.bind(this);
   }
 
-  handleChange(val) {
-    if (val) {
-      this.setState({ value: val });
-      this.props.change(val);
-    }
-  }
-
   handleEditorChange(content, editor) {
     this.setState({ content });
   }
@@ -34,11 +27,6 @@ class EditorInput extends Component {
       <div className='editor-input-wrap'>
         <Form.Field>
           <input {...input} className='hidden-text-input' type='text' value={this.state.content} ref={ref => (this.inputRef = ref)} />
-          {touched && error && (
-            <Label basic color='red'>
-              {error}
-            </Label>
-          )}
         </Form.Field>
         <Editor
           apiKey='twpt6v84p920kri6p37w1wk4258x70z5e2yjhikzlu6mysb6'
@@ -56,6 +44,11 @@ class EditorInput extends Component {
             target_list: false
           }}
         />
+        {touched && error && (
+          <Label basic color='red'>
+            {error}
+          </Label>
+        )}
       </div>
     );
   }

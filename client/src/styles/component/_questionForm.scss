@@ -1,3 +1,50 @@
+// ask-question-modal
+.ui.modal.ask-question-modal {
+  .description {
+    font-weight: 500;
+  }
+  .spacer {
+    display: inline-block;
+    margin: 0 auto;
+  }
+  .ui.button {
+    padding: 0.625rem 0.8rem 0.5rem 0.75rem;
+  }
+  .header {
+    padding: 1rem 1.5rem;
+  }
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+  }
+}
+
+// question tabs
+.question-tabs {
+  .ui.secondary.menu {
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+  .ui.segment {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+  .ui.radio.checkbox {
+    padding-bottom: 0.5rem;
+  }
+  .columns {
+    @media only screen and (min-width: 997px) {
+      column-count: 3;
+    }
+    @media only screen and (max-width: 996px) {
+      column-count: 2;
+    }
+  }
+}
+
 .question-hints {
   width: 200px;
   h5 {
