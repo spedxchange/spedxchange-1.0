@@ -10,6 +10,7 @@ const QuestionType = ({ categories }) => {
     label: 'text',
     data: categories
   };
+  // console.log('QuestionType: options: ', options);
   return (
     <div>
       <div className='text-center mb-5'>

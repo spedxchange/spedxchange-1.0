@@ -7,7 +7,8 @@ import { closeModal } from './ModalActions';
 const actions = { closeModal };
 
 class AskQuestionModal extends Component {
-  handleShowCheckbox = () => {
+  handleShowCheckbox = e => {
+    console.log('handleShowCheckbox: e: ', e);
     let expireDate = new Date();
     expireDate.setDate(expireDate.getDate() + 30);
     if (localStorage.hideAskModal) {
@@ -34,7 +35,7 @@ class AskQuestionModal extends Component {
         </Modal.Content>
         <Modal.Actions>
           <Form>
-            <Form.Field control={Checkbox} label={{ children: `Don't show this again.` }} onClick={this.handleShowCheckbox} />
+            <Form.Field control={Checkbox} label={{ children: `Don't show this again.` }} onClick={e => this.handleShowCheckbox(e)} />
           </Form>
           <Button color='green' size='medium' onClick={closeModal}>
             <Icon name='checkmark' />

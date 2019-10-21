@@ -18,16 +18,17 @@ options = {
 */
 
 const RadioGroupInput = ({ input, options }) => {
+  console.log('RadioGroupInput: options: ', options);
   return (
     <>
       {options.data &&
         options.data.map(option => (
-          <Form.Field key={option.data[option.key]}>
+          <Form.Field key={option[options.key]}>
             <Radio
               {...input}
-              label={option.data[option.label]}
-              checked={input.name === option.data[option.key]}
-              value={option.data[option.key]}
+              label={option[options.label]}
+              checked={input.name === option[options.key]}
+              value={option[options.key]}
               onChange={(e, data) => input.onChange(data.value)}
             />
           </Form.Field>

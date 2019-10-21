@@ -14,7 +14,7 @@ class QuestionCategoryPage extends Component {
       <div className='question-categories flex-wrap-content'>
         {categories &&
           categories.map(category => (
-            <div className='column-3'>
+            <div key={category._id} className='column-3'>
               <h5>{category.text}</h5>
               <p>{category.description}</p>
             </div>

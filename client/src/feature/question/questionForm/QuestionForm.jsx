@@ -5,10 +5,13 @@ import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan 
 import { Form, Button } from 'semantic-ui-react';
 import { createQuestion, updateQuestion } from '../questionActions';
 import { handleEditorUpdate } from './actions/questionFormActions';
+import { handleTabChange, handleSelectCategory, handleSelectTags } from './actions/questionFormActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
 import { openModal } from '../../../app/layout/modal/ModalActions';
+import PageLoader from '../../../app/layout/PageLoader';
 import TextInput from '../../../app/common/form/TextInput';
 import EditorInput from '../../../app/common/form/EditorInput';
+import QuestionType from './QuestionType';
 import QuestionHints from './QuestionHints';
 
 const mapState = (state, ownProps) => {
@@ -19,8 +22,6 @@ const mapState = (state, ownProps) => {
   if (localStorage.hideAskModal) {
     const expires = new Date(localStorage.hideAskModal);
     const now = new Date();
-    console.log('expires: ', expires);
-    console.log('now: ', now);
     if (now < expires) {
       hideAskModal = true;
     } else {
@@ -33,15 +34,21 @@ const mapState = (state, ownProps) => {
   }
 
   return {
-    hideAskModal: hideAskModal,
+    loading: state.async.loading,
     initialValues: question,
-    editorValue: state.questionForm.editorValue
+    hideAskModal: hideAskModal,
+    activeQuestionTab: state.questionForm.activeQuestionTab,
+    editorValue: state.questionForm.editorValue,
+    categories: state.category.questionCategories
   };
 };
 
 const actions = {
   loadQuestionCategories,
   handleEditorUpdate,
+  handleTabChange,
+  handleSelectCategory,
+  handleSelectTags,
   createQuestion,
   updateQuestion,
   openModal
@@ -68,7 +75,7 @@ class QuestionForm extends Component {
 
   onSubmit = values => {
     console.log('values: ', values);
-    console.log('editorValue: ', this.props.editorValue);
+    //console.log('editorValue: ', this.props.editorValue);
     /*
     if (this.props.initialValues.id) {
       this.props.updateQuestion(values);
@@ -84,20 +91,41 @@ class QuestionForm extends Component {
   };
 
   render() {
-    const { history, initialValues, invalid, submitting, pristine } = this.props;
+    const { loading, activeQuestionTab, categories, handleTabChange, handleSelectTags, handleSelectCategory, history, initialValues, invalid, submitting, pristine } = this.props;
+    if (loading) return <PageLoader />;
     return (
       <div className='flex-wrap sm'>
-        <div className='grow question-form'>
+        <div className={`grow question-form tab-${activeQuestionTab}`}>
           <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
-            <Field name='title' type='text' component={TextInput} placeholder='Question Title' />
-            <Field name='content' component={EditorInput} />
-            <Field name='test' type='text' component={TextInput} placeholder='Tags' />
-            <Button type='button' positive disabled={invalid || submitting || pristine}>
-              Previw
-            </Button>
+            {activeQuestionTab === 0 && (
+              <div>
+                <h1>Identity Question</h1>
+                <Button positive onClick={() => handleTabChange(1)}>
+                  Next
+                </Button>
+              </div>
+            )}
+            {activeQuestionTab === 1 && (
+              <div>
+                <QuestionType categories={categories} handleSelectTags={handleSelectTags} handleSelectCategory={handleSelectCategory} />
+                <Button positive onClick={() => handleTabChange(2)}>
+                  Next
+                </Button>
+              </div>
+            )}
+            {activeQuestionTab === 2 && (
+              <div>
+                <Field name='title' type='text' component={TextInput} placeholder='Question Title' />
+                <Field name='content' component={EditorInput} />
+                <Button type='button' positive disabled={invalid || submitting || pristine}>
+                  Review Question
+                </Button>
+              </div>
+            )}
+            {activeQuestionTab === 3 && <div>Review</div>}
           </Form>
         </div>
-        <QuestionHints />
+        {activeQuestionTab === 2 && <QuestionHints />}
       </div>
     );
   }
