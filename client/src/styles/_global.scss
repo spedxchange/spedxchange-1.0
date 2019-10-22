@@ -60,6 +60,16 @@ h2:first-line {
   line-height: 1em;
 }
 
+// hr
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px dotted var(--border-color);
+  margin: 0.5rem 0;
+  padding: 0;
+}
+
 // text align
 .center {
   text-align: center;

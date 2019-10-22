@@ -33,7 +33,7 @@ class EditorInput extends Component {
           onEditorChange={this.handleEditorChange}
           onBlur={this.blur}
           init={{
-            height: 200,
+            height: 250,
             menubar: false,
             elementpath: false,
             plugins: ['lists link searchreplace fullscreen paste'],

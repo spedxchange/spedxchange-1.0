@@ -75,9 +75,6 @@
     padding-right: 1.5rem;
     border-right: 1px dotted var(--border-color);
   }
-  .editor-input-wrap {
-    margin-bottom: 1.5rem;
-  }
   .columns {
     @media only screen and (min-width: 997px) {
       column-count: 3;
@@ -85,6 +82,12 @@
     @media only screen and (max-width: 996px) {
       column-count: 2;
     }
+  }
+  .ui.labeled.icon.button,
+  .ui.labeled.icon.buttons {
+    position: relative;
+    padding-left: 3em !important;
+    padding-right: 1em !important;
   }
   @media only screen and (max-width: 767px) {
     margin-top: 1.5rem;

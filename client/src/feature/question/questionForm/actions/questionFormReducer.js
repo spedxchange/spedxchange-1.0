@@ -3,7 +3,7 @@ import { UPDATE_TAB, UPDATE_CATEGORY, UPDATE_TAGS, UPDATE_TAG_NAMES, UPDATE_EDIT
 
 const initialState = {
   tags: [],
-  activeQuestionTab: 0,
+  activeQuestionTab: 1,
   categoryId: null,
   editorValue: '',
   tagNames: []

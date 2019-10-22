@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Icon } from 'semantic-ui-react';
 import { createQuestion, updateQuestion } from '../questionActions';
 import { handleEditorUpdate } from './actions/questionFormActions';
 import { handleTabChange, handleSelectCategory, handleUpdateTagNames } from './actions/questionFormActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
 import { openModal } from '../../../app/layout/modal/ModalActions';
+import { createSlug } from '../../../app/common/util/createSlug';
+import { createUid } from '../../../app/common/util/createUid';
 import PageLoader from '../../../app/layout/PageLoader';
 import TextInput from '../../../app/common/form/TextInput';
 import EditorInput from '../../../app/common/form/EditorInput';
@@ -18,6 +20,8 @@ import QuestionHints from './QuestionHints';
 const mapState = (state, ownProps) => {
   // localStorage.removeItem('hideAskModal');
   const questionId = ownProps.match.params.id;
+  const questionUid = ownProps.match.params.id;
+  const questionSlug = ownProps.match.params.id;
   let question = {};
   let hideAskModal = false;
   if (localStorage.hideAskModal) {
@@ -31,7 +35,11 @@ const mapState = (state, ownProps) => {
   }
 
   if (questionId && state.questions.length > 0) {
-    question = state.questions.filter(question => question.id === questionId)[0];
+    question = state.questions.filter(question => question._id === questionId)[0];
+  }
+
+  if (questionUid && questionSlug && state.questions.length > 0) {
+    question = state.questions.filter(question => question.uid === questionUid && question.slug === questionSlug)[0];
   }
 
   return {
@@ -77,19 +85,19 @@ class QuestionForm extends Component {
 
   onSubmit = values => {
     console.log('values: ', values);
-    //console.log('editorValue: ', this.props.editorValue);
-    /*
-    if (this.props.initialValues.id) {
+    values.uid = values.uid ? values.uid : createUid();
+    values.slug = values.slug ? values.slug : createSlug(values.title);
+
+    if (this.props.initialValues._id) {
       this.props.updateQuestion(values);
-      this.props.history.push(`/ask/${this.props.initialValues.id}`);
+      this.props.history.push(`/ask/${this.props.initialValues.uid}/${this.props.initialValues.slug}`);
     } else {
       const newQuestion = {
         ...values
       };
       this.props.createQuestion(newQuestion);
-      this.props.history.push(`/ask/${newQuestion.id}`);
+      this.props.history.push(`/ask/${this.props.initialValues.uid}/${this.props.initialValues.slug}`);
     }
-    */
   };
 
   render() {
@@ -112,14 +120,6 @@ class QuestionForm extends Component {
       <div className='flex-wrap sm'>
         <div className={`grow question-form tab-${activeQuestionTab}`}>
           <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
-            {activeQuestionTab === 0 && (
-              <div>
-                <h1>Identity Question</h1>
-                <Button type='button' positive onClick={() => handleTabChange(1)}>
-                  Next
-                </Button>
-              </div>
-            )}
             {activeQuestionTab === 1 && (
               <div>
                 <div className='text-center mb-5'>
@@ -128,7 +128,7 @@ class QuestionForm extends Component {
                 </div>
                 <div>
                   <h5>
-                    <strong>1. </strong>Select a SPED discipline that is most relevant to your question.
+                    <strong>1. </strong>Select a SPED category related to your question.
                   </h5>
                   <div className='columns'>
                     <Field
@@ -142,27 +142,49 @@ class QuestionForm extends Component {
                     />
                   </div>
                 </div>
-                <div className='mt-3'>
+                <div className='my-3'>
                   <h5>
                     <strong>2. </strong>Add tags to help the right people find and answer your question.
                   </h5>
-                  <Field name='tags' component={TagInput} tags={tagNames} updateTags={handleUpdateTagNames} placeholder='eg test' />
+                  <Field name='tags' component={TagInput} tags={tagNames} updateTags={handleUpdateTagNames} placeholder='e.g. (policy behavior kindergarten)' />
                 </div>
-                <Button type='button' positive onClick={() => handleTabChange(2)}>
-                  Next
+                <Button positive type='button' className='mt-3' onClick={() => handleTabChange(2)}>
+                  Next&nbsp;&nbsp;
+                  <Icon fitted name='right arrow' />
                 </Button>
               </div>
             )}
             {activeQuestionTab === 2 && (
               <div>
+                <div className='mb-1'>
+                  <strong>Question:</strong>
+                </div>
                 <Field name='title' type='text' component={TextInput} placeholder='Question Title' />
+                <div className='mt-3 mb-n2'>
+                  <strong>Description:</strong>
+                </div>
                 <Field name='content' component={EditorInput} />
+                <hr className='my-3' />
+                <div className='flex-wrap between'>
+                  <Button type='button' onClick={() => handleTabChange(1)}>
+                    <Icon fitted name='left arrow' />
+                    &nbsp;&nbsp;Question Type
+                  </Button>
+                  <Button type='button' positive onClick={() => handleTabChange(3)}>
+                    Review Question&nbsp;&nbsp;
+                    <Icon fitted name='right arrow' />
+                  </Button>
+                </div>
+              </div>
+            )}
+            {activeQuestionTab === 3 && (
+              <div>
+                Review
                 <Button type='submit' positive>
-                  Review Question
+                  Submit Question
                 </Button>
               </div>
             )}
-            {activeQuestionTab === 3 && <div>Review</div>}
           </Form>
         </div>
         {activeQuestionTab === 2 && <QuestionHints />}
