@@ -11,6 +11,7 @@ import TestReducer from '../../feature/testarea/TestReducer';
 import NewsReducer from '../../feature/news/newsReducer';
 import CategoryReducer from '../common/actions/category/categoryReducer';
 import QuestionFormReducer from '../../feature/question/questionForm/actions/questionFormReducer';
+import TagInput from '../common/form/actions/tagInputReducer';
 
 const rootReducer = combineReducers({
   toastr: TaostrReducer,
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   questions: QuestionReducer,
   news: NewsReducer,
   category: CategoryReducer,
-  questionForm: QuestionFormReducer
+  questionForm: QuestionFormReducer,
+  tagInput: TagInput
 });
 
 export default rootReducer;

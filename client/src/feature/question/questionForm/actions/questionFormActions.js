@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../../../app/common/async/asyncActions';
-import { UPDATE_TAB, UPDATE_CATEGORY, UPDATE_TAGS, UPDATE_EDITOR } from './questionFormConstants';
+import { UPDATE_TAB, UPDATE_CATEGORY, UPDATE_TAGS, UPDATE_TAG_NAMES, UPDATE_EDITOR } from './questionFormConstants';
 
 export const handleTabChange = tab => {
   return dispatch => {
@@ -17,6 +17,13 @@ export const handleSelectCategory = id => {
       type: UPDATE_CATEGORY,
       payload: id
     });
+  };
+};
+
+export const handleUpdateTagNames = tagNames => {
+  console.log('handleSelectTags: tagNames: ', tagNames);
+  return dispatch => {
+    dispatch({ type: UPDATE_TAG_NAMES, payload: tagNames });
   };
 };
 

@@ -1,4 +1,5 @@
 export const UPDATE_TAB = 'UPDATE_TAB';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const UPDATE_TAGS = 'UPDATE_TAGS';
+export const UPDATE_TAG_NAMES = 'UPDATE_TAG_NAMES';
 export const UPDATE_EDITOR = 'UPDATE_EDITOR';

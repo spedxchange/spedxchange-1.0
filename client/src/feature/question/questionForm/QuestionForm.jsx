@@ -5,7 +5,7 @@ import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan 
 import { Form, Button } from 'semantic-ui-react';
 import { createQuestion, updateQuestion } from '../questionActions';
 import { handleEditorUpdate } from './actions/questionFormActions';
-import { handleTabChange, handleSelectCategory, handleSelectTags } from './actions/questionFormActions';
+import { handleTabChange, handleSelectCategory, handleUpdateTagNames } from './actions/questionFormActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
 import { openModal } from '../../../app/layout/modal/ModalActions';
 import PageLoader from '../../../app/layout/PageLoader';
@@ -40,6 +40,7 @@ const mapState = (state, ownProps) => {
     hideAskModal: hideAskModal,
     activeQuestionTab: state.questionForm.activeQuestionTab,
     editorValue: state.questionForm.editorValue,
+    tagNames: state.questionForm.tagsNames,
     categories: state.category.questionCategories
   };
 };
@@ -49,7 +50,7 @@ const actions = {
   handleEditorUpdate,
   handleTabChange,
   handleSelectCategory,
-  handleSelectTags,
+  handleUpdateTagNames,
   createQuestion,
   updateQuestion,
   openModal
@@ -92,7 +93,20 @@ class QuestionForm extends Component {
   };
 
   render() {
-    const { loading, activeQuestionTab, categories, handleTabChange, handleSelectTags, handleSelectCategory, history, initialValues, invalid, submitting, pristine } = this.props;
+    const {
+      loading,
+      activeQuestionTab,
+      categories,
+      handleTabChange,
+      tagNames,
+      handleUpdateTagNames,
+      handleSelectCategory,
+      history,
+      initialValues,
+      invalid,
+      submitting,
+      pristine
+    } = this.props;
     if (loading) return <PageLoader />;
     return (
       <div className='flex-wrap sm'>
@@ -101,7 +115,7 @@ class QuestionForm extends Component {
             {activeQuestionTab === 0 && (
               <div>
                 <h1>Identity Question</h1>
-                <Button positive onClick={() => handleTabChange(1)}>
+                <Button type='button' positive onClick={() => handleTabChange(1)}>
                   Next
                 </Button>
               </div>
@@ -132,9 +146,9 @@ class QuestionForm extends Component {
                   <h5>
                     <strong>2. </strong>Add tags to help the right people find and answer your question.
                   </h5>
-                  <Field name='tags' component={TagInput} placeholder='eg test' />
+                  <Field name='tags' component={TagInput} tags={tagNames} updateTags={handleUpdateTagNames} placeholder='eg test' />
                 </div>
-                <Button positive onClick={() => handleTabChange(2)}>
+                <Button type='button' positive onClick={() => handleTabChange(2)}>
                   Next
                 </Button>
               </div>

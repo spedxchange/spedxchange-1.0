@@ -1,59 +1,75 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Form } from 'semantic-ui-react';
 import { createSlug } from '../util/createSlug';
+import { handleUpdateTagNames } from './actions/tagInputActions';
 
-class TagInput extends Component {
-  constructor(props) {
-    super(props);
-    console.log('TagInput: props: ', this.props);
-    this.tagInput = React.createRef();
-    this.state = { currentTags: this.props.tags || [] };
-    this.inputKeyDown = this.inputKeyDown.bind(this);
-    this.removeTag = this.removeTag.bind(this);
+const mapState = state => ({
+  tagNames: state.tagInput.tagNames
+});
+
+const actions = {
+  handleUpdateTagNames
+};
+
+export class TagInput extends Component {
+  componentDidMount() {
+    console.log('TagInput: this.props: ', this.props);
   }
 
+  removeTag = i => {
+    const newTags = [...this.props.tagNames];
+    newTags.splice(i, 1);
+    this.props.handleUpdateTagNames(newTags);
+    this.valueRef.value = newTags;
+    this.blur();
+    this.inputRef.focus();
+  };
+
   inputKeyDown = e => {
+    console.log('inputKeyDown: start');
     const val = createSlug(e.target.value);
-    // console.log('inputKeyDown: props: ', this.props);
-    // console.log('inputKeyDown: state: ', this.state);
-    // console.log('inputKeyDown: e.target: ', e.target.value);
     if (e.key === 'Enter' && val) {
-      if (this.state.currentTags && this.state.currentTags.find(tag => tag === val)) {
-        this.tagInput.focus();
+      console.log('val: ', val);
+      if (this.props.tagNames && this.props.tagNames.find(tag => tag === val)) {
+        this.inputRef.focus();
         e.preventDefault();
         return;
       }
-      const newTags = [...this.state.currentTags, val];
-      this.setState({ currentTags: newTags });
-      this.props.handleSelectTags(this.state.currentTags);
-      this.tagInput.value = null;
-      this.tagInput.focus();
+      console.log('Enter Key: ');
+      const newTags = [...this.props.tagNames, val];
+      console.log('inputKeyDown: newTags: ', newTags);
+      this.props.handleUpdateTagNames(newTags);
+      this.inputRef.value = null;
+      this.valueRef.value = newTags;
+      this.blur();
+      this.inputRef.focus();
       e.preventDefault();
     } else if (e.key === 'Backspace' && !val) {
-      this.removeTag(this.state.currentTags.length - 1);
-      this.props.handleSelectTags(this.state.currentTags);
-      this.tagInput.focus();
+      this.removeTag(this.props.tagNames.length - 1);
+      this.inputRef.focus();
       e.preventDefault();
     }
   };
 
-  removeTag = i => {
-    const newTags = [...this.state.currentTags];
-    newTags.splice(i, 1);
-    this.setState({ currentTags: newTags });
-    this.props.handleSelectTags(this.state.currentTags);
+  blur = () => {
+    this.valueRef.focus();
+    console.log('this.valueRef.value: ', this.valueRef.value);
+    this.valueRef.blur();
   };
 
   render() {
-    const { input, placeholder } = this.props;
-    const { currentTags } = this.state;
+    const { input, placeholder, tagNames } = this.props;
     return (
-      <Form.Field>
+      <>
+        <Form.Field>
+          <input {...input} className='hidden-text-input' type='text' value={this.props.tagNames} ref={ref => (this.valueRef = ref)} />
+        </Form.Field>
         <div className='input-tag'>
           <ul className='input-tag__tags'>
-            {currentTags &&
-              currentTags.map((tag, i) => (
-                <li key={tag}>
+            {tagNames &&
+              tagNames.map((tag, i) => (
+                <li key={i}>
                   {tag || ''}
                   <button
                     type='button'
@@ -66,21 +82,16 @@ class TagInput extends Component {
                 </li>
               ))}
             <li className='input-tag__tags__input'>
-              <input
-                type='text'
-                placeholder={placeholder}
-                onKeyDown={e => this.inputKeyDown(e)}
-                ref={c => {
-                  this.tagInput = c;
-                }}
-              />
+              <input type='text' placeholder={placeholder} onKeyDown={this.inputKeyDown} ref={ref => (this.inputRef = ref)} />
             </li>
           </ul>
         </div>
-        <input {...input} type='hidden' value={this.state.tags} />
-      </Form.Field>
+      </>
     );
   }
 }
 
-export default TagInput;
+export default connect(
+  mapState,
+  actions
+)(TagInput);

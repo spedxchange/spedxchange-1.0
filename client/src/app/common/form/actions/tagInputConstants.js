@@ -1,0 +1,1 @@
+export const UPDATE_TAG_NAMES = 'UPDATE_TAG_NAMES';
