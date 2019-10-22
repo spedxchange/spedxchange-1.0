@@ -29,7 +29,7 @@ const QuestionType = ({ categories }) => {
         <h5>
           <strong>2. </strong>Add tags to help the right people find and answer your question.
         </h5>
-        <Field name='tags' component={TagInput} />
+        <Field name='tags' component={TagInput} placeholder='eg test' />
       </div>
     </div>
   );

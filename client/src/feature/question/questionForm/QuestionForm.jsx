@@ -11,7 +11,8 @@ import { openModal } from '../../../app/layout/modal/ModalActions';
 import PageLoader from '../../../app/layout/PageLoader';
 import TextInput from '../../../app/common/form/TextInput';
 import EditorInput from '../../../app/common/form/EditorInput';
-import QuestionType from './QuestionType';
+import TagInput from '../../../app/common/form/TagInput';
+import RadioGroupInput from '../../../app/common/form/RadioGroupInput';
 import QuestionHints from './QuestionHints';
 
 const mapState = (state, ownProps) => {
@@ -74,6 +75,7 @@ class QuestionForm extends Component {
   }
 
   onSubmit = values => {
+    e.preventDefault();
     console.log('values: ', values);
     //console.log('editorValue: ', this.props.editorValue);
     /*
@@ -107,17 +109,39 @@ class QuestionForm extends Component {
             )}
             {activeQuestionTab === 1 && (
               <div>
-                <QuestionType categories={categories} handleSelectTags={handleSelectTags} handleSelectCategory={handleSelectCategory} />
-                <Button positive onClick={() => handleTabChange(2)}>
-                  Next
-                </Button>
+                <div className='text-center mb-5'>
+                  <h2 className='m-0'>What type of question do you have?</h2>
+                  <p className='mt-2'>We’ll help you find the best way to get your answer.</p>
+                </div>
+                <div>
+                  <h5>
+                    <strong>1. </strong>Select a SPED discipline that is most relevant to your question.
+                  </h5>
+                  <div className='columns'>
+                    <Field
+                      name='category'
+                      options={{
+                        key: '_id',
+                        label: 'text',
+                        data: categories
+                      }}
+                      component={RadioGroupInput}
+                    />
+                  </div>
+                </div>
+                <div className='mt-3'>
+                  <h5>
+                    <strong>2. </strong>Add tags to help the right people find and answer your question.
+                  </h5>
+                  <Field name='tags' component={TagInput} placeholder='eg test' />
+                </div>
               </div>
             )}
             {activeQuestionTab === 2 && (
               <div>
                 <Field name='title' type='text' component={TextInput} placeholder='Question Title' />
                 <Field name='content' component={EditorInput} />
-                <Button type='button' positive disabled={invalid || submitting || pristine}>
+                <Button type='submit' positive>
                   Review Question
                 </Button>
               </div>
