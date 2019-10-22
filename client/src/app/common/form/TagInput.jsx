@@ -5,52 +5,60 @@ import { createSlug } from '../util/createSlug';
 class TagInput extends Component {
   constructor(props) {
     super(props);
+    console.log('TagInput: props: ', this.props);
     this.tagInput = React.createRef();
-    this.state = { tags: [] };
-    console.log('TagInput: props: ', props);
+    this.state = { currentTags: this.props.tags || [] };
+    this.inputKeyDown = this.inputKeyDown.bind(this);
+    this.removeTag = this.removeTag.bind(this);
   }
 
   inputKeyDown = e => {
     const val = createSlug(e.target.value);
     // console.log('inputKeyDown: props: ', this.props);
     // console.log('inputKeyDown: state: ', this.state);
-    console.log('inputKeyDown: e.target: ', e.target.value);
+    // console.log('inputKeyDown: e.target: ', e.target.value);
     if (e.key === 'Enter' && val) {
-      if (this.state.tags && this.state.tags.find(tag => tag === val)) {
+      if (this.state.currentTags && this.state.currentTags.find(tag => tag === val)) {
+        this.tagInput.focus();
+        e.preventDefault();
         return;
       }
-      this.setState({ tags: [...this.state.tags, val] });
-      // console.log('inputKeyDown: setTags: ', this.state.tags);
+      const newTags = [...this.state.currentTags, val];
+      this.setState({ currentTags: newTags });
+      this.props.handleSelectTags(this.state.currentTags);
       this.tagInput.value = null;
+      this.tagInput.focus();
       e.preventDefault();
     } else if (e.key === 'Backspace' && !val) {
-      this.props.removeTag(this.state.tags.length - 1);
-      this.tagInput.value = null;
+      this.removeTag(this.state.currentTags.length - 1);
+      this.props.handleSelectTags(this.state.currentTags);
+      this.tagInput.focus();
       e.preventDefault();
     }
   };
 
   removeTag = i => {
-    const newTags = [...this.state.tags];
+    const newTags = [...this.state.currentTags];
     newTags.splice(i, 1);
-    this.setState({ tags: newTags });
+    this.setState({ currentTags: newTags });
+    this.props.handleSelectTags(this.state.currentTags);
   };
 
   render() {
-    const { input, removeTag, placeholder } = this.props;
-    const { tags } = this.state;
+    const { input, placeholder } = this.props;
+    const { currentTags } = this.state;
     return (
       <Form.Field>
         <div className='input-tag'>
           <ul className='input-tag__tags'>
-            {tags &&
-              tags.map((tag, i) => (
+            {currentTags &&
+              currentTags.map((tag, i) => (
                 <li key={tag}>
                   {tag || ''}
                   <button
                     type='button'
                     onClick={() => {
-                      removeTag(i);
+                      this.removeTag(i);
                     }}
                   >
                     +

@@ -2,7 +2,7 @@ import { createReducer } from '../../../../app/common/util/ReducerUtil';
 import { UPDATE_TAB, UPDATE_CATEGORY, UPDATE_TAGS, UPDATE_EDITOR } from './questionFormConstants';
 
 const initialState = {
-  tags: null,
+  tags: [],
   activeQuestionTab: 0,
   categoryId: null,
   editorValue: ''
