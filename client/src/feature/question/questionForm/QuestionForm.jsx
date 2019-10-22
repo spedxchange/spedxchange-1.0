@@ -75,7 +75,6 @@ class QuestionForm extends Component {
   }
 
   onSubmit = values => {
-    e.preventDefault();
     console.log('values: ', values);
     //console.log('editorValue: ', this.props.editorValue);
     /*
@@ -135,6 +134,9 @@ class QuestionForm extends Component {
                   </h5>
                   <Field name='tags' component={TagInput} placeholder='eg test' />
                 </div>
+                <Button positive onClick={() => handleTabChange(2)}>
+                  Next
+                </Button>
               </div>
             )}
             {activeQuestionTab === 2 && (
