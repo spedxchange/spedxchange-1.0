@@ -92,8 +92,7 @@ class QuestionForm extends Component {
 
     formValues.uid = formValues.uid ? formValues.uid : createUid();
     formValues.slug = formValues.slug ? formValues.slug : createSlug(formValues.title);
-    formValues.tags = this.props.tagNames;
-    handleTabChange(1);
+    formValues.tags = values.tags ? values.tags.split(',') : [];
     console.log('did handleTabChange');
 
     if (params.uid && params.slug) {

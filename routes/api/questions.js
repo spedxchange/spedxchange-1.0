@@ -30,8 +30,6 @@ router.get('/', async (req, res) => {
         path: 'tags',
         select: 'text'
       });
-    console.log('count: ', questionCount);
-    console.log('questions: ', questions);
     res.json({
       questionCount: questionCount,
       questions: questions
@@ -139,12 +137,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, content, tags, category } = req.body;
-    const uid = RouteUtil.createUid();
-    const slug = RouteUtil.createSlug(req.body.title);
-
-    console.log('uid: ', uid);
-    console.log('slug: ', slug);
+    const { uid, slug, title, content, tags, category } = req.body;
 
     try {
       const newQuestion = new Question({
@@ -159,6 +152,7 @@ router.post(
       const question = await newQuestion.save();
 
       // Handle tags
+      console.log('tags: ', tags);
       if (tags && tags.length > 0) {
         let tag;
         for (tag of tags) {

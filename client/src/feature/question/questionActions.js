@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { HEADER_JSON } from '../../app/api/apiConstants';
 import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION } from './questionConstants';
+import { QUESTION_SUBMITED } from './questionForm/actions/questionFormConstants';
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../app/common/async/asyncActions';
 import { toastr } from 'react-redux-toastr';
 
@@ -17,6 +18,9 @@ export const createQuestion = question => {
         payload: {
           question
         }
+      });
+      dispatch({
+        type: QUESTION_SUBMITED
       });
       dispatch(asyncActionFinish());
       toastr.success('Success!', 'Question has been created');
@@ -40,6 +44,9 @@ export const updateQuestion = question => {
         payload: {
           question
         }
+      });
+      dispatch({
+        type: QUESTION_SUBMITED
       });
       dispatch(asyncActionFinish());
       toastr.success('Success!', 'Question has been updated');
