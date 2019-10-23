@@ -44,6 +44,7 @@ router.get('/', async (req, res) => {
 // @desc     Get Question by Id
 // @access   Public
 router.get('/:uid/:slug', async (req, res) => {
+  console.log('get: /:uid/:slug');
   try {
     const question = await Question.findOne({
       uid: req.params.uid,
@@ -83,6 +84,7 @@ router.get('/:uid/:slug', async (req, res) => {
 // @desc     Get Question by Id
 // @access   Public
 router.get('/:question_id', async (req, res) => {
+  console.log('get: /:question_id');
   try {
     const question = await Question.findById(req.params.question_id)
       .populate({

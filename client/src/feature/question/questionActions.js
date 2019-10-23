@@ -88,6 +88,7 @@ export const loadQuestions = () => {
 };
 
 export const loadQuestionBySlug = (uid, slug) => {
+  console.log('loadQuestionBySlug: ', uid, slug);
   return async dispatch => {
     try {
       dispatch(asyncActionStart());

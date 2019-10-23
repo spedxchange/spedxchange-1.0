@@ -23,7 +23,7 @@ const updateQuestion = (state, payload) => {
 const deleteQuestion = (state, payload) => {
   return {
     ...state,
-    questions: payload
+    currentQuestion: payload
   };
 };
 
@@ -31,11 +31,12 @@ const fetchQuestions = (state, payload) => {
   return {
     ...state,
     questionCount: payload.questionCount,
-    currentQuestion: payload.questions
+    questions: payload.questions
   };
 };
 
 const fetchQuestion = (state, payload) => {
+  console.log('fetchQuestion: ');
   return {
     ...state,
     currentQuestion: payload

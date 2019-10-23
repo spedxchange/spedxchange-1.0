@@ -92,6 +92,15 @@ hr {
   position: absolute;
 }
 
+// truncate content
+.truncate-content {
+  position: relative;
+  max-height: 3rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* pagination */
 .ui.pagination.menu.questions {
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif !important;
