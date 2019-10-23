@@ -25,7 +25,7 @@ class QuestionListItem extends Component {
           </div>
           <div className='flex-item grow info'>
             <h3>
-              <a href='/'>{question.title}</a>
+              <a href={`/questions/${question.uid}/${question.slug}`}>{question.title}</a>
             </h3>
             <p>{question.content}</p>
             <div className='info'>

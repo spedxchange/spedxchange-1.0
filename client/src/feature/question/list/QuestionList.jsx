@@ -13,12 +13,13 @@ class QuestionList extends Component {
     showPreviousAndNextNav: true,
     totalPages: 20
   };
+
   handlePaginationChange = (e, { activePage }) => {
     this.setState({ activePage: activePage });
   };
 
   render() {
-    const { history, questions, deleteQuestion } = this.props;
+    const { history, questions, questionCount } = this.props;
     const { activePage, boundaryRange, siblingRange, showEllipsis, showFirstAndLastNav, showPreviousAndNextNav, totalPages } = this.state;
     return (
       <Fragment>
@@ -30,7 +31,7 @@ class QuestionList extends Component {
             </Button>
           </div>
           <div className='flex-wrap bottom'>
-            <div>count</div>
+            <div>{questionCount} questions</div>
             <div>
               <Button.Group basic size='mini'>
                 <Button>Newest</Button>
@@ -40,7 +41,7 @@ class QuestionList extends Component {
             </div>
           </div>
         </div>
-        {questions && questions.map(question => <QuestionListItem key={question._id} question={question} deleteQuestion={deleteQuestion} />)}
+        {questions && questions.map(question => <QuestionListItem key={question._id} question={question} />)}
         <Pagination
           className='questions'
           activePage={activePage}

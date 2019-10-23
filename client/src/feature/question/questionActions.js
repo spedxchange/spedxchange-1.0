@@ -11,7 +11,7 @@ export const createQuestion = question => {
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
-      await axios.put(`/api/questions`, body, config);
+      await axios.post(`/api/questions`, body, config);
       dispatch({
         type: CREATE_QUESTION,
         payload: {
@@ -64,6 +64,7 @@ export const loadQuestions = () => {
     try {
       dispatch(asyncActionStart());
       const questions = await axios.get('/api/questions');
+      console.log(questions.data);
       dispatch({ type: FETCH_QUESTIONS, payload: questions.data });
       dispatch(asyncActionFinish());
     } catch (error) {
@@ -78,7 +79,7 @@ export const loadQuestionBySlug = (uid, slug) => {
     try {
       dispatch(asyncActionStart());
       const question = await axios.get(`/api/questions/${uid}/${slug}`);
-      dispatch({ type: FETCH_QUESTION, payload: question });
+      dispatch({ type: FETCH_QUESTION, payload: question.data });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);
@@ -92,7 +93,7 @@ export const loadQuestionById = id => {
     try {
       dispatch(asyncActionStart());
       const question = await axios.get(`/api/questions/${id}`);
-      dispatch({ type: FETCH_QUESTION, payload: question });
+      dispatch({ type: FETCH_QUESTION, payload: question.data });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);

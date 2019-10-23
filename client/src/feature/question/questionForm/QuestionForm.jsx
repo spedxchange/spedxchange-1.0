@@ -7,6 +7,7 @@ import { createQuestion, updateQuestion } from '../questionActions';
 import { handleEditorUpdate } from './actions/questionFormActions';
 import { handleTabChange, handleSelectCategory, handleUpdateTagNames } from './actions/questionFormActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
+import { loadQuestionBySlug } from '../questionActions';
 import { openModal } from '../../../app/layout/modal/ModalActions';
 import { createSlug } from '../../../app/common/util/createSlug';
 import { createUid } from '../../../app/common/util/createUid';
@@ -17,11 +18,8 @@ import TagInput from '../../../app/common/form/TagInput';
 import RadioGroupInput from '../../../app/common/form/RadioGroupInput';
 import QuestionHints from './QuestionHints';
 import QuestionPreview from './QuestionPreview';
+
 const mapState = (state, ownProps) => {
-  const ID = ownProps.match.params.id;
-  const UID = ownProps.match.params.id;
-  const SLUG = ownProps.match.params.id;
-  let initialValues = {};
   let hideAskModal = false;
   if (localStorage.hideAskModal) {
     const expires = new Date(localStorage.hideAskModal);
@@ -33,23 +31,13 @@ const mapState = (state, ownProps) => {
     }
   }
 
-  if (ID && state.questions.length > 0) {
-    initialValues = state.questions.filter(question => question._id === ID)[0];
-    question.oldTags = question.tags;
-  }
-
-  if (UID && SLUG && state.questions.length > 0) {
-    question = state.questions.filter(question => question.uid === UID && question.slug === SLUG)[0];
-    question.oldTags = question.tags;
-  }
-
   return {
     loading: state.async.loading,
-    currentUser: state.auth.currentUser,
-    initialValues: initialValues,
     hideAskModal: hideAskModal,
+    questions: state.questions.questions,
+    currentQuestion: state.questions.currentQuestion,
+    currentUser: state.auth.currentUser,
     activeQuestionTab: state.questionForm.activeQuestionTab,
-    editorValue: state.questionForm.editorValue,
     tagNames: state.questionForm.tagsNames,
     categories: state.category.questionCategories,
     questionData: state.form.questionForm
@@ -57,6 +45,7 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
+  loadQuestionBySlug,
   loadQuestionCategories,
   handleEditorUpdate,
   handleTabChange,
@@ -80,43 +69,47 @@ const validate = combineValidators({
 
 class QuestionForm extends Component {
   componentDidMount() {
+    const {
+      match: { params }
+    } = this.props;
+
     if (!this.props.hideAskModal) {
       this.props.openModal('AskQuestionModal');
+    }
+    if (params.uid && params.slug) {
+      this.props.loadQuestionBySlug(params.uid, params.slug);
     }
 
     this.props.loadQuestionCategories();
   }
 
   onSubmit = values => {
-    values.uid = values.uid ? values.uid : createUid();
-    values.slug = values.slug ? values.slug : createSlug(values.title);
-    values.user = values.user ? values.user : this.props.currentUser._id;
+    const {
+      match: { params }
+    } = this.props;
 
-    if (this.props.initialValues._id) {
-      console.log('update: send: ', values);
-      this.props.updateQuestion(values);
-      handleTabChange(1);
-      this.props.history.push(`/ask/${values.uid}/${values.slug}`);
+    let formValues = values;
+
+    formValues.uid = formValues.uid ? formValues.uid : createUid();
+    formValues.slug = formValues.slug ? formValues.slug : createSlug(formValues.title);
+    formValues.tags = this.props.tagNames;
+    handleTabChange(1);
+    console.log('did handleTabChange');
+
+    if (params.uid && params.slug) {
+      console.log('update: send: ', formValues);
+      this.props.updateQuestion(formValues);
     } else {
-      const newQuestion = {
-        ...values
-      };
-      console.log('create: send: ', newQuestion);
-      this.props.createQuestion(newQuestion);
-      handleTabChange(1);
-      this.props.history.push(`/ask/${values.uid}/${values.slug}`);
+      console.log('create: send: ', formValues);
+      this.props.createQuestion(formValues);
     }
+    this.props.history.push(`/questions/${formValues.uid}/${formValues.slug}`);
   };
 
   createPreviewData = () => {
     let i = 1;
     const previewTags = [];
     this.props.tagNames.map(tag => previewTags.push({ text: tag, _id: i++ }));
-    console.log('question: ', {
-      ...this.props.questionData.values,
-      user: this.props.currentUser,
-      tags: previewTags
-    });
     return {
       ...this.props.questionData.values,
       user: this.props.currentUser,
@@ -204,7 +197,7 @@ class QuestionForm extends Component {
             {activeQuestionTab === 3 && (
               <div>
                 <div>
-                  <QuestionPreview question={this.props.questionData.values} user={this.props.currentUser} />
+                  {this.props.questionData && this.props.questionData.values && <QuestionPreview question={this.props.questionData.values} user={this.props.currentUser} />}
                 </div>
                 <Button type='submit' positive>
                   Submit Question

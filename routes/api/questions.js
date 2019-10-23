@@ -15,6 +15,7 @@ const Category = require('../../models/Category');
 // @access   Public
 router.get('/', async (req, res) => {
   try {
+    const questionCount = await Question.countDocuments();
     const questions = await Question.find()
       .sort({ updated: -1 })
       .populate({
@@ -29,7 +30,12 @@ router.get('/', async (req, res) => {
         path: 'tags',
         select: 'text'
       });
-    res.json(questions);
+    console.log('count: ', questionCount);
+    console.log('questions: ', questions);
+    res.json({
+      questionCount: questionCount,
+      questions: questions
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -41,7 +47,7 @@ router.get('/', async (req, res) => {
 // @access   Public
 router.get('/:uid/:slug', async (req, res) => {
   try {
-    const question = await Question.find({
+    const question = await Question.findOne({
       uid: req.params.uid,
       slug: req.params.slug
     })

@@ -1,38 +1,38 @@
-import React from 'react';
-import { Grid } from 'semantic-ui-react';
-import QuestionHeader from './QuestionHeader';
-import QuestionInfo from './QuestionInfo';
-import QuestionChat from './QuestionChat';
-import QuestionSidebar from './QuestionSidebar';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-const mapState = (state, ownProps) => {
-  const questionId = ownProps.match.params.id;
+import { loadQuestionBySlug, loadQuestionById } from '../questionActions';
 
-  let question = {};
+const mapState = state => ({
+  questions: state.questions.questions,
+  currentQuestion: state.questions.currentQuestion
+});
 
-  if (questionId && state.questions.length > 0) {
-    question = state.questions.filter(question => question.id === questionId)[0];
+const actions = {
+  loadQuestionBySlug,
+  loadQuestionById
+};
+
+export class QuestionDetail extends Component {
+  componentDidMount() {
+    const {
+      match: { params }
+    } = this.props;
+
+    if (params.uid && params.slug) {
+      this.props.loadQuestionBySlug(params.uid, params.slug);
+    }
+    if (params.id) {
+      this.props.loadQuestionById(params.id);
+    }
   }
 
-  return {
-    question
-  };
-};
+  render() {
+    return <div>question detail</div>;
+  }
+}
 
-const QuestionDetail = ({ question }) => {
-  return (
-    <Grid>
-      <Grid.Column width={10}>
-        <QuestionHeader question={question} />
-        <QuestionInfo question={question} />
-        <QuestionChat />
-      </Grid.Column>
-      <Grid.Column width={6}>
-        <QuestionSidebar attendees={question.attendees} />
-      </Grid.Column>
-    </Grid>
-  );
-};
-
-export default connect(mapState)(QuestionDetail);
+export default connect(
+  mapState,
+  actions
+)(QuestionDetail);

@@ -5,6 +5,7 @@ import PageLoader from '../../../app/layout/PageLoader';
 import QuestionList from '../list/QuestionList';
 
 const mapState = state => ({
+  questionCount: state.questions.questionCount,
   questions: state.questions.questions,
   loading: state.async.loading
 });
@@ -21,12 +22,13 @@ class QuestionDashboard extends Component {
   }
 
   render() {
-    const { questions, loading } = this.props;
+    const { questions, questionCount, loading } = this.props;
+    console.log(questions);
     if (loading) return <PageLoader />;
     return (
       <div className='questions-dashboard flex-wrap md'>
         <div className='grow'>
-          <QuestionList questions={questions} />
+          <QuestionList questions={questions} questionCount={questionCount} />
         </div>
       </div>
     );

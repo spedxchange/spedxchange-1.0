@@ -5,7 +5,6 @@ const initialState = {
   tags: [],
   activeQuestionTab: 1,
   categoryId: null,
-  editorValue: '',
   tagNames: []
 };
 
