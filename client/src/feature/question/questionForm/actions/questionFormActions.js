@@ -21,14 +21,14 @@ export const handleSelectCategory = id => {
 };
 
 export const handleUpdateTagNames = tagNames => {
-  console.log('handleSelectTags: tagNames: ', tagNames);
+  // console.log('handleSelectTags: tagNames: ', tagNames);
   return dispatch => {
     dispatch({ type: UPDATE_TAG_NAMES, payload: tagNames });
   };
 };
 
 export const handleSelectTags = tags => {
-  console.log('handleSelectTags: tags: ', tags);
+  // console.log('handleSelectTags: tags: ', tags);
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
@@ -41,19 +41,19 @@ export const handleSelectTags = tags => {
           _id: existingTag ? existingTag._id : 'new'
         });
       }
-      console.log('handleSelectTags: returnTags', returnTags);
+      // console.log('handleSelectTags: returnTags', returnTags);
       dispatch({ type: UPDATE_TAGS, payload: returnTags });
       dispatch(asyncActionFinish());
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       dispatch(asyncActionError());
     }
   };
 };
 
 export const handleEditorUpdate = (content, editor) => {
-  // console.log('content: ', content);
-  // console.log('editor: ', editor);
+  // // console.log('content: ', content);
+  // // console.log('editor: ', editor);
   return dispatch => {
     dispatch({
       type: UPDATE_EDITOR,

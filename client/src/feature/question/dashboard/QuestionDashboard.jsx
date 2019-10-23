@@ -5,7 +5,7 @@ import PageLoader from '../../../app/layout/PageLoader';
 import QuestionList from '../list/QuestionList';
 
 const mapState = state => ({
-  questions: state.questions,
+  questions: state.questions.questions,
   loading: state.async.loading
 });
 

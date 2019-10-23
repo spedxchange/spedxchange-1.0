@@ -44,7 +44,7 @@ export class QuestionTabs extends Component {
   }
 
   onSubmit = values => {
-    console.log(values);
+    // console.log(values);
   };
 
   render() {

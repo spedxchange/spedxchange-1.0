@@ -1,27 +1,52 @@
 import { createReducer } from '../../app/common/util/ReducerUtil';
-import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS } from './questionConstants';
+import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTIONS } from './questionConstants';
 
-const initialState = [];
+const initialState = {
+  questions: [],
+  currentQuestion: null
+};
 
 const createQuestion = (state, payload) => {
-  return [...state, payload.question];
+  console.log('reducer: createQuestion: (state, payload): ', state, payload);
+  return {
+    ...state,
+    currentQuestion: payload
+  };
 };
 
 const updateQuestion = (state, payload) => {
-  return [...state.filter(question => question.id !== payload.question.id), payload.question];
+  console.log('reducer: updateQuestion: (state, payload): ', state, payload);
+  return {
+    ...state,
+    currentQuestion: payload
+  };
 };
 
 const deleteQuestion = (state, payload) => {
-  return [...state.filter(question => question.id !== payload.questionId)];
+  return {
+    ...state,
+    questions: payload
+  };
 };
 
 const fetchQuestions = (state, payload) => {
-  return payload;
+  return {
+    ...state,
+    questions: payload
+  };
+};
+
+const fetchQuestion = (state, payload) => {
+  return {
+    ...state,
+    currentQuestion: payload
+  };
 };
 
 export default createReducer(initialState, {
   [CREATE_QUESTION]: createQuestion,
   [UPDATE_QUESTION]: updateQuestion,
   [DELETE_QUESTION]: deleteQuestion,
-  [FETCH_QUESTIONS]: fetchQuestions
+  [FETCH_QUESTIONS]: fetchQuestions,
+  [FETCH_QUESTION]: fetchQuestion
 });

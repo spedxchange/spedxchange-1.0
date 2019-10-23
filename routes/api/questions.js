@@ -327,11 +327,49 @@ router.put(
         return res.status(404).json({ msg: 'Question not found' });
       }
 
-      const { title, content } = req.body;
+      const { category, title, content, tags, oldTags } = req.body;
 
+      question.category = category;
       question.title = title;
       question.content = content;
-      question.slug = RouteUtil.createSlug(title);
+      question.tags = [];
+
+      let tag;
+
+      let currentTag;
+      // Handle Old Tags
+      if (oldTags && oldTags.length > 0) {
+        for (currentTag of oldTags) {
+          const tag = await Tag.findById(tag._id);
+          if (tag) {
+            tag.questions.pull({ _id: question._id });
+            tag.questionCount--;
+            await tag.save();
+          }
+        }
+      }
+
+      // Handle New Tags
+      if (newTags && newTags.length > 0) {
+        for (tag of tags) {
+          const text = tag.toLowerCase().trim();
+          let existingTag = await Tag.findOne({ text: text });
+          if (!existingTag) {
+            const newTag = new Tag({
+              text: text,
+              questionCount: 1,
+              questions: question._id
+            });
+            const createdTag = await newTag.save();
+            question.tags.push(createdTag._id);
+          } else {
+            existingTag.questions.push(question._id);
+            existingTag.questionCount++;
+            question.tags.push(existingTag._id);
+            await existingTag.save();
+          }
+        }
+      }
 
       await question.save();
       res.json(question);

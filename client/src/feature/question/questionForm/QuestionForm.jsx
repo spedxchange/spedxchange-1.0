@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, reset } from 'redux-form';
 import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { createQuestion, updateQuestion } from '../questionActions';
@@ -16,13 +16,12 @@ import EditorInput from '../../../app/common/form/EditorInput';
 import TagInput from '../../../app/common/form/TagInput';
 import RadioGroupInput from '../../../app/common/form/RadioGroupInput';
 import QuestionHints from './QuestionHints';
-
+import QuestionPreview from './QuestionPreview';
 const mapState = (state, ownProps) => {
-  // localStorage.removeItem('hideAskModal');
-  const questionId = ownProps.match.params.id;
-  const questionUid = ownProps.match.params.id;
-  const questionSlug = ownProps.match.params.id;
-  let question = {};
+  const ID = ownProps.match.params.id;
+  const UID = ownProps.match.params.id;
+  const SLUG = ownProps.match.params.id;
+  let initialValues = {};
   let hideAskModal = false;
   if (localStorage.hideAskModal) {
     const expires = new Date(localStorage.hideAskModal);
@@ -34,22 +33,26 @@ const mapState = (state, ownProps) => {
     }
   }
 
-  if (questionId && state.questions.length > 0) {
-    question = state.questions.filter(question => question._id === questionId)[0];
+  if (ID && state.questions.length > 0) {
+    initialValues = state.questions.filter(question => question._id === ID)[0];
+    question.oldTags = question.tags;
   }
 
-  if (questionUid && questionSlug && state.questions.length > 0) {
-    question = state.questions.filter(question => question.uid === questionUid && question.slug === questionSlug)[0];
+  if (UID && SLUG && state.questions.length > 0) {
+    question = state.questions.filter(question => question.uid === UID && question.slug === SLUG)[0];
+    question.oldTags = question.tags;
   }
 
   return {
     loading: state.async.loading,
-    initialValues: question,
+    currentUser: state.auth.currentUser,
+    initialValues: initialValues,
     hideAskModal: hideAskModal,
     activeQuestionTab: state.questionForm.activeQuestionTab,
     editorValue: state.questionForm.editorValue,
     tagNames: state.questionForm.tagsNames,
-    categories: state.category.questionCategories
+    categories: state.category.questionCategories,
+    questionData: state.form.questionForm
   };
 };
 
@@ -80,24 +83,45 @@ class QuestionForm extends Component {
     if (!this.props.hideAskModal) {
       this.props.openModal('AskQuestionModal');
     }
+
     this.props.loadQuestionCategories();
   }
 
   onSubmit = values => {
-    console.log('values: ', values);
     values.uid = values.uid ? values.uid : createUid();
     values.slug = values.slug ? values.slug : createSlug(values.title);
+    values.user = values.user ? values.user : this.props.currentUser._id;
 
     if (this.props.initialValues._id) {
+      console.log('update: send: ', values);
       this.props.updateQuestion(values);
-      this.props.history.push(`/ask/${this.props.initialValues.uid}/${this.props.initialValues.slug}`);
+      handleTabChange(1);
+      this.props.history.push(`/ask/${values.uid}/${values.slug}`);
     } else {
       const newQuestion = {
         ...values
       };
+      console.log('create: send: ', newQuestion);
       this.props.createQuestion(newQuestion);
-      this.props.history.push(`/ask/${this.props.initialValues.uid}/${this.props.initialValues.slug}`);
+      handleTabChange(1);
+      this.props.history.push(`/ask/${values.uid}/${values.slug}`);
     }
+  };
+
+  createPreviewData = () => {
+    let i = 1;
+    const previewTags = [];
+    this.props.tagNames.map(tag => previewTags.push({ text: tag, _id: i++ }));
+    console.log('question: ', {
+      ...this.props.questionData.values,
+      user: this.props.currentUser,
+      tags: previewTags
+    });
+    return {
+      ...this.props.questionData.values,
+      user: this.props.currentUser,
+      tags: this.props.tagNames
+    };
   };
 
   render() {
@@ -179,7 +203,9 @@ class QuestionForm extends Component {
             )}
             {activeQuestionTab === 3 && (
               <div>
-                Review
+                <div>
+                  <QuestionPreview question={this.props.questionData.values} user={this.props.currentUser} />
+                </div>
                 <Button type='submit' positive>
                   Submit Question
                 </Button>
