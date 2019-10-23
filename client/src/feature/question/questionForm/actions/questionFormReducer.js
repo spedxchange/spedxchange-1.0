@@ -46,6 +46,7 @@ const updateEditor = (state, payload) => {
 };
 
 const onQuestionSumitted = state => {
+  console.log('onQuestionSumitted');
   return initialState;
 };
 

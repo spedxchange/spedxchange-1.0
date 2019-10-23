@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { reset } from 'redux-form';
 import { HEADER_JSON } from '../../app/api/apiConstants';
 import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION } from './questionConstants';
 import { QUESTION_SUBMITED } from './questionForm/actions/questionFormConstants';
+import { CLEAR_TAGS } from '../../app/common/form/actions/tagInputConstants';
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../app/common/async/asyncActions';
 import { toastr } from 'react-redux-toastr';
 
@@ -19,8 +21,12 @@ export const createQuestion = question => {
           question
         }
       });
+      await dispatch(reset('questionForm'));
       dispatch({
         type: QUESTION_SUBMITED
+      });
+      dispatch({
+        type: CLEAR_TAGS
       });
       dispatch(asyncActionFinish());
       toastr.success('Success!', 'Question has been created');
