@@ -8,7 +8,7 @@ const actions = { closeModal };
 
 class AskQuestionModal extends Component {
   handleShowCheckbox = e => {
-    console.log('handleShowCheckbox: e: ', e);
+    // console.log('handleShowCheckbox: e: ', e);
     let expireDate = new Date();
     expireDate.setDate(expireDate.getDate() + 30);
     if (localStorage.hideAskModal) {

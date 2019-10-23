@@ -31,7 +31,7 @@ router.get('/:term', async (req, res) => {
 // @access   Public
 router.get('/tags/:term', async (req, res) => {
   const { term } = req.params;
-  console.log('term: ', term);
+  // console.log('term: ', term);
   try {
     const tags = await Tag.aggregate([
       {

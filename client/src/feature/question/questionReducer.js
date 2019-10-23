@@ -7,7 +7,6 @@ const initialState = {
 };
 
 const createQuestion = (state, payload) => {
-  console.log('reducer: createQuestion: (state, payload): ', state, payload);
   return {
     ...state,
     currentQuestion: payload
@@ -15,7 +14,6 @@ const createQuestion = (state, payload) => {
 };
 
 const updateQuestion = (state, payload) => {
-  console.log('reducer: updateQuestion: (state, payload): ', state, payload);
   return {
     ...state,
     currentQuestion: payload

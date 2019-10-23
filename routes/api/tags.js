@@ -118,14 +118,14 @@ router.get('/name/:type/:text', async (req, res) => {
 router.post('/:type', auth, async (req, res) => {
   try {
     let newTag;
-    console.log('start switch');
+    // console.log('start switch');
     switch (req.params.type) {
       case 'question':
         newTag = new Tag({
           text: req.body.text,
           description: req.body.description
         });
-        console.log('inside switch');
+        // console.log('inside switch');
         break;
       case 'article':
         newTag = new ArticleTag({
@@ -136,8 +136,8 @@ router.post('/:type', auth, async (req, res) => {
       default:
         return res.status(404).json({ msg: 'Tag type error' });
     }
-    console.log('end switch');
-    console.log('newTag: ', newTag);
+    // console.log('end switch');
+    // console.log('newTag: ', newTag);
 
     const tag = await newTag.save();
 

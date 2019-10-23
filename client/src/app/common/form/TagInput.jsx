@@ -13,10 +13,6 @@ const actions = {
 };
 
 export class TagInput extends Component {
-  componentDidMount() {
-    console.log('TagInput: this.props: ', this.props);
-  }
-
   removeTag = i => {
     const newTags = [...this.props.tagNames];
     newTags.splice(i, 1);
@@ -27,18 +23,18 @@ export class TagInput extends Component {
   };
 
   inputKeyDown = e => {
-    console.log('inputKeyDown: start');
+    // console.log('inputKeyDown: start');
     const val = createSlug(e.target.value);
     if (e.key === 'Enter' && val) {
-      console.log('val: ', val);
+      // console.log('val: ', val);
       if (this.props.tagNames && this.props.tagNames.find(tag => tag === val)) {
         this.inputRef.focus();
         e.preventDefault();
         return;
       }
-      console.log('Enter Key: ');
+      // console.log('Enter Key: ');
       const newTags = [...this.props.tagNames, val];
-      console.log('inputKeyDown: newTags: ', newTags);
+      // console.log('inputKeyDown: newTags: ', newTags);
       this.props.handleUpdateTagNames(newTags);
       this.inputRef.value = null;
       this.valueRef.value = newTags;
@@ -54,7 +50,7 @@ export class TagInput extends Component {
 
   blur = () => {
     this.valueRef.focus();
-    console.log('this.valueRef.value: ', this.valueRef.value);
+    // console.log('this.valueRef.value: ', this.valueRef.value);
     this.valueRef.blur();
   };
 

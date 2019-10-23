@@ -4,9 +4,6 @@ import { SEARCH_RESULTS, SEARCH_ERROR } from './searchConstants';
 const initialState = {};
 
 const onSearchResults = (state, payload) => {
-  console.log('onSearchResults: ');
-  console.log('state: ', state);
-  console.log('payload: ', payload);
   return { ...state, query: payload.query, results: payload.results };
 };
 

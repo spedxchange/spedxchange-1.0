@@ -152,7 +152,7 @@ router.post(
       const question = await newQuestion.save();
 
       // Handle tags
-      console.log('tags: ', tags);
+      // console.log('tags: ', tags);
       if (tags && tags.length > 0) {
         let tag;
         for (tag of tags) {
@@ -494,7 +494,7 @@ router.put('/unlike/:question_id', auth, async (req, res) => {
     // If  No: Add Unlike
     if (question.likes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
       // Remove existing down vote
-      console.log('user id: ', req.user.id);
+      // console.log('user id: ', req.user.id);
       // question.likes.pull({ user: req.user.id });
       const removeIndex = question.likes.map(vote => vote.user.toString()).indexOf(req.user.id);
       question.likes.splice(removeIndex, 1);
@@ -748,7 +748,7 @@ router.get('/answer/:answer_id', async (req, res) => {
     const question = await Question.findOne({ 'answers._id': req.params.answer_id });
     const answer = question.answers.find(answer => answer.id === req.params.answer_id);
 
-    console.log('answer: ', answer);
+    // console.log('answer: ', answer);
 
     if (!answer) {
       return res.status(404).json({ msg: 'Answer not found' });

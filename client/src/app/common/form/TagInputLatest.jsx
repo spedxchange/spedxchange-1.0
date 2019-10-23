@@ -8,8 +8,8 @@ class TagInput extends Component {
     this.tagInput = React.createRef();
     this.transferTags = this.props.tags;
     this.state = { currentTags: this.props.tags || [] };
-    console.log('TagInput: props: ', this.props);
-    console.log('TagInput: state: ', this.state);
+    // console.log('TagInput: props: ', this.props);
+    // console.log('TagInput: state: ', this.state);
   }
 
   inputKeyDown = e => {
@@ -20,15 +20,15 @@ class TagInput extends Component {
         e.preventDefault();
         return;
       }
-      console.log('Enter Key: ');
+      // console.log('Enter Key: ');
       const newTags = [...this.state.currentTags, val];
-      console.log('inputKeyDown: newTags: ', newTags);
+      // console.log('inputKeyDown: newTags: ', newTags);
       this.setState({ currentTags: newTags });
       this.props.handleSelectTags(val);
       this.tagInput.value = null;
       this.tagInput.focus();
-      console.log('inputKeyDown: props: ', this.props);
-      console.log('inputKeyDown: state: ', this.state);
+      // console.log('inputKeyDown: props: ', this.props);
+      // console.log('inputKeyDown: state: ', this.state);
       e.preventDefault();
     } else if (e.key === 'Backspace' && !val) {
       this.removeTag(this.state.currentTags.length - 1);

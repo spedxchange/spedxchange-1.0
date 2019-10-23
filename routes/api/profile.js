@@ -90,7 +90,7 @@ router.post(
       // Using upsert option (creates new doc if no match is found):
       let profile = await Profile.findOneAndUpdate({ user: req.user.id }, { $set: profileFields }, { new: true, upsert: true });
       let user = await User.findOne({ _id: req.user.id });
-      console.log('user: ', user);
+      // console.log('user: ', user);
       if (!user.profile) {
         user.profile = req.user.id;
         await user.save();

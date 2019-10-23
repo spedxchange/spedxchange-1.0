@@ -93,13 +93,13 @@ class QuestionForm extends Component {
     formValues.uid = formValues.uid ? formValues.uid : createUid();
     formValues.slug = formValues.slug ? formValues.slug : createSlug(formValues.title);
     formValues.tags = values.tags ? values.tags.split(',') : [];
-    console.log('did handleTabChange');
+    // console.log('did handleTabChange');
 
     if (params.uid && params.slug) {
-      console.log('update: send: ', formValues);
+      // console.log('update: send: ', formValues);
       this.props.updateQuestion(formValues);
     } else {
-      console.log('create: send: ', formValues);
+      // console.log('create: send: ', formValues);
       this.props.createQuestion(formValues);
     }
     this.props.history.push(`/questions/${formValues.uid}/${formValues.slug}`);

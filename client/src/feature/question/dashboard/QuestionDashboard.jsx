@@ -23,7 +23,7 @@ class QuestionDashboard extends Component {
 
   render() {
     const { questions, questionCount, loading } = this.props;
-    console.log(questions);
+    // console.log(questions);
     if (loading) return <PageLoader />;
     return (
       <div className='questions-dashboard flex-wrap md'>

@@ -346,7 +346,7 @@ router.put(
       if (tags && tags.length) {
         let tag;
         for (tag of tags) {
-          console.log('tag in loop: ', tag);
+          // console.log('tag in loop: ', tag);
           article.tags = [];
           tag = tag.toLowerCase().trim();
 
@@ -486,7 +486,7 @@ router.put('/unlike/:article_id', auth, async (req, res) => {
     // If  No: Add Unlike
     if (article.likes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
       // Remove existing down vote
-      console.log('user id: ', req.user.id);
+      // console.log('user id: ', req.user.id);
       // article.likes.pull({ user: req.user.id });
       const removeIndex = article.likes.map(vote => vote.user.toString()).indexOf(req.user.id);
       article.likes.splice(removeIndex, 1);
@@ -737,7 +737,7 @@ router.get('/comment/:comment_id', async (req, res) => {
     const article = await Article.findOne({ 'comments._id': req.params.comment_id });
     const comment = article.comments.find(comment => comment.id === req.params.comment_id);
 
-    console.log('comment: ', comment);
+    // console.log('comment: ', comment);
 
     if (!comment) {
       return res.status(404).json({ msg: 'Comment not found' });

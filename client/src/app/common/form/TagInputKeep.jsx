@@ -10,14 +10,14 @@ const TagInput = ({ placeholder, handleSelectTags }) => {
     const val = createSlug(e.target.value);
     if (e.key === 'Enter' && val) {
       // tags = tags ? tags : [];
-      console.log('start inputKeyDown: oldTags: ', oldTags);
-      console.log('start inputKeyDown: val: ', val);
+      // console.log('start inputKeyDown: oldTags: ', oldTags);
+      // console.log('start inputKeyDown: val: ', val);
       if (tags && tags.find(tag => tag === val)) {
         return;
       }
       const newTags = [...oldTags, val];
       setTags(newTags);
-      console.log('inputKeyDown: setTags: ', tags);
+      // console.log('inputKeyDown: setTags: ', tags);
       handleSelectTags(tags);
       tagInput.value = null;
     } else if (e.key === 'Backspace' && !val) {
@@ -29,7 +29,7 @@ const TagInput = ({ placeholder, handleSelectTags }) => {
     const newTags = [...tags];
     newTags.splice(i, 1);
     setTags(newTags);
-    console.log('removeTag: ', tags);
+    // console.log('removeTag: ', tags);
     handleSelectTags(tags);
   };
 
