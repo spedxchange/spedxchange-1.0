@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Icon } from 'semantic-ui-react';
+import { reduxForm, Field } from 'redux-form';
+import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
+import { Form, Button, Icon } from 'semantic-ui-react';
 import moment from 'moment/moment.js';
 import PageLoader from '../../../app/layout/PageLoader';
-import { loadQuestionBySlug, loadQuestionById } from '../questionActions';
+import { loadQuestionBySlug, loadQuestionById, answerQuestion } from '../questionActions';
+import EditorInput from '../../../app/common/form/EditorInput';
 
 const mapState = state => ({
+  auth: state.auth,
   loading: state.async.loading,
   questions: state.questions.questions,
   currentQuestion: state.questions.currentQuestion
@@ -13,8 +17,18 @@ const mapState = state => ({
 
 const actions = {
   loadQuestionBySlug,
-  loadQuestionById
+  loadQuestionById,
+  answerQuestion
 };
+
+const validate = combineValidators({
+  content: composeValidators(
+    isRequired({ message: 'Answer is required' }),
+    hasLengthGreaterThan(55)({
+      message: 'Please provide more detail in your answer.'
+    })
+  )()
+});
 
 export class QuestionDetail extends Component {
   componentDidMount() {
@@ -31,8 +45,13 @@ export class QuestionDetail extends Component {
     }
   }
 
+  onSubmit = values => {
+    console.log('onSubmit', values);
+    this.props.answerQuestion(this.props.currentQuestion._id, values);
+  };
+
   render() {
-    const { currentQuestion, loading } = this.props;
+    const { currentQuestion, loading, auth, invalid, submitting, pristine } = this.props;
     if (loading) return <PageLoader />;
     return (
       <>
@@ -65,7 +84,26 @@ export class QuestionDetail extends Component {
               {currentQuestion.answers.length} Answer{currentQuestion.answers.length === 1 ? '' : 's'}
             </h5>
             <hr />
-            {currentQuestion.answers && currentQuestion.answers.length > 0 && currentQuestion.answers.map(answer => <div key={answer._id}>answers</div>)}
+            {currentQuestion.answers &&
+              currentQuestion.answers.length > 0 &&
+              currentQuestion.answers.map(answer => (
+                <>
+                  <div key={answer._id} dangerouslySetInnerHTML={{ __html: answer.content }} />
+                  <hr />
+                </>
+              ))}
+            {auth.authenticated && (
+              <>
+                <h5 className='my-1'>Your Answer</h5>
+                <hr />
+                <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
+                  <Field name='content' component={EditorInput} />
+                  <Button positive type='submit' className='mt-2 mb-5'>
+                    Submit Answer
+                  </Button>
+                </Form>
+              </>
+            )}
           </div>
         )}
       </>
@@ -76,4 +114,4 @@ export class QuestionDetail extends Component {
 export default connect(
   mapState,
   actions
-)(QuestionDetail);
+)(reduxForm({ form: 'answerForm', validate })(QuestionDetail));

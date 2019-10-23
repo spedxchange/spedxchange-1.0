@@ -27,7 +27,7 @@ class QuestionListItem extends Component {
             <h3>
               <a href={`/questions/${question.uid}/${question.slug}`}>{question.title}</a>
             </h3>
-            <p>{question.content}</p>
+            <div className='mb-3' dangerouslySetInnerHTML={{ __html: question.content }} />
             <div className='info'>
               <div className='flex-wrap responsive'>
                 <div className='flex-item grow'>

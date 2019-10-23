@@ -1,5 +1,5 @@
 import { createReducer } from '../../app/common/util/ReducerUtil';
-import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION } from './questionConstants';
+import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION, ANSWER_QUESTION } from './questionConstants';
 
 const initialState = {
   questions: [],
@@ -43,10 +43,19 @@ const fetchQuestion = (state, payload) => {
   };
 };
 
+const answerQuestion = (state, payload) => {
+  console.log('answerQuestion: ');
+  return {
+    ...state,
+    currentQuestion: payload
+  };
+};
+
 export default createReducer(initialState, {
   [CREATE_QUESTION]: createQuestion,
   [UPDATE_QUESTION]: updateQuestion,
   [DELETE_QUESTION]: deleteQuestion,
   [FETCH_QUESTIONS]: fetchQuestions,
-  [FETCH_QUESTION]: fetchQuestion
+  [FETCH_QUESTION]: fetchQuestion,
+  [ANSWER_QUESTION]: answerQuestion
 });

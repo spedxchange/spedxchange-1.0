@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field, reset } from 'redux-form';
+import { reduxForm, Field } from 'redux-form';
 import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { createQuestion, updateQuestion } from '../questionActions';

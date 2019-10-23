@@ -554,7 +554,7 @@ router.post(
 
       question.answers.push(newAnswer._id);
       await question.save();
-      res.json(newAnswer);
+      res.json(question);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
