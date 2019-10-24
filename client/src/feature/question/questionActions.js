@@ -13,7 +13,6 @@ export const createQuestion = question => {
   const body = JSON.stringify(question);
   return async dispatch => {
     try {
-      dispatch(asyncActionStart());
       await axios.post(`/api/questions`, body, config);
       dispatch({
         type: CREATE_QUESTION,
