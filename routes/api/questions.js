@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 const RouteUtil = require('../routeUtil');
+const HTMLParser = require('node-html-parser');
 
 const Question = require('../../models/Question');
 const Answer = require('../../models/Answer');
@@ -84,7 +84,6 @@ router.get('/:uid/:slug', async (req, res) => {
 // @desc     Get Question by Id
 // @access   Public
 router.get('/:question_id', async (req, res) => {
-  console.log('get: /:question_id');
   try {
     const question = await Question.findById(req.params.question_id)
       .populate({
@@ -120,267 +119,214 @@ router.get('/:question_id', async (req, res) => {
 // @route    POST api/questions
 // @desc     Create Question
 // @access   Private
-router.post(
-  '/',
-  [
-    auth,
-    [
-      check('title', 'Title is required.')
-        .not()
-        .isEmpty(),
-      check('content', 'Content is required.')
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
+router.post('/', auth, async (req, res) => {
+  try {
     const { uid, slug, title, content, tags, category } = req.body;
 
-    try {
-      const newQuestion = new Question({
-        user: req.user.id,
-        title: title,
-        content: content,
-        uid: uid,
-        slug: slug
-      });
+    const rawTextParse = HTMLParser.parse(content);
 
-      // Save question
-      const question = await newQuestion.save();
+    const newQuestion = new Question({
+      user: req.user.id,
+      title: title,
+      content: content,
+      rawText: rawTextParse.structuredText,
+      uid: uid,
+      slug: slug
+    });
 
-      // Handle tags
-      // console.log('tags: ', tags);
-      if (tags && tags.length > 0) {
-        let tag;
-        for (tag of tags) {
-          text = tag.toLowerCase().trim();
-          let existingTag = await Tag.findOne({ text: text });
-          if (!existingTag) {
-            const newTag = new Tag({
-              text: text,
-              questionCount: 1,
-              questions: question._id
-            });
-            const createdTag = await newTag.save();
-            question.tags.push(createdTag._id);
-            await question.save();
-          } else {
-            existingTag.questions.push(question._id);
-            existingTag.questionCount++;
-            question.tags.push(existingTag._id);
-            await existingTag.save();
-            await question.save();
-          }
+    // Save question
+    const question = await newQuestion.save();
+
+    // Handle tags
+    // console.log('tags: ', tags);
+    if (tags && tags.length > 0) {
+      let tag;
+      for (tag of tags) {
+        text = tag.toLowerCase().trim();
+        let existingTag = await Tag.findOne({ text: text });
+        if (!existingTag) {
+          const newTag = new Tag({
+            text: text,
+            questionCount: 1,
+            questions: question._id
+          });
+          const createdTag = await newTag.save();
+          question.tags.push(createdTag._id);
+          await question.save();
+        } else {
+          existingTag.questions.push(question._id);
+          existingTag.questionCount++;
+          question.tags.push(existingTag._id);
+          await existingTag.save();
+          await question.save();
         }
       }
-
-      // Handle category
-      const qCategory = category ? category.toLowerCase().trim() : 'no category';
-      let existingCategory = await Category.findOne({ text: qCategory });
-      if (!existingCategory) {
-        const newCategory = new Category({
-          text: qCategory,
-          questionCount: 1,
-          questions: question._id
-        });
-        const createdCategory = await newCategory.save();
-        question.category = createdCategory._id;
-        await question.save();
-      } else {
-        existingCategory.questions.push(question._id);
-        existingCategory.questionCount++;
-        await existingCategory.save();
-        question.category = existingCategory._id;
-        await question.save();
-      }
-
-      res.json(question);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
     }
+
+    // Handle category
+    const qCategory = category ? category.toLowerCase().trim() : 'no category';
+    let existingCategory = await Category.findOne({ text: qCategory });
+    if (!existingCategory) {
+      const newCategory = new Category({
+        text: qCategory,
+        questionCount: 1,
+        questions: question._id
+      });
+      const createdCategory = await newCategory.save();
+      question.category = createdCategory._id;
+      await question.save();
+    } else {
+      existingCategory.questions.push(question._id);
+      existingCategory.questionCount++;
+      await existingCategory.save();
+      question.category = existingCategory._id;
+      await question.save();
+    }
+
+    res.json(question);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-);
+});
 
 // @route    POST api/questions/admin/:user_id
 // @desc     Create Question for A User
 // @access   Private
-router.post(
-  '/admin/:user_id',
-  [
-    auth,
-    [
-      check('title', 'Title is required.')
-        .not()
-        .isEmpty(),
-      check('content', 'Content is required.')
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
+router.post('/admin/:user_id', auth, async (req, res) => {
+  try {
     const { title, content, tags, category } = req.body;
     const uid = RouteUtil.createUid();
     const slug = RouteUtil.createSlug(title);
+    const rawTextParse = HTMLParser.parse(content);
 
-    try {
-      const newQuestion = new Question({
-        user: req.params.user_id,
-        title: title,
-        content: content,
-        uid: uid,
-        slug: slug
-      });
+    const newQuestion = new Question({
+      user: req.params.user_id,
+      title: title,
+      content: content,
+      rawText: rawTextParse.structuredText,
+      uid: uid,
+      slug: slug
+    });
 
-      // Save question
-      const question = await newQuestion.save();
+    // Save question
+    const question = await newQuestion.save();
 
-      // Handle tags
-      if (tags && tags.length > 0) {
-        let tag;
-        for (tag of tags) {
-          text = tag.toLowerCase().trim();
-          let existingTag = await Tag.findOne({ text: text });
-          if (!existingTag) {
-            const newTag = new Tag({
-              text: text,
-              questionCount: 1,
-              questions: question._id
-            });
-            const createdTag = await newTag.save();
-            question.tags.push(createdTag._id);
-            await question.save();
-          } else {
-            existingTag.questions.push(question._id);
-            existingTag.questionCount++;
-            question.tags.push(existingTag._id);
-            await existingTag.save();
-            await question.save();
-          }
+    // Handle tags
+    if (tags && tags.length > 0) {
+      let tag;
+      for (tag of tags) {
+        text = tag.toLowerCase().trim();
+        let existingTag = await Tag.findOne({ text: text });
+        if (!existingTag) {
+          const newTag = new Tag({
+            text: text,
+            questionCount: 1,
+            questions: question._id
+          });
+          const createdTag = await newTag.save();
+          question.tags.push(createdTag._id);
+          await question.save();
+        } else {
+          existingTag.questions.push(question._id);
+          existingTag.questionCount++;
+          question.tags.push(existingTag._id);
+          await existingTag.save();
+          await question.save();
         }
       }
-
-      // Handle category
-      const qCategory = category ? category.toLowerCase().trim() : 'no category';
-      let existingCategory = await Category.findOne({ text: qCategory });
-      if (!existingCategory) {
-        const newCategory = new Category({
-          text: qCategory,
-          questionCount: 1,
-          questions: question._id
-        });
-        const createdCategory = await newCategory.save();
-        question.category = createdCategory._id;
-        await question.save();
-      } else {
-        existingCategory.questions.push(question._id);
-        existingCategory.questionCount++;
-        await existingCategory.save();
-        question.category = existingCategory._id;
-        await question.save();
-      }
-
-      res.json(question);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
     }
+
+    // Handle category
+    const questionCategory = category ? category.toLowerCase().trim() : 'General Special Education';
+    const existingCategory = await Category.findOne({ text: questionCategory });
+    if (!existingCategory) {
+      const generalCategory = await Category.findOne({ text: 'General Special Education' });
+      if (!generalCategory) {
+        res.status(500).send('Category Error');
+      }
+      generalCategory.questions.push(question._id);
+      generalCategory.questionCount++;
+      await generalCategory.save();
+      question.category = generalCategory._id;
+    } else {
+      existingCategory.questions.push(question._id);
+      existingCategory.questionCount++;
+      await existingCategory.save();
+      question.category = existingCategory._id;
+    }
+    await question.save();
+
+    res.json(question);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-);
+});
 
 // @route    PUT api/questions/:question_id
 // @desc     Update Question
 // @access   Private
-router.put(
-  '/:question_id',
-  [
-    auth,
-    [
-      check('title', 'Title is required.')
-        .not()
-        .isEmpty(),
-      check('content', 'Content is required.')
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
+router.put('/:question_id', auth, async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.question_id);
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+    if (!question) {
+      return res.status(404).json({ msg: 'Question not found' });
     }
 
-    try {
-      const question = await Question.findById(req.params.question_id);
+    const { category, title, content, tags, oldTags } = req.body;
+    const rawTextParse = HTMLParser.parse(content);
 
-      if (!question) {
-        return res.status(404).json({ msg: 'Question not found' });
-      }
+    question.category = category;
+    question.title = title;
+    question.content = content;
+    (question.rawText = rawTextParse.structuredText), (question.tags = []);
 
-      const { category, title, content, tags, oldTags } = req.body;
+    let tag;
+    let currentTag;
 
-      question.category = category;
-      question.title = title;
-      question.content = content;
-      question.tags = [];
-
-      let tag;
-
-      let currentTag;
-      // Handle Old Tags
-      if (oldTags && oldTags.length > 0) {
-        for (currentTag of oldTags) {
-          const tag = await Tag.findById(tag._id);
-          if (tag) {
-            tag.questions.pull({ _id: question._id });
-            tag.questionCount--;
-            await tag.save();
-          }
+    // Handle Old Tags
+    if (oldTags && oldTags.length > 0) {
+      for (currentTag of oldTags) {
+        const tag = await Tag.findById(tag._id);
+        if (tag) {
+          tag.questions.pull({ _id: question._id });
+          tag.questionCount--;
+          await tag.save();
         }
       }
-
-      // Handle New Tags
-      if (newTags && newTags.length > 0) {
-        for (tag of tags) {
-          const text = tag.toLowerCase().trim();
-          let existingTag = await Tag.findOne({ text: text });
-          if (!existingTag) {
-            const newTag = new Tag({
-              text: text,
-              questionCount: 1,
-              questions: question._id
-            });
-            const createdTag = await newTag.save();
-            question.tags.push(createdTag._id);
-          } else {
-            existingTag.questions.push(question._id);
-            existingTag.questionCount++;
-            question.tags.push(existingTag._id);
-            await existingTag.save();
-          }
-        }
-      }
-
-      await question.save();
-      res.json(question);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
     }
+
+    // Handle New Tags
+    if (newTags && newTags.length > 0) {
+      for (tag of tags) {
+        const text = tag.toLowerCase().trim();
+        let existingTag = await Tag.findOne({ text: text });
+        if (!existingTag) {
+          const newTag = new Tag({
+            text: text,
+            questionCount: 1,
+            questions: question._id
+          });
+          const createdTag = await newTag.save();
+          question.tags.push(createdTag._id);
+        } else {
+          existingTag.questions.push(question._id);
+          existingTag.questionCount++;
+          question.tags.push(existingTag._id);
+          await existingTag.save();
+        }
+      }
+    }
+
+    await question.save();
+    res.json(question);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-);
+});
 
 // @route    DELETE api/question/:question_id
 // @desc     Delete Question
@@ -518,105 +464,65 @@ router.put('/unlike/:question_id', auth, async (req, res) => {
 // @route    POST api/questions/answer/:question_id
 // @desc     Answer A Question
 // @access   Private
-router.post(
-  '/answer/:question_id',
-  [
-    auth,
-    [
-      check('content', 'Content is required')
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+router.post('/answer/:question_id', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    const question = await Question.findById(req.params.question_id);
+
+    if (!question) {
+      return res.status(404).json({ msg: 'Question not found' });
     }
 
-    try {
-      const user = await User.findById(req.user.id).select('-password');
-      const question = await Question.findById(req.params.question_id);
+    const newAnswer = new Answer({
+      user: req.user.id,
+      question: question._id,
+      displayName: user.displayName,
+      avatar: user.avatar,
+      content: req.body.content
+    });
 
-      if (!question) {
-        return res.status(404).json({ msg: 'Question not found' });
-      }
+    await newAnswer.save();
 
-      const newAnswer = new Answer({
-        user: req.user.id,
-        question: question._id,
-        displayName: user.displayName,
-        avatar: user.avatar,
-        content: req.body.content
-      });
-
-      await newAnswer.save();
-
-      question.answers.push(newAnswer._id);
-      await question.save();
-      res.json(question);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
+    question.answers.push(newAnswer._id);
+    await question.save();
+    res.json(question);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-);
+});
 
 // @route    PUT api/questions/answer/:question_id/:answer_id
 // @desc     Update Answer
 // @access   Private
-router.put(
-  '/answer/:question_id/:answer_id',
-  [
-    auth,
-    [
-      check('content', 'Content is required.')
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
+router.put('/answer/:question_id/:answer_id', auth, async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.question_id);
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+    if (!question) {
+      return res.status(404).json({ msg: 'Question not found' });
     }
 
-    try {
-      // Get Question
-      const question = await Question.findById(req.params.question_id);
-
-      if (!question) {
-        return res.status(404).json({ msg: 'Question not found' });
-      }
-
-      // Get Answer
-      const answer = question.answers.find(answer => answer.id === req.params.answer_id);
-      if (!answer) {
-        return res.status(404).json({ msg: 'Answer not found' });
-      }
-
-      // Check user
-      if (answer.user.toString() !== req.user.id) {
-        return res.status(401).json({ msg: 'User not authorized' });
-      }
-
-      // let question = await Question.findOneAndUpdate(
-      //   { _id: req.params.question_id, 'answers._id': req.params.answer_id },
-      //   { $set: { content: content } },
-      //   { new: true, upsert: true }
-      // );
-
-      answer.set({ content: req.body.content });
-
-      await question.save();
-      res.json(question.answers);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+    // Get Answer
+    const answer = question.answers.find(answer => answer.id === req.params.answer_id);
+    if (!answer) {
+      return res.status(404).json({ msg: 'Answer not found' });
     }
+
+    // Check user
+    if (answer.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    answer.set({ content: req.body.content });
+
+    await question.save();
+    res.json(question.answers);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-);
+});
 
 // @route    PUT api/questions/answer/like/:question_id/:answer_id
 // @desc     Like Answer

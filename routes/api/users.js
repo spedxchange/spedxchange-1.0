@@ -12,6 +12,7 @@ const RouteUtil = require('../routeUtil');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const User = require('../../models/User');
+const Role = require('../../models/Role');
 
 const smtpTransport = nodemailer.createTransport({
   host: 'smtp.office365.com',
@@ -35,20 +36,15 @@ smtpTransport.use('compile', hbs(handlebarsOptions));
 // @desc     Register User
 // @access   Public
 router.post('/', async (req, res) => {
-  const { displayName, email, password, role } = req.body;
-
   try {
+    const { displayName, email, password, roles } = req.body;
     let user = await User.findOne({ email });
 
     if (user) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
 
-    const avatar = gravatar.url(email, {
-      s: '200',
-      r: 'pg',
-      d: 'mm'
-    });
+    const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'mm' });
 
     user = new User({
       displayName,
@@ -57,16 +53,33 @@ router.post('/', async (req, res) => {
       password
     });
 
+    // Handle Password
     const salt = await bcrypt.genSalt(10);
-
     user.password = await bcrypt.hash(password, salt);
-    user.role = role || 'reader';
+    await user.save();
 
+    // Handle roles
+    user.roles = [];
+    if (roles && roles.length > 0) {
+      let role;
+      for (role of roles) {
+        const newRole = await Role.findOne({ type: role });
+        console.log('newRole: ', newRole);
+        if (newRole) {
+          console.log('newRole._id: ', newRole._id), user.roles.push(newRole._id);
+        }
+      }
+    } else {
+      const newRole = await Role.findOne({ type: 'reader' });
+      if (newRole) {
+        user.roles.push(newRole._id);
+      }
+    }
     await user.save();
 
     const payload = {
       user: {
-        id: user.id
+        id: user._id
       }
     };
 

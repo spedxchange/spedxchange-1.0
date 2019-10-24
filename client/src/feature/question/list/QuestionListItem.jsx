@@ -2,39 +2,27 @@ import React, { Component } from 'react';
 import { Segment, Statistic, List, Image } from 'semantic-ui-react';
 import QuestionListTag from './QuestionListTag';
 import moment from 'moment/moment.js';
-
+import { truncateText } from '../../../app/common/util/truncateText';
+import QuestionStats from '../components/QuestionStats';
 class QuestionListItem extends Component {
   render() {
     const { question } = this.props;
     return (
       <Segment vertical>
         <div className='flex-box'>
-          <div className='votes'>
-            <div>
-              <Statistic size='mini'>
-                <Statistic.Value>100</Statistic.Value>
-                <Statistic.Label>votes</Statistic.Label>
-              </Statistic>
-            </div>
-            <div>
-              <Statistic size='mini'>
-                <Statistic.Value>100</Statistic.Value>
-                <Statistic.Label>answers</Statistic.Label>
-              </Statistic>
-            </div>
-          </div>
-          <div className='flex-item grow info'>
+          <QuestionStats question={question} />
+          <div className='grow info'>
             <h3>
               <a href={`/questions/${question.uid}/${question.slug}`}>{question.title}</a>
             </h3>
-            <div className='mb-3' dangerouslySetInnerHTML={{ __html: question.content }} />
+            <div className='mb-3'>{truncateText(question.rawText)}</div>
             <div className='info'>
               <div className='flex-box responsive'>
-                <div className='flex-item grow'>
+                <div className='grow'>
                   <List horizontal>{question.tags && Object.values(question.tags).map((tag, idx) => <QuestionListTag key={idx} tag={tag} />)}</List>
                 </div>
-                <div className='flex-item'>
-                  <div className='user'>
+                <div className='user'>
+                  <div>
                     <List horizontal>
                       <List.Item>
                         <Image avatar src={question.user.avatar} />

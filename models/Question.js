@@ -22,6 +22,9 @@ const QuestionSchema = new Schema({
     type: String,
     required: true
   },
+  rawText: {
+    type: String
+  },
   rating: {
     type: Number,
     default: 0
@@ -70,6 +73,6 @@ const QuestionSchema = new Schema({
     type: Date,
     default: Date.now
   }
-}).index({ uid: 'text', slug: 'text', title: 'text', content: 'text' });
+}).index({ uid: 'text', slug: 'text', title: 'text', content: 'text', rawText: 'text' });
 
 module.exports = Question = mongoose.model('question', QuestionSchema);

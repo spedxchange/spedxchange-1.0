@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'semantic-ui-react';
 import { Route, Switch, withRouter } from 'react-router-dom';
+import { loadReCaptcha } from 'react-recaptcha-v3';
 import NavBar from '../layout/nav/navBar/NavBar';
 import SideBar from '../layout/nav/sideBar/SideBar';
 import QuestionDashboard from '../../feature/question/dashboard/QuestionDashboard';
@@ -33,6 +34,9 @@ const mapState = state => ({
 });
 
 class App extends Component {
+  componentDidMount() {
+    loadReCaptcha('6LdfOb8UAAAAAJg87yIa2NJwxwP8ZkJJg18XGG1M');
+  }
   render() {
     return (
       <Fragment>

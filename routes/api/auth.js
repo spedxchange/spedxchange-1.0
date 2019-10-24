@@ -9,11 +9,16 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const User = require('../../models/User');
 
 // @route    GET api/auth
-// @desc     Test route
-// @access   Public
+// @desc     Get User Record
+// @access   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id)
+      .select('-password')
+      .populate({
+        path: 'roles',
+        select: 'type'
+      });
     res.json(user);
   } catch (err) {
     res.status(500).send('Server Error');
@@ -41,7 +46,7 @@ router.post('/', async (req, res) => {
 
     const payload = {
       user: {
-        id: user.id
+        id: user._id
       }
     };
 

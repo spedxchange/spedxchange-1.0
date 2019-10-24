@@ -25,25 +25,23 @@ class QuestionPreview extends Component {
               </Statistic>
             </div>
           </div>
-          <div className='flex-item grow info'>
+          <div className='grow info'>
             <h3>
               <a href='/'>{question.title}</a>
             </h3>
             <div className='mb-3' dangerouslySetInnerHTML={{ __html: question.content }} />
             <div className='info'>
               <div className='flex-box responsive'>
-                <div className='flex-item grow'>
+                <div className='grow'>
                   <List horizontal>{question.tags && question.tags.split(',').map((tag, i) => <QuestionListTag key={i} tag={{ text: tag, _id: i }} />)}</List>
                 </div>
-                <div className='flex-item'>
-                  <div className='user'>
-                    <List horizontal>
-                      <List.Item>
-                        <Image avatar src={user.avatar} />
-                        <List.Content verticalAlign='middle'>{user.displayName}</List.Content>
-                      </List.Item>
-                    </List>
-                  </div>
+                <div>
+                  <List horizontal>
+                    <List.Item>
+                      <Image avatar src={user.avatar} />
+                      <List.Content verticalAlign='middle'>{user.displayName}</List.Content>
+                    </List.Item>
+                  </List>
                   <div className='asked'>asked {moment(now).from()}</div>
                 </div>
               </div>

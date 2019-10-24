@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -26,10 +26,12 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'profile'
   },
-  role: {
-    type: String,
-    default: 'reader'
-  },
+  roles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'role'
+    }
+  ],
   reset_password_token: {
     type: String
   },
