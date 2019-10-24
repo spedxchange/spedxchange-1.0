@@ -16643,7 +16643,7 @@ ol.ui.horizontal.list li:before {
     position: relative;
     display: flex;
     flex: 1 0 auto;
-    flex-wrap: wrap;
+    flex-box: wrap;
     flex-direction: row;
     vertical-align: middle;
     align-items: center;
@@ -17000,7 +17000,7 @@ ol.ui.horizontal.list li:before {
 .ui.six.steps>.step,
 .ui.three.steps>.step,
 .ui.two.steps>.step {
-    flex-wrap: nowrap
+    flex-box: nowrap
 }
 
 .ui.one.steps>.step {
@@ -17884,7 +17884,7 @@ ol.ui.horizontal.list li:before {
 
 @media only screen and (max-width:767px) {
     .ui.form .fields {
-        flex-wrap: wrap
+        flex-box: wrap
     }
     .ui.form:not(.unstackable) .eight.fields:not(.unstackable)>.field,
     .ui.form:not(.unstackable) .eight.fields:not(.unstackable)>.fields,
@@ -18126,7 +18126,7 @@ ol.ui.horizontal.list li:before {
 .ui.grid {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-box: wrap;
     align-items: stretch;
     padding: 0;
     margin: -1rem
@@ -18165,7 +18165,7 @@ ol.ui.horizontal.list li:before {
     position: relative;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-box: wrap;
     justify-content: inherit;
     align-items: stretch;
     width: 100%!important;
@@ -23216,7 +23216,7 @@ ol.ui.horizontal.list li:before {
 .ui.cards {
     display: flex;
     margin: -.875em -.5em;
-    flex-wrap: wrap
+    flex-box: wrap
 }
 
 .ui.cards>.card {
@@ -24872,7 +24872,7 @@ a.ui.card:hover {
 
 .ui.statistics {
     align-items: flex-start;
-    flex-wrap: wrap
+    flex-box: wrap
 }
 
 .ui.statistics>.statistic {

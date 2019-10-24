@@ -26,7 +26,7 @@ const SearchInput = ({ input }) => {
 
 const SearchBar = ({ doSearch, handleSubmit, isSearchBarOpen, error }) => {
   return (
-    <Form className={isSearchBarOpen ? 'flex-wrap search-form open' : 'flex-wrap search-form'} onSubmit={handleSubmit(doSearch)} autoComplete='off'>
+    <Form className={isSearchBarOpen ? 'flex-box search-form open' : 'flex-box search-form'} onSubmit={handleSubmit(doSearch)} autoComplete='off'>
       <Field name='query' component={SearchInput} type='text' />
     </Form>
   );

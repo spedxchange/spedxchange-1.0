@@ -58,11 +58,11 @@ class TestComponent extends Component {
         <hr />
 
         <div className='test-header'>
-          <div className='flex-wrap'>
+          <div className='flex-box'>
             <Link className='brand' to='/'>
               <img src={logo} alt='SPEDxchange' />
             </Link>
-            <div className='flex-wrap grow nav-content'>
+            <div className='flex-box grow nav-content'>
               <button className='search'>
                 <Icon name='search' />
               </button>

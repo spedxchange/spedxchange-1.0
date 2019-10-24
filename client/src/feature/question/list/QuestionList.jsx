@@ -24,13 +24,13 @@ class QuestionList extends Component {
     return (
       <Fragment>
         <div className='question-head'>
-          <div className='flex-wrap top'>
+          <div className='flex-box top'>
             <h1>Questions</h1>
             <Button color='green' onClick={() => history.push('/ask')}>
               Ask Question
             </Button>
           </div>
-          <div className='flex-wrap bottom'>
+          <div className='flex-box bottom'>
             <div>{questionCount} questions</div>
             <div>
               <Button.Group basic size='mini'>

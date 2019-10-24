@@ -25,7 +25,7 @@ class QuestionDashboard extends Component {
     const { questions, questionCount, loading } = this.props;
     if (loading) return <PageLoader />;
     return (
-      <div className='questions-dashboard flex-wrap md'>
+      <div className='questions-dashboard flex-box md'>
         <div className='grow'>
           <QuestionList questions={questions} questionCount={questionCount} />
         </div>

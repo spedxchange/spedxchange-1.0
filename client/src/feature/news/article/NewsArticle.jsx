@@ -39,7 +39,7 @@ export class NewsArticle extends Component {
     return (
       <>
         {currentArticle && (
-          <div className='flex-wrap md article-wrap'>
+          <div className='flex-box md article-wrap'>
             <div className='article grow'>
               <h5 className='section-head'>Featured Story</h5>
               <div>

@@ -6,7 +6,7 @@ const AppFooter = () => {
   return (
     <div className='main-footer'>
       <Container>
-        <div className='flex-wrap sm'>
+        <div className='flex-box sm'>
           <div>
             <h6>SPEDxchange</h6>
             <Link to='/about'>About Us</Link>
@@ -55,7 +55,7 @@ const AppFooter = () => {
             </a>
           </div>
         </div>
-        <div className='flex-wrap sm legal'>
+        <div className='flex-box sm legal'>
           <div className='grow'>
             <strong>SPEDxchange</strong> | 1740 Ridge Ave, Suite 500 | Evanston Il, 60201 | <a href='tel:1-224-300-7990'>224.300.7790</a>
           </div>

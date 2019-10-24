@@ -133,7 +133,7 @@ class QuestionForm extends Component {
     } = this.props;
     if (loading) return <PageLoader />;
     return (
-      <div className='flex-wrap sm'>
+      <div className='flex-box sm'>
         <div className={`grow question-form tab-${activeQuestionTab}`}>
           <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
             {activeQuestionTab === 1 && (
@@ -181,7 +181,7 @@ class QuestionForm extends Component {
                 </div>
                 <Field name='content' component={EditorInput} />
                 <hr className='my-3' />
-                <div className='flex-wrap between'>
+                <div className='flex-box between'>
                   <Button type='button' onClick={() => handleTabChange(1)}>
                     <Icon fitted name='left arrow' />
                     &nbsp;&nbsp;Question Type

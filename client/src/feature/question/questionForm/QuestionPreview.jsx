@@ -10,7 +10,7 @@ class QuestionPreview extends Component {
     console.log('QuestionPreview: question: ', question);
     return (
       <Segment vertical>
-        <div className='flex-wrap'>
+        <div className='flex-box'>
           <div className='votes'>
             <div>
               <Statistic size='mini'>
@@ -31,7 +31,7 @@ class QuestionPreview extends Component {
             </h3>
             <div className='mb-3' dangerouslySetInnerHTML={{ __html: question.content }} />
             <div className='info'>
-              <div className='flex-wrap responsive'>
+              <div className='flex-box responsive'>
                 <div className='flex-item grow'>
                   <List horizontal>{question.tags && question.tags.split(',').map((tag, i) => <QuestionListTag key={i} tag={{ text: tag, _id: i }} />)}</List>
                 </div>

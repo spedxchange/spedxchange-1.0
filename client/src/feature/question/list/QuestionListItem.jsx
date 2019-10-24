@@ -8,7 +8,7 @@ class QuestionListItem extends Component {
     const { question } = this.props;
     return (
       <Segment vertical>
-        <div className='flex-wrap'>
+        <div className='flex-box'>
           <div className='votes'>
             <div>
               <Statistic size='mini'>
@@ -29,7 +29,7 @@ class QuestionListItem extends Component {
             </h3>
             <div className='mb-3' dangerouslySetInnerHTML={{ __html: question.content }} />
             <div className='info'>
-              <div className='flex-wrap responsive'>
+              <div className='flex-box responsive'>
                 <div className='flex-item grow'>
                   <List horizontal>{question.tags && Object.values(question.tags).map((tag, idx) => <QuestionListTag key={idx} tag={tag} />)}</List>
                 </div>

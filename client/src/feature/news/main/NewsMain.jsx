@@ -32,7 +32,7 @@ class NewsMain extends Component {
     if (loading) return <PageLoader />;
     return (
       <>
-        <div className='flex-wrap-content'>
+        <div className='flex-box-content'>
           {articles &&
             articles.map(article => (
               <div key={article._id} className='column-3' onClick={() => this.handleArticleClick(article)}>

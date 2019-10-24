@@ -57,7 +57,7 @@ export class QuestionDetail extends Component {
       <>
         {currentQuestion && (
           <div className='question-detail'>
-            <div className='flex-wrap sm'>
+            <div className='flex-box sm'>
               <div className='grow'>
                 <h1 className='mb-1'>{currentQuestion.title}</h1>
                 <p>
@@ -71,7 +71,7 @@ export class QuestionDetail extends Component {
               </div>
             </div>
             <hr />
-            <div className='flex-wrap'>
+            <div className='flex-box'>
               <div className='text-center pr-3'>
                 <Icon name='caret up' color='grey' size='big' className='mr-0 pt-0'></Icon>
                 <div>5</div>

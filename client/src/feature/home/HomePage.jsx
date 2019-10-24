@@ -71,7 +71,7 @@ const HomePage = ({ history }) => {
         <Container>
           <h2>SPED&nbsp;Resources You&nbsp;Need</h2>
           <p>Check out what you can do by becoming a SPEDhunters member today!</p>
-          <div className='flex-wrap sm callout'>
+          <div className='flex-box sm callout'>
             <div className='grow'>
               <i className='icon-present text-primary'></i>
               <h3>Latest SPED Trends</h3>
@@ -83,7 +83,7 @@ const HomePage = ({ history }) => {
               <p>Let us do the work based on your preferences. We'll keep you up-to-date!</p>
             </div>
           </div>
-          <div className='flex-wrap sm callout'>
+          <div className='flex-box sm callout'>
             <div className='grow'>
               <i className='icon-camera'></i>
               <h3>Career Portfolio</h3>

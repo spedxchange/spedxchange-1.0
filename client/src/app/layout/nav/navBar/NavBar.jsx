@@ -47,11 +47,11 @@ class NavBar extends Component {
     const authenticated = auth.authenticated && auth.currentUser;
     return (
       <div className='app-header'>
-        <div className='flex-wrap'>
+        <div className='flex-box'>
           <Link className='brand' to='/'>
             <img src={logo} alt='SPEDxchange' />
           </Link>
-          <div className='flex-wrap grow nav-content'>
+          <div className='flex-box grow nav-content'>
             <button className='square' onClick={this.props.toggleSearchBar}>
               <Icon name='search' />
             </button>
