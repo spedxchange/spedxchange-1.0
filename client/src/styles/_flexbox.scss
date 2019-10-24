@@ -13,11 +13,35 @@
   &.column {
     flex-direction: column;
   }
+  &.start {
+    justify-content: flex-start;
+  }
+  &.end {
+    justify-content: flex-end;
+  }
+  &.center {
+    justify-content: center;
+  }
   &.between {
     justify-content: space-between;
   }
   &.around {
     justify-content: space-around;
+  }
+  &.evenly {
+    justify-content: space-evenly;
+  }
+  &.align-start {
+    align-items: flex-start;
+  }
+  &.align-end {
+    align-items: flex-end;
+  }
+  &.align-stretch {
+    align-items: stretch;
+  }
+  &.wrap {
+    flex-wrap: wrap;
   }
 }
 
@@ -34,11 +58,11 @@
 }
 
 // flex grid (wrap content)
-.flex-box-content {
+.flex-box-wrap {
   width: 100%;
   position: relative;
   display: flex;
-  flex-box: wrap;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;

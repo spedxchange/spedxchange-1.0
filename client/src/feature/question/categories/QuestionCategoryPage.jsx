@@ -11,7 +11,7 @@ class QuestionCategoryPage extends Component {
     const { loading, categories } = this.props;
     if (loading) return <PageLoader />;
     return (
-      <div className='question-categories flex-box-content'>
+      <div className='question-categories flex-box-wrap'>
         {categories &&
           categories.map(category => (
             <div key={category._id} className='column-3'>
