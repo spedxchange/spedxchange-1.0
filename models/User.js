@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -29,10 +30,20 @@ const UserSchema = new Schema({
     type: String,
     default: 'reader'
   },
+  reset_password_token: {
+    type: String
+  },
+  reset_password_expires: {
+    type: Date
+  },
   created: {
     type: Date,
     default: Date.now
   }
 });
+
+UserSchema.methods.comparePassword = function(password) {
+  return bcrypt.compareSync(password, this.hash_password);
+};
 
 module.exports = User = mongoose.model('user', UserSchema);
