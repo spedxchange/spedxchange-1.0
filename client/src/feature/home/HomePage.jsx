@@ -4,6 +4,7 @@ import { Button, Container } from 'semantic-ui-react';
 import NavBar from '../../app/layout/nav/navBar/NavBar';
 import SearchBar from '../../feature/search/searchBar/SearchBar';
 import AppFooter from '../../app/layout/footer/AppFooter';
+import NavMobile from '../../app/layout/nav/navMobile/NavMobile';
 
 // import { Segment, Container, Header, Icon, Button } from 'semantic-ui-react';
 
@@ -102,6 +103,7 @@ const HomePage = ({ history }) => {
       <div className='footer-wrap'>
         <AppFooter />
       </div>
+      <NavMobile />
     </>
   );
 };

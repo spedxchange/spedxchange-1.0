@@ -7,11 +7,11 @@ const mapState = state => {
 
 const actions = {};
 
-const About = () => {
-  return <h1>About Us</h1>;
+const Contact = () => {
+  return <h1>Contact Us</h1>;
 };
 
 export default connect(
   mapState,
   actions
-)(About);
+)(Contact);

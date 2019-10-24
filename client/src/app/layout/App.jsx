@@ -18,10 +18,15 @@ import NavMobile from './nav/navMobile/NavMobile';
 import NewsMain from '../../feature/news/main/NewsMain';
 import NewsArticle from '../../feature/news/article/NewsArticle';
 import QuestionForm from '../../feature/question/questionForm/QuestionForm';
-// import QuestionTabs from '../../feature/question/questionForm/QuestionTabs';
-
 import { UserIsAuthenticated } from './auth/AuthWrapper';
 import QuestionCategoryPage from '../../feature/question/categories/QuestionCategoryPage';
+import Scholarships from '../../feature/scholarships/Scholarships';
+import Resources from '../../feature/resources/Resources';
+import About from '../../feature/about/About';
+import Contact from '../../feature/contact/Contact';
+import Tags from '../../feature/tags/Tags';
+import People from '../../feature/people/People';
+import Jobs from '../../feature/jobs/Jobs';
 
 const mapState = state => ({
   auth: state.auth
@@ -46,12 +51,19 @@ class App extends Component {
                     <Route path='/questions/:uid/:slug' component={QuestionDetail} />
                     <Route path='/categories' component={QuestionCategoryPage} />
                     <Route path={['/ask', '/ask/:id', '/ask/:uid/:slug']} component={UserIsAuthenticated(QuestionForm)} />
-                    <Route exact path='/people' component={UserDashboard} />
+                    <Route exact path='/user' component={UserDashboard} />
                     <Route path='/profile/:id' component={UserIsAuthenticated(UserDetail)} />
                     <Route exact path='/settings' component={UserIsAuthenticated(SettingsDashboard)} />
                     <Route exact path='/test' component={TestComponent} />
                     <Route exact path='/news' component={NewsMain} />
                     <Route path='/news/:uid/:slug' component={NewsArticle} />
+                    <Route path='/scholarships' component={Scholarships} />
+                    <Route path='/resources' component={Resources} />
+                    <Route path='/about' component={About} />
+                    <Route path='/contact' component={Contact} />
+                    <Route path='/tags' component={Tags} />
+                    <Route path='/people' component={People} />
+                    <Route path='/jobs' component={Jobs} />
                   </Switch>
                 </div>
               </Container>

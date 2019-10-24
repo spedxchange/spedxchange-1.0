@@ -1,5 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { ScrollTo, ScrollArea } from 'react-scroll-to';
 import { toggleMobileNav, navItemClick } from '../navActions';
 import { openModal } from '../../modal/ModalActions';
@@ -35,6 +36,7 @@ class NavMobile extends Component {
 
       default:
         this.props.navItemClick(item);
+        this.props.history.push(item.link);
         break;
     }
   };
@@ -82,7 +84,7 @@ class NavMobile extends Component {
                 <span onClick={() => this.handleItemClick(navItems.jobs)}>Jobs</span>
               </li>
               {!authenticated && (
-                <Fragment>
+                <>
                   <li className='nav-spacer'></li>
                   <li>
                     <span onClick={() => this.handleItemClick('login')}>Login</span>
@@ -90,7 +92,7 @@ class NavMobile extends Component {
                   <li>
                     <span onClick={() => this.handleItemClick('signup')}>Sign Up</span>
                   </li>
-                </Fragment>
+                </>
               )}
             </ul>
           </ScrollArea>
@@ -100,7 +102,9 @@ class NavMobile extends Component {
   }
 }
 
-export default connect(
-  mapState,
-  actions
-)(NavMobile);
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(NavMobile)
+);

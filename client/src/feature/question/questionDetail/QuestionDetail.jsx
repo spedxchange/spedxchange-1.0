@@ -51,7 +51,7 @@ export class QuestionDetail extends Component {
   };
 
   render() {
-    const { currentQuestion, loading, auth, invalid, submitting, pristine } = this.props;
+    const { currentQuestion, loading, auth } = this.props;
     if (loading) return <PageLoader />;
     return (
       <>
