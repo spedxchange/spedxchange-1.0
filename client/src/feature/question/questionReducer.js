@@ -47,7 +47,6 @@ const fetchQuestionsPage = (state, payload) => {
 };
 
 const fetchQuestion = (state, payload) => {
-  console.log('fetchQuestion: ');
   return {
     ...state,
     currentQuestion: payload
@@ -55,7 +54,6 @@ const fetchQuestion = (state, payload) => {
 };
 
 const answerQuestion = (state, payload) => {
-  console.log('answerQuestion: ');
   return {
     ...state,
     currentQuestion: payload

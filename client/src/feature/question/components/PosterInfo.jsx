@@ -3,7 +3,6 @@ import moment from 'moment/moment.js';
 import { List, Image } from 'semantic-ui-react';
 
 const PosterInfo = info => {
-  console.log('PosterInfo: info: ', info);
   return (
     <>
       {info && (

@@ -21,8 +21,11 @@ const validate = combineValidators({
 
 class AnswerForm extends Component {
   onSubmit = values => {
-    console.log('onSubmit', values);
+    // console.log('onSubmit', values);
     this.props.answerQuestion(this.props.question._id, values);
+    setTimeout(() => {
+      this.props.reload(this.props.question.uid, this.props.question.slug);
+    }, 150);
   };
 
   render() {

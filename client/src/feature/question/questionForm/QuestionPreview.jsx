@@ -7,7 +7,6 @@ class QuestionPreview extends Component {
   render() {
     const { question, user } = this.props;
     const now = new Date();
-    console.log('QuestionPreview: question: ', question);
     return (
       <Segment vertical>
         <div className='flex-box'>

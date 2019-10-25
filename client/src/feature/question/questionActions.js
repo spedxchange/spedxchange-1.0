@@ -12,13 +12,8 @@ export const createQuestion = question => {
   const body = JSON.stringify(question);
   return async dispatch => {
     try {
+      dispatch(asyncActionStart());
       await dispatch(reset('questionForm'));
-      dispatch({
-        type: QUESTION_SUBMITED
-      });
-      dispatch({
-        type: CLEAR_TAGS
-      });
       await axios.post(`/api/questions`, body, config);
       dispatch({
         type: CREATE_QUESTION,
@@ -26,11 +21,16 @@ export const createQuestion = question => {
           question
         }
       });
-      dispatch(asyncActionFinish());
       toastr.success('Success!', 'Question has been created');
+      dispatch({
+        type: QUESTION_SUBMITED
+      });
+      dispatch({
+        type: CLEAR_TAGS
+      });
+      dispatch(asyncActionFinish());
     } catch (error) {
       dispatch(asyncActionError());
-      toastr.error('Error!', 'error');
     }
   };
 };
@@ -102,7 +102,6 @@ export const loadQuestionsByPage = page => {
 };
 
 export const loadQuestionBySlug = (uid, slug) => {
-  console.log('loadQuestionBySlug: ', uid, slug);
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
@@ -145,7 +144,6 @@ export const loadQuestionById = id => {
 };
 
 export const answerQuestion = (id, answer) => {
-  console.log('answerQuestion: ', id);
   const config = HEADER_JSON;
   const body = JSON.stringify(answer);
 

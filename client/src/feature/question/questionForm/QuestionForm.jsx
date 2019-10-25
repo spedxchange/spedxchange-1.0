@@ -6,6 +6,7 @@ import { Form, Button, Icon } from 'semantic-ui-react';
 import { createQuestion, updateQuestion } from '../questionActions';
 import { handleEditorUpdate } from './actions/questionFormActions';
 import { handleTabChange, handleSelectCategory, handleUpdateTagNames } from './actions/questionFormActions';
+// import { asyncActionStart } from '../../../app/common/async/asyncActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
 import { loadQuestionBySlug } from '../questionActions';
 import { openModal } from '../../../app/layout/modal/ModalActions';
@@ -99,7 +100,9 @@ class QuestionForm extends Component {
     } else {
       this.props.createQuestion(formValues);
     }
-    this.props.history.push(`/questions/${formValues.uid}/${formValues.slug}`);
+    setTimeout(() => {
+      this.props.history.push(`/questions/${formValues.uid}/${formValues.slug}`);
+    }, 150);
   };
 
   createPreviewData = () => {

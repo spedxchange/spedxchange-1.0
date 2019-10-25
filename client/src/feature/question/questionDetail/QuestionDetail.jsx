@@ -24,7 +24,7 @@ class QuestionDetail extends Component {
   }
 
   render() {
-    const { auth, history, loading, question } = this.props;
+    const { auth, history, loading, question, loadQuestionBySlugAsView } = this.props;
     if (loading) return <PageLoader />;
     return (
       <>
@@ -67,7 +67,7 @@ class QuestionDetail extends Component {
                   <hr />
                 </div>
               ))}
-            {auth.authenticated && <AnswerForm question={question} />}
+            {auth.authenticated && <AnswerForm question={question} reload={loadQuestionBySlugAsView} />}
           </div>
         )}
       </>

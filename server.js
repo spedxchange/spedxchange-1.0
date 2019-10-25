@@ -6,7 +6,7 @@ const app = express();
 const mime = require('mime-types');
 
 // configure environment
-console.log('process: ', process.env.NODE_ENV);
+// console.log('process: ', process.env.NODE_ENV);
 if (!process.env.NODE_ENV) {
   // console.log('do process...');
   const dotenv = require('dotenv');
@@ -75,5 +75,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

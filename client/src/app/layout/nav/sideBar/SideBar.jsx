@@ -13,7 +13,6 @@ class SideBar extends Component {
 
   onRouteChanged() {
     const pathRoot = '/' + this.props.match.url.split('/')[1];
-    console.log('onRouteChanged: pathRoot: ', pathRoot);
     this.setState({ activeItem: pathRoot });
   }
 
