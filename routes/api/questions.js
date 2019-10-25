@@ -116,6 +116,49 @@ router.get('/:uid/:slug', async (req, res) => {
   }
 });
 
+// @route    GET api/questions/:uid/:slug
+// @desc     Get Question by Id
+// @access   Public
+router.get('/view/:uid/:slug', async (req, res) => {
+  try {
+    const question = await Question.findOne({
+      uid: req.params.uid,
+      slug: req.params.slug
+    })
+      .populate({
+        path: 'user',
+        select: ['displayName', 'avatar']
+      })
+      .populate({
+        path: 'categories',
+        select: 'text'
+      })
+      .populate({
+        path: 'tags',
+        select: 'text'
+      })
+      .populate({
+        path: 'answers'
+      });
+
+    if (!question) {
+      return res.status(404).json({ msg: 'Question not found' });
+    }
+
+    question.viewCount++;
+    await question.save();
+    console.log('question: ', question);
+
+    res.json(question);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Question not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route    GET api/questions/:question_id
 // @desc     Get Question by Id
 // @access   Public

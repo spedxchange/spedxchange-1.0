@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { loadQuestionBySlug } from '../questionActions';
+import { loadQuestionBySlugAsView } from '../questionActions';
 import { Button, Icon } from 'semantic-ui-react';
 import moment from 'moment/moment.js';
 import PageLoader from '../../../app/layout/PageLoader';
@@ -14,13 +14,13 @@ const mapState = state => ({
 });
 
 const actions = {
-  loadQuestionBySlug
+  loadQuestionBySlugAsView
 };
 
 class QuestionDetail extends Component {
   componentDidMount() {
     const { uid, slug } = this.props.match.params;
-    this.props.loadQuestionBySlug(uid, slug);
+    this.props.loadQuestionBySlugAsView(uid, slug);
   }
 
   render() {

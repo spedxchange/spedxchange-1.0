@@ -8,7 +8,6 @@ import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../app
 import { toastr } from 'react-redux-toastr';
 
 export const createQuestion = question => {
-  // console.log('createQuestion: question: ', question);
   const config = HEADER_JSON;
   const body = JSON.stringify(question);
   return async dispatch => {
@@ -108,6 +107,20 @@ export const loadQuestionBySlug = (uid, slug) => {
     try {
       dispatch(asyncActionStart());
       const question = await axios.get(`/api/questions/${uid}/${slug}`);
+      dispatch({ type: FETCH_QUESTION, payload: question.data });
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      console.log(error);
+      dispatch(asyncActionError());
+    }
+  };
+};
+
+export const loadQuestionBySlugAsView = (uid, slug) => {
+  return async dispatch => {
+    try {
+      dispatch(asyncActionStart());
+      const question = await axios.get(`/api/questions/view/${uid}/${slug}`);
       dispatch({ type: FETCH_QUESTION, payload: question.data });
       dispatch(asyncActionFinish());
     } catch (error) {
