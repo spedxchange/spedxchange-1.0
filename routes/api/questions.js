@@ -15,7 +15,7 @@ const Category = require('../../models/Category');
 // @access   Public
 router.get('/', async (req, res) => {
   try {
-    const questionCount = await Question.count();
+    const questionCount = await Question.countDocuments();
     const questions = await Question.find()
       .sort({ updated: -1 })
       .populate({
@@ -48,7 +48,7 @@ router.get('/page/:page', async (req, res) => {
     const resPerPage = 20;
     const page = req.params.page || 1;
 
-    const questionCount = await Question.count();
+    const questionCount = await Question.countDocuments();
     const questions = await Question.find()
       .skip(resPerPage * page - resPerPage)
       .limit(resPerPage)

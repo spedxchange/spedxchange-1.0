@@ -11,9 +11,6 @@ const mapState = state => ({
   activePage: state.questions.page,
   boundaryRange: 1,
   siblingRange: 1,
-  showEllipsis: true,
-  showFirstAndLastNav: true,
-  showPreviousAndNextNav: true,
   totalPages: state.questions.pages
 });
 
@@ -25,20 +22,7 @@ class QuestionList extends Component {
   };
 
   render() {
-    console.log('QuestionList: this.props: ', this.props);
-    const {
-      loading,
-      history,
-      questions,
-      questionCount,
-      activePage,
-      boundaryRange,
-      siblingRange,
-      showEllipsis,
-      showFirstAndLastNav,
-      showPreviousAndNextNav,
-      totalPages
-    } = this.props;
+    const { loading, history, questions, questionCount, activePage, boundaryRange, siblingRange, totalPages } = this.props;
     return (
       <>
         <div className='question-head'>
@@ -68,12 +52,12 @@ class QuestionList extends Component {
             activePage={activePage || 1}
             boundaryRange={boundaryRange}
             siblingRange={siblingRange}
-            ellipsisItem={showEllipsis}
             totalPages={totalPages}
-            firstItem={showFirstAndLastNav}
-            lastItem={showFirstAndLastNav}
-            prevItem={showPreviousAndNextNav}
-            nextItem={showPreviousAndNextNav}
+            ellipsisItem={totalPages > 5 ? undefined : null}
+            firstItem={null}
+            lastItem={null}
+            prevItem={totalPages > 5 ? undefined : null}
+            nextItem={totalPages > 5 ? undefined : null}
           />
         )}
       </>

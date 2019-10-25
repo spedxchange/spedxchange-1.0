@@ -2,7 +2,8 @@ import { createReducer } from '../../app/common/util/ReducerUtil';
 import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION_PAGE, FETCH_QUESTION, ANSWER_QUESTION } from './questionConstants';
 
 const initialState = {
-  page: 1
+  page: 1,
+  pages: 1
 };
 
 const createQuestion = (state, payload) => {
