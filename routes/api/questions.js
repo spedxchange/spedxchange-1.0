@@ -11,11 +11,11 @@ const Tag = require('../../models/Tag');
 const Category = require('../../models/Category');
 
 // @route    GET api/questions
-// @desc     Get all Questions
+// @desc     Get all Questions and Question Document Count
 // @access   Public
 router.get('/', async (req, res) => {
   try {
-    const questionCount = await Question.countDocuments();
+    const questionCount = await Question.count();
     const questions = await Question.find()
       .sort({ updated: -1 })
       .populate({
@@ -31,6 +31,43 @@ router.get('/', async (req, res) => {
         select: 'text'
       });
     res.json({
+      questionCount: questionCount,
+      questions: questions
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    GET api/questions/page/:page
+// @desc     Get all Questions
+// @access   Public
+router.get('/page/:page', async (req, res) => {
+  try {
+    const resPerPage = 20;
+    const page = req.params.page || 1;
+
+    const questionCount = await Question.count();
+    const questions = await Question.find()
+      .skip(resPerPage * page - resPerPage)
+      .limit(resPerPage)
+      .sort({ updated: -1 })
+      .populate({
+        path: 'user',
+        select: ['displayName', 'avatar']
+      })
+      .populate({
+        path: 'categories',
+        select: 'text'
+      })
+      .populate({
+        path: 'tags',
+        select: 'text'
+      });
+    res.json({
+      page: page,
+      pages: Math.ceil(questionCount / resPerPage),
       questionCount: questionCount,
       questions: questions
     });
@@ -164,24 +201,27 @@ router.post('/', auth, async (req, res) => {
     }
 
     // Handle category
-    const qCategory = category ? category.toLowerCase().trim() : 'no category';
-    let existingCategory = await Category.findOne({ text: qCategory });
+    const questionCategory = category ? category.toLowerCase().trim() : 'General Special Education';
+    const existingCategory = await Category.findOne({ text: questionCategory });
+
     if (!existingCategory) {
-      const newCategory = new Category({
-        text: qCategory,
-        questionCount: 1,
-        questions: question._id
-      });
-      const createdCategory = await newCategory.save();
-      question.category = createdCategory._id;
-      await question.save();
+      const generalCategory = await Category.findOne({ text: 'General Special Education' });
+      if (!generalCategory) {
+        res.status(500).send('Category Error');
+      }
+      generalCategory.questions.push(question._id);
+      generalCategory.questionCount++;
+      await generalCategory.save();
+      console.log('generalCategory: ', generalCategory);
+      question.category = generalCategory._id;
     } else {
       existingCategory.questions.push(question._id);
       existingCategory.questionCount++;
       await existingCategory.save();
+      console.log('existingCategory: ', existingCategory);
       question.category = existingCategory._id;
-      await question.save();
     }
+    await question.save();
 
     res.json(question);
   } catch (err) {

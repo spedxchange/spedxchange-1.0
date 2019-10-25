@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createQuestion, updateQuestion, loadQuestions } from '../questionActions';
+import { createQuestion, updateQuestion, loadQuestionsByPage } from '../questionActions';
 import PageLoader from '../../../app/layout/PageLoader';
 import QuestionList from '../list/QuestionList';
 
 const mapState = state => ({
+  page: state.questions.page,
+  pages: state.questions.pages,
   questions: state.questions.questions,
   questionCount: state.questions.questionCount,
   loading: state.async.loading
@@ -13,12 +15,12 @@ const mapState = state => ({
 const actions = {
   createQuestion,
   updateQuestion,
-  loadQuestions
+  loadQuestionsByPage
 };
 
 class QuestionDashboard extends Component {
   componentDidMount() {
-    this.props.loadQuestions();
+    this.props.loadQuestionsByPage(this.props.page || 1);
   }
 
   render() {
@@ -27,7 +29,7 @@ class QuestionDashboard extends Component {
     return (
       <div className='questions-dashboard flex-box md'>
         <div className='grow'>
-          <QuestionList />
+          <QuestionList loadPage={this.props.loadQuestionsByPage} />
         </div>
       </div>
     );

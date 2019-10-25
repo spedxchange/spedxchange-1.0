@@ -1,7 +1,9 @@
 import { createReducer } from '../../app/common/util/ReducerUtil';
-import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION, ANSWER_QUESTION } from './questionConstants';
+import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION_PAGE, FETCH_QUESTION, ANSWER_QUESTION } from './questionConstants';
 
-const initialState = {};
+const initialState = {
+  page: 1
+};
 
 const createQuestion = (state, payload) => {
   return {
@@ -32,6 +34,16 @@ const fetchQuestions = (state, payload) => {
   };
 };
 
+const fetchQuestionsPage = (state, payload) => {
+  return {
+    ...state,
+    page: payload.page,
+    pages: payload.pages,
+    questionCount: payload.questionCount,
+    questions: payload.questions
+  };
+};
+
 const fetchQuestion = (state, payload) => {
   console.log('fetchQuestion: ');
   return {
@@ -53,6 +65,7 @@ export default createReducer(initialState, {
   [UPDATE_QUESTION]: updateQuestion,
   [DELETE_QUESTION]: deleteQuestion,
   [FETCH_QUESTIONS]: fetchQuestions,
+  [FETCH_QUESTION_PAGE]: fetchQuestionsPage,
   [FETCH_QUESTION]: fetchQuestion,
   [ANSWER_QUESTION]: answerQuestion
 });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { reset } from 'redux-form';
 import { HEADER_JSON } from '../../app/api/apiConstants';
-import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION, ANSWER_QUESTION } from './questionConstants';
+import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION_PAGE, FETCH_QUESTION, ANSWER_QUESTION } from './questionConstants';
 import { QUESTION_SUBMITED } from './questionForm/actions/questionFormConstants';
 import { CLEAR_TAGS } from '../../app/common/form/actions/tagInputConstants';
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../app/common/async/asyncActions';
@@ -80,6 +80,20 @@ export const loadQuestions = () => {
       dispatch(asyncActionStart());
       const questions = await axios.get('/api/questions');
       dispatch({ type: FETCH_QUESTIONS, payload: questions.data });
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      console.log(error);
+      dispatch(asyncActionError());
+    }
+  };
+};
+
+export const loadQuestionsByPage = page => {
+  return async dispatch => {
+    try {
+      dispatch(asyncActionStart());
+      const questions = await axios.get(`/api/questions/page/${page}`);
+      dispatch({ type: FETCH_QUESTION_PAGE, payload: questions.data });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);

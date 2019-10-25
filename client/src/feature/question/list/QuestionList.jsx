@@ -8,27 +8,37 @@ const mapState = state => ({
   questions: state.questions.questions,
   questionCount: state.questions.questionCount,
   loading: state.async.loading,
-  pagination: {
-    activePage: 1,
-    boundaryRange: 1,
-    siblingRange: 1,
-    showEllipsis: true,
-    showFirstAndLastNav: false,
-    showPreviousAndNextNav: true,
-    totalPages: 20
-  }
+  activePage: state.questions.page,
+  boundaryRange: 1,
+  siblingRange: 1,
+  showEllipsis: true,
+  showFirstAndLastNav: true,
+  showPreviousAndNextNav: true,
+  totalPages: state.questions.pages
 });
 
 const actions = {};
 
 class QuestionList extends Component {
   handlePaginationChange = (e, { activePage }) => {
-    this.setState({ activePage: activePage });
+    this.props.loadPage(activePage);
   };
 
   render() {
-    const { history, questions, questionCount } = this.props;
-    const { activePage, boundaryRange, siblingRange, showEllipsis, showFirstAndLastNav, showPreviousAndNextNav, totalPages } = this.props.pagination;
+    console.log('QuestionList: this.props: ', this.props);
+    const {
+      loading,
+      history,
+      questions,
+      questionCount,
+      activePage,
+      boundaryRange,
+      siblingRange,
+      showEllipsis,
+      showFirstAndLastNav,
+      showPreviousAndNextNav,
+      totalPages
+    } = this.props;
     return (
       <>
         <div className='question-head'>
@@ -50,20 +60,22 @@ class QuestionList extends Component {
           </div>
         </div>
         {questions && questions.map(question => <QuestionListItem key={question._id} question={question} />)}
-        <Pagination
-          className='questions'
-          size='mini'
-          onPageChange={this.handlePaginationChange}
-          activePage={activePage}
-          boundaryRange={boundaryRange}
-          siblingRange={siblingRange}
-          ellipsisItem={showEllipsis ? undefined : null}
-          totalPages={totalPages}
-          firstItem={showFirstAndLastNav ? undefined : null}
-          lastItem={showFirstAndLastNav ? undefined : null}
-          prevItem={showPreviousAndNextNav ? undefined : null}
-          nextItem={showPreviousAndNextNav ? undefined : null}
-        />
+        {!loading && totalPages > 1 && (
+          <Pagination
+            className='questions'
+            size='mini'
+            onPageChange={this.handlePaginationChange}
+            activePage={activePage || 1}
+            boundaryRange={boundaryRange}
+            siblingRange={siblingRange}
+            ellipsisItem={showEllipsis}
+            totalPages={totalPages}
+            firstItem={showFirstAndLastNav}
+            lastItem={showFirstAndLastNav}
+            prevItem={showPreviousAndNextNav}
+            nextItem={showPreviousAndNextNav}
+          />
+        )}
       </>
     );
   }
