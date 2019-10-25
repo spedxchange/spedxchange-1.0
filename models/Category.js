@@ -20,6 +20,6 @@ const CategorySchema = new Schema({
       ref: 'question'
     }
   ]
-}).index({ description: 'text' });
+});
 
 module.exports = Category = mongoose.model('category', CategorySchema);
