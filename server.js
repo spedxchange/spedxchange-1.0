@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
+const mime = require('mime-types');
 
 // configure environment
 console.log('process: ', process.env.NODE_ENV);
@@ -58,10 +59,21 @@ app.use('/api/roles', require('./routes/api/roles'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-  app.use('/client/build/static', express.static(path.join(__dirname, 'client/build/static')));
   app.use(express.static('client/build'));
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    // console.log('req.url', req.url);
+    // console.log('req.path', req.path);
+    if (req.url.indexOf('.') > -1) {
+      const type = mime.contentType(path.extname(req.url));
+      // console.log('type: ', type);
+      if (type) {
+        res.header('Content-Type', type);
+        // console.log('path: ', path.join(__dirname, req.url));
+        res.sendFile(path.join(__dirname, req.url));
+      }
+    } else {
+      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    }
   });
 }
 
