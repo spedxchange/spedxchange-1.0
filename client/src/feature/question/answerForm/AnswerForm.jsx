@@ -1,18 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
+import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
+import { Form, Button } from 'semantic-ui-react';
+import { answerQuestion } from '../questionActions';
+import EditorInput from '../../../app/common/form/EditorInput';
 
-const mapState = state => ({});
+const actions = {
+  answerQuestion
+};
 
-const actions = {};
+const validate = combineValidators({
+  content: composeValidators(
+    isRequired({ message: 'Answer is required' }),
+    hasLengthGreaterThan(55)({
+      message: 'Please provide more detail in your answer.'
+    })
+  )()
+});
 
-export class AnswerForm extends Component {
+class AnswerForm extends Component {
+  onSubmit = values => {
+    console.log('onSubmit', values);
+    this.props.answerQuestion(this.props.question._id, values);
+  };
+
   render() {
-    return <div></div>;
+    return (
+      <>
+        <h5 className='my-1'>Your Answer</h5>
+        <hr />
+        <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
+          <Field name='content' component={EditorInput} />
+          <Button positive type='submit' className='mt-2 mb-5'>
+            Submit Answer
+          </Button>
+        </Form>
+      </>
+    );
   }
 }
 
 export default connect(
-  mapState,
+  null,
   actions
-)(AnswerForm);
+)(reduxForm({ form: 'answerForm', validate })(AnswerForm));

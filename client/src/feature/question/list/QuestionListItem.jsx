@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Segment, Statistic, List, Image } from 'semantic-ui-react';
-import QuestionListTag from './QuestionListTag';
-import moment from 'moment/moment.js';
+import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
+import { Segment, List, Image } from 'semantic-ui-react';
 import { truncateText } from '../../../app/common/util/truncateText';
+import moment from 'moment/moment.js';
+import QuestionListTag from './QuestionListTag';
 import QuestionStats from '../components/QuestionStats';
+
 class QuestionListItem extends Component {
   render() {
     const { question } = this.props;
@@ -13,14 +16,11 @@ class QuestionListItem extends Component {
           <QuestionStats question={question} />
           <div className='grow info'>
             <h3>
-              <a href={`/questions/${question.uid}/${question.slug}`}>{question.title}</a>
+              <Link to={`/questions/${question.uid}/${question.slug}`}>{question.title}</Link>
             </h3>
             <div className='mb-3'>{truncateText(question.rawText)}</div>
             <div className='info'>
-              <div className='flex-box responsive'>
-                <div className='grow'>
-                  <List horizontal>{question.tags && Object.values(question.tags).map((tag, idx) => <QuestionListTag key={idx} tag={tag} />)}</List>
-                </div>
+              <div className='flex-box'>
                 <div className='user'>
                   <div>
                     <List horizontal>
@@ -31,6 +31,9 @@ class QuestionListItem extends Component {
                     </List>
                   </div>
                   {question.updated && <div className='asked'>asked {moment(question.updated).from()}</div>}
+                </div>{' '}
+                <div className='grow'>
+                  <List horizontal>{question.tags && Object.values(question.tags).map((tag, idx) => <QuestionListTag key={idx} tag={tag} />)}</List>
                 </div>
               </div>
             </div>
@@ -41,4 +44,4 @@ class QuestionListItem extends Component {
   }
 }
 
-export default QuestionListItem;
+export default withRouter(connect()(QuestionListItem));

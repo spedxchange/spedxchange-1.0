@@ -13,19 +13,19 @@ export const createQuestion = question => {
   const body = JSON.stringify(question);
   return async dispatch => {
     try {
-      await axios.post(`/api/questions`, body, config);
-      dispatch({
-        type: CREATE_QUESTION,
-        payload: {
-          question
-        }
-      });
       await dispatch(reset('questionForm'));
       dispatch({
         type: QUESTION_SUBMITED
       });
       dispatch({
         type: CLEAR_TAGS
+      });
+      await axios.post(`/api/questions`, body, config);
+      dispatch({
+        type: CREATE_QUESTION,
+        payload: {
+          question
+        }
       });
       dispatch(asyncActionFinish());
       toastr.success('Success!', 'Question has been created');
@@ -43,15 +43,18 @@ export const updateQuestion = question => {
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
+      dispatch({
+        type: QUESTION_SUBMITED
+      });
+      dispatch({
+        type: CLEAR_TAGS
+      });
       await axios.put(`/api/questions/${question._id}`, body, config);
       dispatch({
         type: UPDATE_QUESTION,
         payload: {
           question
         }
-      });
-      dispatch({
-        type: QUESTION_SUBMITED
       });
       dispatch(asyncActionFinish());
       toastr.success('Success!', 'Question has been updated');
@@ -76,7 +79,6 @@ export const loadQuestions = () => {
     try {
       dispatch(asyncActionStart());
       const questions = await axios.get('/api/questions');
-      // console.log(questions.data);
       dispatch({ type: FETCH_QUESTIONS, payload: questions.data });
       dispatch(asyncActionFinish());
     } catch (error) {

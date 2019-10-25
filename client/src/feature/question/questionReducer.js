@@ -1,29 +1,26 @@
 import { createReducer } from '../../app/common/util/ReducerUtil';
 import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION, ANSWER_QUESTION } from './questionConstants';
 
-const initialState = {
-  questions: [],
-  currentQuestion: null
-};
+const initialState = {};
 
 const createQuestion = (state, payload) => {
   return {
     ...state,
-    currentQuestion: payload
+    questions: [...state.questions, payload.question]
   };
 };
 
 const updateQuestion = (state, payload) => {
   return {
     ...state,
-    currentQuestion: payload
+    questions: [...state.questions.filter(question => question._id !== payload.question._id), payload.question]
   };
 };
 
 const deleteQuestion = (state, payload) => {
   return {
     ...state,
-    currentQuestion: payload
+    questions: [...state.questions.filter(question => question._id !== payload.questionId)]
   };
 };
 
