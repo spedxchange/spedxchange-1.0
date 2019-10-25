@@ -63,6 +63,8 @@ if (process.env.NODE_ENV === 'production') {
     const hasExtension = req.url.indexOf('.') > -1;
     const type = hasExtension ? mime.contentType(path.extname(req.url)) : null;
     if (hasExtension && type) {
+      // res.set('Access-Control-Allow-Headers', 'Content-Type');
+      // res.set('Content-Type', type);
       res.header('Access-Control-Allow-Headers', 'Content-Type');
       res.header('Content-Type', type);
       res.sendFile(path.join(__dirname, req.url));
