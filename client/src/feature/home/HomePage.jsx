@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Button, Container } from 'semantic-ui-react';
 
 import NavBar from '../../app/layout/nav/navBar/NavBar';
@@ -29,9 +30,13 @@ const HomePage = ({ history }) => {
             that enable growth and discovery.
           </h2>
           <div className='actions'>
-            <Button>For Educators</Button>
-            <Button color='purple'>For Students</Button>
-            <Button color='green'>For Schools</Button>
+            <Button onClick={() => history.push('/news')}>For Educators</Button>
+            <Button color='purple' onClick={() => history.push('/news')}>
+              For Students
+            </Button>
+            <Button color='green' onClick={() => history.push('/news')}>
+              For Schools
+            </Button>
           </div>
         </Container>
       </section>
@@ -49,7 +54,9 @@ const HomePage = ({ history }) => {
           <p>
             <span className='text-warning'>Sign up</span> today and you will also have access to exclusive content.
           </p>
-          <Button color='purple'>Read Our Latest news...</Button>
+          <Button color='purple' onClick={() => history.push('/news')}>
+            Read Our Latest news...
+          </Button>
         </Container>
       </section>
 
@@ -64,7 +71,9 @@ const HomePage = ({ history }) => {
             challenges are successful. We are not recruiters, we are experts in the process of matching districts and open positions. We use our technology and social media
             community to make that happen.
           </p>
-          <Button color='orange'>Learn More!</Button>
+          <Button color='orange' onClick={() => history.push('/about')}>
+            Learn More!
+          </Button>
         </Container>
       </section>
 
@@ -96,7 +105,9 @@ const HomePage = ({ history }) => {
               <p>Better understand the job market and openings across the united states.</p>
             </div>
           </div>
-          <Button color='blue'>Visit Our Resource Center...</Button>
+          <Button color='blue' onClick={() => history.push('/resources')}>
+            Visit Our Resource Center...
+          </Button>
         </Container>
       </section>
 
@@ -122,4 +133,4 @@ const HomePage = ({ history }) => {
 
 */
 
-export default HomePage;
+export default withRouter(HomePage);
