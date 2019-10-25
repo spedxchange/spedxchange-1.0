@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react';
 import { loadArticle, loadArticles } from '../newsActions';
 import PageLoader from '../../../app/layout/PageLoader';
@@ -65,9 +66,9 @@ export class NewsArticle extends Component {
                   <div className='related'>
                     {articles &&
                       articles.slice(0, 5).map(article => (
-                        <a key={article._id} href='/'>
+                        <Link key={article._id} to={`/news/${article.uid}/${article.slug}`}>
                           {article.title}
-                        </a>
+                        </Link>
                       ))}
                   </div>
                 </div>
@@ -91,7 +92,9 @@ export class NewsArticle extends Component {
   }
 }
 
-export default connect(
-  mapState,
-  actions
-)(NewsArticle);
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(NewsArticle)
+);
