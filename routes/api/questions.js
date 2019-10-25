@@ -147,7 +147,7 @@ router.get('/view/:uid/:slug', async (req, res) => {
 
     question.viewCount++;
     await question.save();
-    console.log('question: ', question);
+    // console.log('question: ', question);
 
     res.json(question);
   } catch (err) {
