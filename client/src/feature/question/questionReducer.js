@@ -2,8 +2,9 @@ import { createReducer } from '../../app/common/util/ReducerUtil';
 import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FETCH_QUESTION_PAGE, FETCH_QUESTION, ANSWER_QUESTION } from './questionConstants';
 
 const initialState = {
-  page: 1,
-  pages: 1
+  activePage: 1,
+  totalPages: 1,
+  questionCount: 0
 };
 
 const createQuestion = (state, payload) => {
@@ -38,8 +39,8 @@ const fetchQuestions = (state, payload) => {
 const fetchQuestionsPage = (state, payload) => {
   return {
     ...state,
-    page: payload.page,
-    pages: payload.pages,
+    activePage: payload.activePage,
+    totalPages: payload.totalPages,
     questionCount: payload.questionCount,
     questions: payload.questions
   };

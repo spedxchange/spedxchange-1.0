@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { loadQuestionBySlug } from '../questionActions';
 import { Button, Icon } from 'semantic-ui-react';
 import moment from 'moment/moment.js';
@@ -21,8 +22,9 @@ class QuestionDetail extends Component {
     const { uid, slug } = this.props.match.params;
     this.props.loadQuestionBySlug(uid, slug);
   }
+
   render() {
-    const { auth, loading, question } = this.props;
+    const { auth, history, loading, question } = this.props;
     if (loading) return <PageLoader />;
     return (
       <>
@@ -38,7 +40,9 @@ class QuestionDetail extends Component {
                 </p>
               </div>
               <div>
-                <Button color='green'>Ask Question</Button>
+                <Button color='green' onClick={() => history.push('/ask')}>
+                  Ask Question
+                </Button>
               </div>
             </div>
             <hr />
@@ -71,7 +75,9 @@ class QuestionDetail extends Component {
   }
 }
 
-export default connect(
-  mapState,
-  actions
-)(QuestionDetail);
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(QuestionDetail)
+);

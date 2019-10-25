@@ -66,8 +66,8 @@ router.get('/page/:page', async (req, res) => {
         select: 'text'
       });
     res.json({
-      page: page,
-      pages: Math.ceil(questionCount / resPerPage),
+      activePage: page,
+      totalPages: Math.ceil(questionCount / resPerPage),
       questionCount: questionCount,
       questions: questions
     });
@@ -81,7 +81,6 @@ router.get('/page/:page', async (req, res) => {
 // @desc     Get Question by Id
 // @access   Public
 router.get('/:uid/:slug', async (req, res) => {
-  console.log('get: /:uid/:slug');
   try {
     const question = await Question.findOne({
       uid: req.params.uid,
@@ -212,13 +211,11 @@ router.post('/', auth, async (req, res) => {
       generalCategory.questions.push(question._id);
       generalCategory.questionCount++;
       await generalCategory.save();
-      console.log('generalCategory: ', generalCategory);
       question.category = generalCategory._id;
     } else {
       existingCategory.questions.push(question._id);
       existingCategory.questionCount++;
       await existingCategory.save();
-      console.log('existingCategory: ', existingCategory);
       question.category = existingCategory._id;
     }
     await question.save();
@@ -289,13 +286,11 @@ router.post('/admin/:user_id', auth, async (req, res) => {
       generalCategory.questions.push(question._id);
       generalCategory.questionCount++;
       await generalCategory.save();
-      console.log('generalCategory: ', generalCategory);
       question.category = generalCategory._id;
     } else {
       existingCategory.questions.push(question._id);
       existingCategory.questionCount++;
       await existingCategory.save();
-      console.log('existingCategory: ', existingCategory);
       question.category = existingCategory._id;
     }
     await question.save();

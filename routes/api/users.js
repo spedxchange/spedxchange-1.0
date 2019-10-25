@@ -64,9 +64,7 @@ router.post('/', async (req, res) => {
       let role;
       for (role of roles) {
         const newRole = await Role.findOne({ type: role });
-        console.log('newRole: ', newRole);
         if (newRole) {
-          console.log('newRole._id: ', newRole._id), user.roles.push(newRole._id);
         }
       }
     } else {

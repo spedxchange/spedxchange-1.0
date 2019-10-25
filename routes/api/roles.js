@@ -41,7 +41,6 @@ router.get('/:role_id', async (req, res) => {
 // @desc     Create Tag
 // @access   Public
 router.post('/', async (req, res) => {
-  console.log('req.body: ', req.body);
   try {
     const newRole = new Role({
       type: req.body.type,
