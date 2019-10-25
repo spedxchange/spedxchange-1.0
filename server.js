@@ -61,16 +61,11 @@ app.use('/api/roles', require('./routes/api/roles'));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   app.get('*', (req, res) => {
-    // console.log('req.url', req.url);
-    // console.log('req.path', req.path);
-    if (req.url.indexOf('.') > -1) {
-      const type = mime.contentType(path.extname(req.url));
-      // console.log('type: ', type);
-      if (type) {
-        res.header('Content-Type', type);
-        // console.log('path: ', path.join(__dirname, req.url));
-        res.sendFile(path.join(__dirname, req.url));
-      }
+    const hasExtension = req.url.indexOf('.') > -1;
+    const type = hasExtension ? mime.contentType(path.extname(req.url)) : null;
+    if (hasExtension && type) {
+      res.header('Content-Type', type);
+      res.sendFile(path.join(__dirname, req.url));
     } else {
       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     }
