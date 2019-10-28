@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import JobsForm from './JobsForm';
 
-const mapState = state => {
-  return {};
-};
+const mapState = state => ({
+  backfillJobs: state.jobs.backfillJobs
+});
 
-const actions = {};
+export class Jobs extends Component {
+  render() {
+    const { backfillJobs } = this.props;
+    return (
+      <>
+        <JobsForm />
+        <hr />
+        {backfillJobs && backfillJobs.length > 0 && (
+          <>
+            <p>Jobs List</p>
+            <p>Jobs List</p>
+          </>
+        )}
+      </>
+    );
+  }
+}
 
-const Jobs = () => {
-  return <h1>Jobs</h1>;
-};
-
-export default connect(
-  mapState,
-  actions
-)(Jobs);
+export default connect(mapState)(Jobs);
