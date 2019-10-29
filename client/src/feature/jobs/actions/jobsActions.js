@@ -19,6 +19,10 @@ const defaultParams = {
   page: 1
 };
 
+const checkNode = node => {
+  return node ? node.innerHTML.trim() : '';
+};
+
 export const fetchBackfillJobs = params => {
   const requestParams = params ? params : defaultParams;
   requestParams.r = requestParams.r ? requestParams.r : 50;
@@ -26,6 +30,7 @@ export const fetchBackfillJobs = params => {
   requestParams.page = requestParams.page ? requestParams.page : 1;
   const queryString = qs.stringify(requestParams);
   const requestUrl = `https://hiteacherhunters.com/ajax/?${queryString}`;
+  console.log(requestUrl);
 
   return async dispatch => {
     try {
@@ -41,10 +46,10 @@ export const fetchBackfillJobs = params => {
         let data = {};
         data.link = job.querySelector('a').attributes.href;
         data.title = job.querySelector('a').structuredText.trim();
-        data.company = job.querySelector('.listing-item__info--item-company').innerHTML.trim();
-        data.location = job.querySelector('.listing-item__info--item-location').innerHTML.trim();
-        data.description = job.querySelector('.listing-item__desc').innerHTML.trim();
-        data.date = job.querySelector('.listing-item__date').innerHTML.trim();
+        data.company = job.querySelector('.listing-item__info--item-company').structuredText.trim();
+        data.location = checkNode(job.querySelector('.listing-item__info--item-location'));
+        data.description = job.querySelector('.hidden-sm').structuredText.trim();
+        data.date = job.querySelector('.listing-item__date').structuredText.trim();
         jobs.push(data);
       }
 

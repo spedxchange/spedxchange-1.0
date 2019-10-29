@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import JobsForm from './JobsForm';
+import JobsListItem from './JobsListItem';
 
 const mapState = state => ({
   backfillJobs: state.jobs.backfillJobs
@@ -12,13 +13,7 @@ export class Jobs extends Component {
     return (
       <>
         <JobsForm />
-        <hr />
-        {backfillJobs && backfillJobs.length > 0 && (
-          <>
-            <p>Jobs List</p>
-            <p>Jobs List</p>
-          </>
-        )}
+        <div className='job-list'>{backfillJobs && backfillJobs.length > 0 && backfillJobs.map(job => <JobsListItem job={job} />)}</div>
       </>
     );
   }

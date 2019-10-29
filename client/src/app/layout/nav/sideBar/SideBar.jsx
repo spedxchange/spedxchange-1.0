@@ -35,7 +35,6 @@ class SideBar extends Component {
         <Menu.Item link name='Questions' path='/questions' active={activeItem === '/questions'} onClick={this.handleItemClick} />
         <Menu.Item link name='Categories' path='/categories' active={activeItem === '/categories'} onClick={this.handleItemClick} className='indent' />
         <Menu.Item link name='Tags' path='/tags' active={activeItem === '/tags'} onClick={this.handleItemClick} className='indent' />
-        <Menu.Item link name='People' path='/people' active={activeItem === '/people'} onClick={this.handleItemClick} className='indent' />
         <hr />
         <Menu.Item link name='Jobs' path='/jobs' active={activeItem === '/jobs'} onClick={this.handleItemClick} />
       </Menu>

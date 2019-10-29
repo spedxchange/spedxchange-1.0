@@ -23,3 +23,17 @@
     }
   }
 }
+
+.job-list {
+  max-width: 542px;
+  .job-list-item {
+    padding-bottom: 0.5rem;
+    h3 {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+    p {
+      margin-bottom: 0.5rem;
+    }
+  }
+}

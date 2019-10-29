@@ -37,8 +37,6 @@ export class JobsForm extends Component {
 
   handleCitySelect = selectedCity => {
     geocodeByAddress(selectedCity).then(() => {
-      console.log('selectedCity: ', selectedCity);
-      console.log('this.props: ', this.props);
       this.props.change('l', selectedCity);
     });
   };
