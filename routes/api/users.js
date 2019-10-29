@@ -37,20 +37,26 @@ smtpTransport.use('compile', hbs(handlebarsOptions));
 // @access   Public
 router.post('/', async (req, res) => {
   try {
-    const { displayName, email, password, roles } = req.body;
+    const { displayName, screenName, email, password, roles } = req.body;
     let user = await User.findOne({ email });
+    let screen = await User.findOne({ screenName });
 
     if (user) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
 
-    const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'mm' });
+    if (screen) {
+      return res.status(400).json({ errors: [{ msg: 'UserName already exists' }] });
+    }
+
+    const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'mp' });
 
     user = new User({
-      displayName,
-      email,
-      avatar,
-      password
+      displayName: displayName,
+      screenName: screenName,
+      email: email,
+      avatar: avatar,
+      password: password
     });
 
     // Handle Password
@@ -63,8 +69,9 @@ router.post('/', async (req, res) => {
     if (roles && roles.length > 0) {
       let role;
       for (role of roles) {
-        const newRole = await Role.findOne({ type: role });
-        if (newRole) {
+        const existingRole = await Role.findOne({ type: role });
+        if (existingRole) {
+          user.roles.push(existingRole._id);
         }
       }
     } else {
