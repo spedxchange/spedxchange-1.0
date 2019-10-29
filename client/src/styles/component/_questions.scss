@@ -15,6 +15,25 @@
   }
 }
 
+.question-detail {
+  .info {
+    padding-right: 1rem;
+    @media only screen and (max-width: 991px) {
+      padding-right: 0;
+      order: 2;
+    }
+  }
+  .ask-button {
+    @media only screen and (max-width: 991px) {
+      order: 1;
+      text-align: right;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px dotted var(--border-color);
+    }
+  }
+}
+
 .question-statistics {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   text-align: center;
