@@ -1,4 +1,5 @@
 import React from 'react';
+import RadioGroupInput from '../../../app/common/form/RadioGroupInput';
 
 const options = (options = {
   key: 'key',

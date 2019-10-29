@@ -33,7 +33,7 @@ class RegisterModal extends Component {
   render() {
     return (
       <Modal size='mini' open={true} onClose={this.handleCloseModal}>
-        <Modal.Header>Sign Up to SPEDxchange!</Modal.Header>
+        <Modal.Header>Sign Up for SPEDxchange!</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <RegisterForm />
