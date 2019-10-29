@@ -26,7 +26,7 @@ class QuestionListItem extends Component {
                     <List horizontal>
                       <List.Item>
                         <Image avatar src={question.user.avatar} />
-                        <List.Content verticalAlign='middle'>{question.user.displayName}</List.Content>
+                        <List.Content verticalAlign='middle'>{question.user.screenName}</List.Content>
                       </List.Item>
                     </List>
                   </div>

@@ -11,7 +11,7 @@ const PosterInfo = info => {
             <List horizontal>
               <List.Item>
                 <Image avatar src={info.user.avatar} />
-                <List.Content verticalAlign='middle'>{info.user.displayName}</List.Content>
+                <List.Content verticalAlign='middle'>{info.user.screenName}</List.Content>
               </List.Item>
             </List>
           </div>

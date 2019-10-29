@@ -38,7 +38,7 @@ class QuestionPreview extends Component {
                   <List horizontal>
                     <List.Item>
                       <Image avatar src={user.avatar} />
-                      <List.Content verticalAlign='middle'>{user.displayName}</List.Content>
+                      <List.Content verticalAlign='middle'>{user.screenName}</List.Content>
                     </List.Item>
                   </List>
                   <div className='asked'>asked {moment(now).from()}</div>

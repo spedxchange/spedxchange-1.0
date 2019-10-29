@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
       .sort({ updated: -1 })
       .populate({
         path: 'user',
-        select: ['displayName', 'avatar']
+        select: ['displayName', 'screenName', 'avatar', 'roles']
       })
       .populate({
         path: 'categories',
@@ -29,6 +29,10 @@ router.get('/', async (req, res) => {
       .populate({
         path: 'tags',
         select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
       });
     res.json({
       questionCount: questionCount,
@@ -55,7 +59,7 @@ router.get('/page/:page', async (req, res) => {
       .sort({ updated: -1 })
       .populate({
         path: 'user',
-        select: ['displayName', 'avatar']
+        select: ['displayName', 'screenName', 'avatar', 'roles']
       })
       .populate({
         path: 'categories',
@@ -64,6 +68,10 @@ router.get('/page/:page', async (req, res) => {
       .populate({
         path: 'tags',
         select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
       });
     res.json({
       activePage: page,
@@ -88,7 +96,7 @@ router.get('/:uid/:slug', async (req, res) => {
     })
       .populate({
         path: 'user',
-        select: ['displayName', 'avatar']
+        select: ['displayName', 'screenName', 'avatar', 'roles']
       })
       .populate({
         path: 'categories',
@@ -97,6 +105,10 @@ router.get('/:uid/:slug', async (req, res) => {
       .populate({
         path: 'tags',
         select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
       })
       .populate({
         path: 'answers'
@@ -127,7 +139,7 @@ router.get('/view/:uid/:slug', async (req, res) => {
     })
       .populate({
         path: 'user',
-        select: ['displayName', 'avatar']
+        select: ['displayName', 'screenName', 'avatar', 'roles']
       })
       .populate({
         path: 'categories',
@@ -136,6 +148,10 @@ router.get('/view/:uid/:slug', async (req, res) => {
       .populate({
         path: 'tags',
         select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
       })
       .populate({
         path: 'answers'
@@ -167,7 +183,7 @@ router.get('/:question_id', async (req, res) => {
     const question = await Question.findById(req.params.question_id)
       .populate({
         path: 'user',
-        select: ['displayName', 'avatar']
+        select: ['displayName', 'screenName', 'avatar', 'roles']
       })
       .populate({
         path: 'categories',
@@ -176,6 +192,10 @@ router.get('/:question_id', async (req, res) => {
       .populate({
         path: 'tags',
         select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
       })
       .populate({
         path: 'answers'
