@@ -1,4 +1,4 @@
-const name = [
+module.exports = moderators = [
   {
     displayName: 'Lillian Hilland',
     screenName: 'lhilland'
@@ -44,5 +44,3 @@ const name = [
     screenName: 'rbeattie'
   }
 ];
-
-module.exports = moderators = {};

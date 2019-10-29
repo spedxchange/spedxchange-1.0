@@ -8,7 +8,8 @@ const UserSchema = new Schema({
     required: true
   },
   screenName: {
-    type: String
+    type: String,
+    unique: true
   },
   email: {
     type: String,
