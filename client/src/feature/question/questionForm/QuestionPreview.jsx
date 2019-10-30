@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
-import { Segment, Statistic, List, Image } from 'semantic-ui-react';
+import { Segment, List, Image } from 'semantic-ui-react';
+import { parse } from 'node-html-parser';
+import { truncateText } from '../../../app/common/util/truncateText';
 import QuestionListTag from '../list/QuestionListTag';
 import moment from 'moment/moment.js';
+import QuestionStats from '../components/QuestionStats';
+
+const dummyQuestion = {
+  likeCount: 0,
+  viewCount: 0,
+  answers: null
+};
+
+const parseContent = content => {
+  const parsed = parse(content);
+  return parsed.structuredText;
+};
 
 class QuestionPreview extends Component {
   render() {
@@ -10,38 +24,27 @@ class QuestionPreview extends Component {
     return (
       <Segment vertical>
         <div className='flex-box'>
-          <div className='votes'>
-            <div>
-              <Statistic size='mini'>
-                <Statistic.Value>0</Statistic.Value>
-                <Statistic.Label>votes</Statistic.Label>
-              </Statistic>
-            </div>
-            <div>
-              <Statistic size='mini'>
-                <Statistic.Value>0</Statistic.Value>
-                <Statistic.Label>answers</Statistic.Label>
-              </Statistic>
-            </div>
-          </div>
+          <QuestionStats question={dummyQuestion} />
           <div className='grow info'>
             <h3>
-              <a href='/'>{question.title}</a>
+              <span className='link'>{question.title}</span>
             </h3>
-            <div className='mb-3' dangerouslySetInnerHTML={{ __html: question.content }} />
+            <div className='mb-3'>{truncateText(parseContent(question.content))}</div>
             <div className='info'>
-              <div className='flex-box responsive'>
+              <div className='flex-box'>
+                <div className='user'>
+                  <div>
+                    <List horizontal>
+                      <List.Item>
+                        <Image avatar src={user.avatar} />
+                        <List.Content verticalAlign='middle'>{user.screenName}</List.Content>
+                      </List.Item>
+                    </List>
+                  </div>
+                  <div className='asked'>asked {moment(now).from()}</div>
+                </div>
                 <div className='grow'>
                   <List horizontal>{question.tags && question.tags.split(',').map((tag, i) => <QuestionListTag key={i} tag={{ text: tag, _id: i }} />)}</List>
-                </div>
-                <div>
-                  <List horizontal>
-                    <List.Item>
-                      <Image avatar src={user.avatar} />
-                      <List.Content verticalAlign='middle'>{user.screenName}</List.Content>
-                    </List.Item>
-                  </List>
-                  <div className='asked'>asked {moment(now).from()}</div>
                 </div>
               </div>
             </div>

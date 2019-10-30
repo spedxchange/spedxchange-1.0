@@ -359,16 +359,19 @@ p:last-child {
     margin-bottom: 0
 }
 
-a {
+a, span.link {
     color: blue;
 }
 
 a,
-a:hover {
+a:hover,
+span.link,
+span.link:hover {
     text-decoration: none
 }
 
-a:hover {
+a:hover,
+span.link:hover {
     color: #0B0080;
 }
 

@@ -159,3 +159,67 @@ export const answerQuestion = (id, answer) => {
     }
   };
 };
+
+export const likeQuestion = questionId => {
+  // TODO: Figure out the best place to catch if
+  //       the user already liked this question
+  return async dispatch => {
+    try {
+      dispatch(asyncActionStart());
+      const question = await axios.post(`/api/questions/like/${questionId}`);
+      dispatch({ type: UPDATE_QUESTION, payload: question });
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      console.log(error);
+      dispatch(asyncActionError());
+    }
+  };
+};
+
+export const unlikeQuestion = questionId => {
+  // TODO: Figure out the best place to catch if
+  //       the user already liked this question
+  return async dispatch => {
+    try {
+      dispatch(asyncActionStart());
+      const question = await axios.post(`/api/questions/unlike/${questionId}`);
+      dispatch({ type: UPDATE_QUESTION, payload: question });
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      console.log(error);
+      dispatch(asyncActionError());
+    }
+  };
+};
+
+export const likeAnswer = (questionId, answerId) => {
+  // TODO: Figure out the best place to catch if
+  //       the user already liked this answer
+  return async dispatch => {
+    try {
+      dispatch(asyncActionStart());
+      const question = await axios.post(`/api/questions/answer/like/${questionId}/${answerId}`);
+      dispatch({ type: UPDATE_QUESTION, payload: question });
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      console.log(error);
+      dispatch(asyncActionError());
+    }
+  };
+};
+
+export const unlikeAnswer = (questionId, answerId) => {
+  // TODO: Figure out the best place to catch if
+  //       the user already inliked this question
+  return async dispatch => {
+    try {
+      dispatch(asyncActionStart());
+      const question = await axios.post(`/api/questions/answer/unlike/${questionId}/${answerId}`);
+      dispatch({ type: UPDATE_QUESTION, payload: question });
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      console.log(error);
+      dispatch(asyncActionError());
+    }
+  };
+};

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { loadQuestionBySlugAsView } from '../questionActions';
-import { Button, Icon } from 'semantic-ui-react';
+import { loadQuestionBySlugAsView, likeQuestion, unlikeQuestion, likeAnswer, unlikeAnswer } from '../questionActions';
+import { Button } from 'semantic-ui-react';
 import moment from 'moment/moment.js';
 import PageLoader from '../../../app/layout/PageLoader';
 import AnswerForm from '../answerForm/AnswerForm';
+import VoteComponent from '../components/VoteComponent';
 
 const mapState = state => ({
   auth: state.auth,
@@ -14,7 +15,11 @@ const mapState = state => ({
 });
 
 const actions = {
-  loadQuestionBySlugAsView
+  loadQuestionBySlugAsView,
+  likeQuestion,
+  unlikeQuestion,
+  likeAnswer,
+  unlikeAnswer
 };
 
 class QuestionDetail extends Component {
@@ -22,6 +27,22 @@ class QuestionDetail extends Component {
     const { uid, slug } = this.props.match.params;
     this.props.loadQuestionBySlugAsView(uid, slug);
   }
+
+  handleLikeQuestion = questionId => {
+    this.props.likeQuestion(questionId);
+  };
+
+  handleUnlikeQuestion = questionId => {
+    this.props.unlikeQuestion(questionId);
+  };
+
+  handleLikeAnswer = answerId => {
+    this.props.likeQuestion(this.props.question._id, answerId);
+  };
+
+  handleUnlikeAnswer = answerId => {
+    this.props.unlikeQuestion(this.props.question._id, answerId);
+  };
 
   render() {
     const { auth, history, loading, question, loadQuestionBySlugAsView } = this.props;
@@ -38,11 +59,7 @@ class QuestionDetail extends Component {
                 </p>
                 <hr />
                 <div className='flex-box'>
-                  <div className='text-center pr-3'>
-                    <Icon name='caret up' color='grey' size='big' className='mr-0 pt-0'></Icon>
-                    <div>5</div>
-                    <Icon name='caret down' color='grey' size='big' className='mr-0'></Icon>
-                  </div>
+                  <VoteComponent item={question} like={this.handleLikeQuestion} unlike={this.handleUnlikeQuestion} />
                   <div className='grow mb-2' dangerouslySetInnerHTML={{ __html: question.content }} />
                 </div>
                 <hr />
