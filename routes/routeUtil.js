@@ -1,12 +1,16 @@
 const createSlug = title => {
-  var slug = title.replace(/[^A-Za-z0-9-]+/g, '-').toLowerCase();
+  var slug = title
+    .replace(/'/g, '')
+    .replace(/[^A-Za-z0-9-]+/g, '-')
+    .toLowerCase();
+
   var len = slug.length;
+  if (len > 80) {
+    slug = slug.substring(0, 79);
+  }
   if (slug.substring(len - 1) === '-') {
     slug = slug.substring(0, len - 1);
     len--;
-  }
-  if (len > 80) {
-    slug = slug.substring(0, 79);
   }
   return slug;
 };
@@ -14,7 +18,7 @@ const createSlug = title => {
 const createUid = () => {
   const d = new Date();
   const s = '' + d.getTime();
-  return s.substring(s.length - 5);
+  return s.substring(s.length - 6);
 };
 
 const toTitleCase = str => {

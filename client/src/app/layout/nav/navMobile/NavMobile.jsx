@@ -68,16 +68,13 @@ class NavMobile extends Component {
               </li>
               <li className='nav-spacer'></li>
               <li>
-                <span onClick={() => this.handleItemClick(navItems.questions)}>SPEDxchange</span>
+                <span onClick={() => this.handleItemClick(navItems.questions)}>Questions</span>
               </li>
               <li>
                 <span onClick={() => this.handleItemClick(navItems.categories)}>Categories</span>
               </li>
               <li>
                 <span onClick={() => this.handleItemClick(navItems.tags)}>Tags</span>
-              </li>
-              <li>
-                <span onClick={() => this.handleItemClick(navItems.people)}>People</span>
               </li>
               <li className='nav-spacer'></li>
               <li>

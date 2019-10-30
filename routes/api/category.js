@@ -34,14 +34,16 @@ router.get('/:type', async (req, res) => {
 // @route    POST api/category/:type
 // @desc     Create Category by type
 // @access   Private
-router.post('/:type', auth, async (req, res) => {
+router.post('/:type', async (req, res) => {
   try {
     let newCategory;
     switch (req.params.type) {
       case 'question':
         newCategory = new Category({
           text: req.body.text,
-          description: req.body.description
+          description: req.body.description,
+          questionCount: 0,
+          questions: []
         });
         break;
       case 'article':

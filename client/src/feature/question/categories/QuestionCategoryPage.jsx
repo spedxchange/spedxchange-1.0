@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
 import PageLoader from '../../../app/layout/PageLoader';
+import { Button } from 'semantic-ui-react';
 
 class QuestionCategoryPage extends Component {
   componentDidMount() {
@@ -17,6 +19,17 @@ class QuestionCategoryPage extends Component {
             <div key={category._id} className='column-3'>
               <h5>{category.text}</h5>
               <p>{category.description}</p>
+              {category.questionCount !== 0 && (
+                <div className='mt-3'>
+                  <Button
+                    color='green'
+                    size='mini'
+                    content=''
+                    icon='question'
+                    label={{ basic: true, color: 'green', pointing: 'left', content: `${category.questionCount} Questions` }}
+                  />
+                </div>
+              )}
             </div>
           ))}
       </div>
@@ -33,7 +46,9 @@ const actions = {
   loadQuestionCategories
 };
 
-export default connect(
-  mapState,
-  actions
-)(QuestionCategoryPage);
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(QuestionCategoryPage)
+);

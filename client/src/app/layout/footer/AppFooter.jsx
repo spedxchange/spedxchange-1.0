@@ -10,39 +10,36 @@ const AppFooter = () => {
           <div>
             <h6>SPEDxchange</h6>
             <Link to='/about'>About Us</Link>
-            <Link to='/hire'>Career Opportunities</Link>
             <Link to='/contact'>Contact Us</Link>
           </div>
           <div>
             <h6>Special Educators</h6>
-            <Link to='/login/sped'>Sign Up</Link>
             <Link to='/jobs'>Find a Job</Link>
             <Link to='/profile'>Post a Resume</Link>
             <Link to='/resources'>Resources</Link>
           </div>
           <div>
             <h6>SPED Employers</h6>
-            <Link to='/login/admin'>Sign Up</Link>
             <Link to='/dashboard/job/new'>Post a Job</Link>
             <Link to='/resources'>Resources</Link>
           </div>
           <div className='social'>
             <h6>Connect</h6>
             <a href='https://twitter.com/sped_hunters' target='_blank' rel='noopener noreferrer'>
-              <Icon fitted name='help' />
-              Twitter
+              <Icon fitted name='twitter' />
+              &nbsp; Twitter
             </a>
             <a href='https://www.facebook.com/SPEDhuntersLLC' target='_blank' rel='noopener noreferrer'>
-              <Icon fitted name='help' />
-              Facebook
+              <Icon fitted name='facebook' />
+              &nbsp; Facebook
             </a>
             <a href='https://www.linkedin.com/in/johnconsalvi/' target='_blank' rel='noopener noreferrer'>
-              <Icon fitted name='help' />
-              LinkdIn
+              <Icon fitted name='linkedin' />
+              &nbsp; LinkdIn
             </a>
             <a href='https://www.instagram.com/spedhuntersllc/' target='_blank' rel='noopener noreferrer'>
-              <Icon fitted name='help' />
-              Instagram
+              <Icon fitted name='instagram' />
+              &nbsp; Instagram
             </a>
           </div>
           <div className='col-md mb-3'>

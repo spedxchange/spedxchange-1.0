@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
-const RouteUtil = require('../routeUtil');
 const HTMLParser = require('node-html-parser');
 
 const Question = require('../../models/Question');
@@ -229,6 +228,7 @@ router.post('/', auth, async (req, res) => {
       title: title,
       content: content,
       rawText: rawTextParse.structuredText,
+      category: category,
       uid: uid,
       slug: slug
     });
@@ -237,7 +237,7 @@ router.post('/', auth, async (req, res) => {
     const question = await newQuestion.save();
 
     // Handle tags
-    // console.log('tags: ', tags);
+    question.tags = [];
     if (tags && tags.length > 0) {
       let tag;
       for (tag of tags) {
@@ -251,36 +251,25 @@ router.post('/', auth, async (req, res) => {
           });
           const createdTag = await newTag.save();
           question.tags.push(createdTag._id);
-          await question.save();
         } else {
           existingTag.questions.push(question._id);
           existingTag.questionCount++;
           question.tags.push(existingTag._id);
           await existingTag.save();
-          await question.save();
         }
       }
     }
 
-    // Handle category
-    const questionCategory = category ? category.toLowerCase().trim() : 'General Special Education';
-    const existingCategory = await Category.findOne({ text: questionCategory });
-
-    if (!existingCategory) {
-      const generalCategory = await Category.findOne({ text: 'General Special Education' });
-      if (!generalCategory) {
-        res.status(500).send('Category Error');
-      }
-      generalCategory.questions.push(question._id);
-      generalCategory.questionCount++;
-      await generalCategory.save();
-      question.category = generalCategory._id;
+    // Handle Category
+    const exitingCategory = await Category.findById(category);
+    if (exitingCategory.questionCount) {
+      exitingCategory.questionCount++;
     } else {
-      existingCategory.questions.push(question._id);
-      existingCategory.questionCount++;
-      await existingCategory.save();
-      question.category = existingCategory._id;
+      exitingCategory.questionCount = 1;
     }
+    exitingCategory.questions.push(question._id);
+    await exitingCategory.save();
+
     await question.save();
 
     res.json(question);
@@ -295,16 +284,16 @@ router.post('/', auth, async (req, res) => {
 // @access   Private
 router.post('/admin/:user_id', auth, async (req, res) => {
   try {
-    const { title, content, tags, category } = req.body;
-    const uid = RouteUtil.createUid();
-    const slug = RouteUtil.createSlug(title);
+    const { uid, slug, title, content, tags, category } = req.body;
+
     const rawTextParse = HTMLParser.parse(content);
 
     const newQuestion = new Question({
-      user: req.params.user_id,
+      user: req.user.id,
       title: title,
       content: content,
       rawText: rawTextParse.structuredText,
+      category: category,
       uid: uid,
       slug: slug
     });
@@ -313,6 +302,7 @@ router.post('/admin/:user_id', auth, async (req, res) => {
     const question = await newQuestion.save();
 
     // Handle tags
+    question.tags = [];
     if (tags && tags.length > 0) {
       let tag;
       for (tag of tags) {
@@ -326,36 +316,15 @@ router.post('/admin/:user_id', auth, async (req, res) => {
           });
           const createdTag = await newTag.save();
           question.tags.push(createdTag._id);
-          await question.save();
         } else {
           existingTag.questions.push(question._id);
           existingTag.questionCount++;
           question.tags.push(existingTag._id);
           await existingTag.save();
-          await question.save();
         }
       }
     }
 
-    // Handle category
-    const questionCategory = category ? category.toLowerCase().trim() : 'General Special Education';
-    const existingCategory = await Category.findOne({ text: questionCategory });
-
-    if (!existingCategory) {
-      const generalCategory = await Category.findOne({ text: 'General Special Education' });
-      if (!generalCategory) {
-        res.status(500).send('Category Error');
-      }
-      generalCategory.questions.push(question._id);
-      generalCategory.questionCount++;
-      await generalCategory.save();
-      question.category = generalCategory._id;
-    } else {
-      existingCategory.questions.push(question._id);
-      existingCategory.questionCount++;
-      await existingCategory.save();
-      question.category = existingCategory._id;
-    }
     await question.save();
 
     res.json(question);
@@ -371,6 +340,8 @@ router.post('/admin/:user_id', auth, async (req, res) => {
 router.put('/:question_id', auth, async (req, res) => {
   try {
     const question = await Question.findById(req.params.question_id);
+
+    const oldCategory = question.category;
 
     if (!question) {
       return res.status(404).json({ msg: 'Question not found' });
