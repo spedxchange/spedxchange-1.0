@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Segment, List, Image } from 'semantic-ui-react';
 import { truncateText } from '../../../app/common/util/truncateText';
 import moment from 'moment/moment.js';
@@ -8,6 +8,9 @@ import QuestionListTag from './QuestionListTag';
 import QuestionStats from '../components/QuestionStats';
 
 class QuestionListItem extends Component {
+  handleClickQuestion = path => {
+    this.props.history.push(path);
+  };
   render() {
     const { question } = this.props;
     return (
@@ -16,7 +19,9 @@ class QuestionListItem extends Component {
           <QuestionStats question={question} />
           <div className='grow info'>
             <h3>
-              <Link to={`/questions/${question.uid}/${question.slug}`}>{question.title}</Link>
+              <span className='link' onClick={() => this.handleClickQuestion(`/questions/${question.uid}/${question.slug}`)}>
+                {question.title}
+              </span>
             </h3>
             <div className='mb-3'>{truncateText(question.rawText)}</div>
             <div className='info'>
@@ -31,7 +36,7 @@ class QuestionListItem extends Component {
                     </List>
                   </div>
                   {question.updated && <div className='asked'>asked {moment(question.updated).from()}</div>}
-                </div>{' '}
+                </div>
                 <div className='grow'>
                   <List horizontal>{question.tags && Object.values(question.tags).map((tag, idx) => <QuestionListTag key={idx} tag={tag} />)}</List>
                 </div>

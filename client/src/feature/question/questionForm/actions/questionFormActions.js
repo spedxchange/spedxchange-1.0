@@ -25,8 +25,8 @@ export const handleUpdateTagNames = tagNames => {
 };
 
 export const handleEditorUpdate = (content, editor) => {
-  // // console.log('content: ', content);
-  // // console.log('editor: ', editor);
+  // console.log('content: ', content);
+  // console.log('editor: ', editor);
   return dispatch => {
     dispatch({
       type: UPDATE_EDITOR,

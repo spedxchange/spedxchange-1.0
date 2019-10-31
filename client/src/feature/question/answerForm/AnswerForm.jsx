@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form';
 import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
 import { Form, Button } from 'semantic-ui-react';
 import { answerQuestion } from '../questionActions';
+import { openModal } from '../../../app/layout/modal/ModalActions';
 import EditorInput from '../../../app/common/form/EditorInput';
 
+const mapState = state => ({
+  auth: state.auth
+});
+
 const actions = {
-  answerQuestion
+  answerQuestion,
+  openModal
 };
 
 const validate = combineValidators({
@@ -28,13 +35,20 @@ class AnswerForm extends Component {
     }, 150);
   };
 
+  onFormClick = () => {
+    if (!this.props.auth.authenticated) {
+      this.props.history.push(this.props.history.location);
+      this.props.openModal('UnauthModal');
+    }
+  };
+
   render() {
     return (
       <>
         <h5 className='my-1'>Your Answer</h5>
         <hr />
         <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
-          <Field name='content' component={EditorInput} />
+          <Field name='content' click={this.onFormClick} component={EditorInput} />
           <Button positive type='submit' className='mt-2 mb-5'>
             Submit Answer
           </Button>
@@ -44,7 +58,9 @@ class AnswerForm extends Component {
   }
 }
 
-export default connect(
-  null,
-  actions
-)(reduxForm({ form: 'answerForm', validate })(AnswerForm));
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(reduxForm({ form: 'answerForm', validate })(AnswerForm))
+);

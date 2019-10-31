@@ -30,7 +30,7 @@ export const fetchBackfillJobs = params => {
   requestParams.page = requestParams.page ? requestParams.page : 1;
   const queryString = qs.stringify(requestParams);
   const requestUrl = `https://hiteacherhunters.com/ajax/?${queryString}`;
-  console.log(requestUrl);
+  // console.log(requestUrl);
 
   return async dispatch => {
     try {

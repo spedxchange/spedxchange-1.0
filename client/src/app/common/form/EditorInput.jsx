@@ -21,6 +21,7 @@ class EditorInput extends Component {
   render() {
     const {
       input,
+      click,
       meta: { touched, error }
     } = this.props;
     return (
@@ -32,6 +33,7 @@ class EditorInput extends Component {
           apiKey='twpt6v84p920kri6p37w1wk4258x70z5e2yjhikzlu6mysb6'
           onEditorChange={this.handleEditorChange}
           onBlur={this.blur}
+          onClick={click}
           init={{
             height: 250,
             menubar: false,

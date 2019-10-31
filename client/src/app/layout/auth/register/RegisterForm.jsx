@@ -13,7 +13,7 @@ const actions = {
 
 const isConfirmed = createValidator(
   message => value => {
-    console.log('value: ', value);
+    // console.log('value: ', value);
     if (!value || value === false) {
       return message;
     }
@@ -38,7 +38,7 @@ const RegisterForm = ({ handleSubmit, registeredUser, error, invalid, subbmittin
         <label>
           Username&nbsp;&nbsp;&nbsp;&nbsp;<span>(16 Character Maximum)</span>
         </label>
-        <Field name='screenName' type='text' component={TextInput} maxlength={16} />
+        <Field name='screenName' type='text' component={TextInput} maxLength={16} />
         <label>Email</label>
         <Field name='email' type='text' component={TextInput} />
         <label>Password</label>

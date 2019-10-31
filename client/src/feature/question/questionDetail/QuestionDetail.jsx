@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { loadQuestionBySlugAsView, likeQuestion, unlikeQuestion, likeAnswer, unlikeAnswer } from '../questionActions';
+import { loadQuestionBySlugAsView, loadQuestionBySlug, likeQuestion, unlikeQuestion, likeAnswer, unlikeAnswer } from '../questionActions';
 import { Button } from 'semantic-ui-react';
 import moment from 'moment/moment.js';
 import PageLoader from '../../../app/layout/PageLoader';
@@ -15,6 +15,7 @@ const mapState = state => ({
 });
 
 const actions = {
+  loadQuestionBySlug,
   loadQuestionBySlugAsView,
   likeQuestion,
   unlikeQuestion,
@@ -45,7 +46,7 @@ class QuestionDetail extends Component {
   };
 
   render() {
-    const { auth, history, loading, question, loadQuestionBySlugAsView } = this.props;
+    const { history, loading, question, loadQuestionBySlug } = this.props;
     if (loading) return <PageLoader />;
     return (
       <>
@@ -69,13 +70,13 @@ class QuestionDetail extends Component {
                 <hr />
                 {question.answers &&
                   question.answers.length > 0 &&
-                  question.answers.map(answer => (
-                    <div key={answer._id}>
+                  question.answers.map((answer, idx) => (
+                    <div key={idx}>
                       <div className='mb-3' dangerouslySetInnerHTML={{ __html: answer.content }} />
                       <hr />
                     </div>
                   ))}
-                {auth.authenticated && <AnswerForm question={question} reload={loadQuestionBySlugAsView} />}
+                <AnswerForm question={question} reload={loadQuestionBySlug} />
               </div>
               <div className='ask-button'>
                 <Button color='green' onClick={() => history.push('/ask')}>

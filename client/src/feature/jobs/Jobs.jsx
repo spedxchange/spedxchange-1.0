@@ -13,7 +13,7 @@ export class Jobs extends Component {
     return (
       <>
         <JobsForm />
-        <div className='job-list'>{backfillJobs && backfillJobs.length > 0 && backfillJobs.map(job => <JobsListItem job={job} />)}</div>
+        <div className='job-list'>{backfillJobs && backfillJobs.length > 0 && backfillJobs.map((job, idx) => <JobsListItem key={idx} job={job} />)}</div>
       </>
     );
   }
