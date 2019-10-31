@@ -60,11 +60,16 @@ const actions = {
 
 const validate = combineValidators({
   category: isRequired({ message: 'Category is required' }),
-  title: isRequired({ message: 'Title is required' }),
+  title: composeValidators(
+    isRequired({ message: 'Question is required' }),
+    hasLengthGreaterThan(20)({
+      message: 'Please provide more Question details'
+    })
+  )(),
   content: composeValidators(
     isRequired({ message: 'Description is required' }),
-    hasLengthGreaterThan(23)({
-      message: 'Description needd to be at least 16 characters'
+    hasLengthGreaterThan(60)({
+      message: 'Please provide more Description details'
     })
   )()
 });

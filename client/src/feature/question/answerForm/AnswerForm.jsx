@@ -20,7 +20,7 @@ const actions = {
 const validate = combineValidators({
   content: composeValidators(
     isRequired({ message: 'Answer is required' }),
-    hasLengthGreaterThan(55)({
+    hasLengthGreaterThan(60)({
       message: 'Please provide more detail in your answer.'
     })
   )()
