@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
 // @access   Public
 router.get('/page/:page', async (req, res) => {
   try {
-    const resPerPage = 20;
+    const resPerPage = 10;
     const page = req.params.page || 1;
 
     const questionCount = await Question.countDocuments();
@@ -465,28 +465,22 @@ router.put('/like/:question_id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Question not found' });
     }
 
-    // Check if the question has already been liked by the user
-    if (question.likes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
-      return res.status(400).json({ msg: 'Question already liked by the user' });
-    }
-
-    // Check if the question has been unliked by the user
-    // If Yes: Remove Unlike
-    // If  No: Add Like
-    if (question.unlikes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
-      // Remove Unlike
-      // question.unlikes.pull({ user: req.user.id });
-      const removeIndex = question.unlikes.map(vote => vote.user.toString()).indexOf(req.user.id);
-      question.unlikes.splice(removeIndex, 1);
+    if (question.likes.indexOf(req.user.id) > -1) {
+      // do nothing if user already like question
+      res.json(question);
     } else {
-      // Add Like
-      question.likes.unshift({ user: req.user.id });
+      // check if user unliked the question
+      if (question.unlikes.indexOf(req.user.id) > -1) {
+        question.unlikes.pull(req.user.id);
+      } else {
+        question.likes.unshift(req.user.id);
+      }
+      // recount likes and save question
+      question.likeCount = question.likes.length + question.unlikes.length;
+      question.rating = question.likes.length - question.unlikes.length;
+      await question.save();
+      res.json(question);
     }
-
-    // recount likes and save question
-    question.likeCount = question.likes.length + question.unlikes.length;
-    await question.save();
-    res.json(question);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -504,29 +498,22 @@ router.put('/unlike/:question_id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Question not found' });
     }
 
-    // Check if the question has already been unliked by the user
-    if (question.unlikes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
-      return res.status(400).json({ msg: 'Question already unliked' });
-    }
-
-    // Check if the question has been liked by this user
-    // If Yes: Remove Like
-    // If  No: Add Unlike
-    if (question.likes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
-      // Remove existing down vote
-      // console.log('user id: ', req.user.id);
-      // question.likes.pull({ user: req.user.id });
-      const removeIndex = question.likes.map(vote => vote.user.toString()).indexOf(req.user.id);
-      question.likes.splice(removeIndex, 1);
+    if (question.unlikes.indexOf(req.user.id) > -1) {
+      // do nothing if user already unliked question
+      res.json(question);
     } else {
-      // Add Unlike
-      question.unlikes.unshift({ user: req.user.id });
+      // check if user liked the question
+      if (question.likes.indexOf(req.user.id) > -1) {
+        question.likes.pull(req.user.id);
+      } else {
+        question.unlikes.unshift(req.user.id);
+      }
+      // recount likes and save question
+      question.likeCount = question.likes.length + question.unlikes.length;
+      question.rating = question.likes.length - question.unlikes.length;
+      await question.save();
+      res.json(question);
     }
-
-    // recount likes and save question
-    question.likeCount = question.likes.length + question.unlikes.length;
-    await question.save();
-    res.json(question);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

@@ -36,7 +36,6 @@ export const createQuestion = question => {
 };
 
 export const updateQuestion = question => {
-  // console.log('action: updateQuestion: question: ', question);
   const config = HEADER_JSON;
   const body = JSON.stringify(question);
   return async dispatch => {
@@ -160,14 +159,14 @@ export const answerQuestion = (id, answer) => {
   };
 };
 
+// TODO: Figure out the best place to catch if
+//       the user already liked this question
 export const likeQuestion = questionId => {
-  // TODO: Figure out the best place to catch if
-  //       the user already liked this question
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
-      const question = await axios.post(`/api/questions/like/${questionId}`);
-      dispatch({ type: UPDATE_QUESTION, payload: question });
+      const question = await axios.put(`/api/questions/like/${questionId}`);
+      dispatch({ type: UPDATE_QUESTION, payload: question.data });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);
@@ -177,13 +176,11 @@ export const likeQuestion = questionId => {
 };
 
 export const unlikeQuestion = questionId => {
-  // TODO: Figure out the best place to catch if
-  //       the user already liked this question
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
-      const question = await axios.post(`/api/questions/unlike/${questionId}`);
-      dispatch({ type: UPDATE_QUESTION, payload: question });
+      const question = await axios.put(`/api/questions/unlike/${questionId}`);
+      dispatch({ type: UPDATE_QUESTION, payload: question.data });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);
@@ -193,13 +190,11 @@ export const unlikeQuestion = questionId => {
 };
 
 export const likeAnswer = (questionId, answerId) => {
-  // TODO: Figure out the best place to catch if
-  //       the user already liked this answer
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
-      const question = await axios.post(`/api/questions/answer/like/${questionId}/${answerId}`);
-      dispatch({ type: UPDATE_QUESTION, payload: question });
+      const question = await axios.put(`/api/questions/answer/like/${questionId}/${answerId}`);
+      dispatch({ type: UPDATE_QUESTION, payload: question.data });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);
@@ -209,13 +204,11 @@ export const likeAnswer = (questionId, answerId) => {
 };
 
 export const unlikeAnswer = (questionId, answerId) => {
-  // TODO: Figure out the best place to catch if
-  //       the user already inliked this question
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
-      const question = await axios.post(`/api/questions/answer/unlike/${questionId}/${answerId}`);
-      dispatch({ type: UPDATE_QUESTION, payload: question });
+      const question = await axios.put(`/api/questions/answer/unlike/${questionId}/${answerId}`);
+      dispatch({ type: UPDATE_QUESTION, payload: question.data });
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);

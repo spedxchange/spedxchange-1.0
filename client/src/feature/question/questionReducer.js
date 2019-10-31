@@ -4,27 +4,29 @@ import { CREATE_QUESTION, UPDATE_QUESTION, DELETE_QUESTION, FETCH_QUESTIONS, FET
 const initialState = {
   activePage: 1,
   totalPages: 1,
-  questionCount: 0
+  questionCount: 0,
+  questions: null
 };
 
 const createQuestion = (state, payload) => {
   return {
     ...state,
-    questions: [...state.questions, payload.question]
+    questions: [...state.questions, payload]
   };
 };
 
 const updateQuestion = (state, payload) => {
   return {
     ...state,
-    questions: [...state.questions.filter(question => question._id !== payload.question._id), payload.question]
+    currentQuestion: payload,
+    questions: state.questions ? [...state.questions.filter(question => question._id !== payload._id), payload] : null
   };
 };
 
 const deleteQuestion = (state, payload) => {
   return {
     ...state,
-    questions: [...state.questions.filter(question => question._id !== payload.questionId)]
+    questions: state.questions ? [...state.questions.filter(question => question._id !== payload.questionId)] : null
   };
 };
 

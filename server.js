@@ -59,6 +59,7 @@ app.use('/api/roles', require('./routes/api/roles'));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   app.get('*', (req, res) => {
+    console.log('req.url: ', req.url);
     // console.log('req.headers: ', req.headers);
     const hasExtension = req.url.indexOf('.') > -1;
     const type = hasExtension ? mime.contentType(path.extname(req.url)) : null;
