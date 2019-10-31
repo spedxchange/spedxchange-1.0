@@ -49,7 +49,7 @@ class AnswerForm extends Component {
         <hr />
         <Form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete='off'>
           <Field name='content' click={this.onFormClick} component={EditorInput} />
-          <Button positive type='submit' className='mt-2 mb-5'>
+          <Button positive disabled={!this.props.auth.authenticated} type='submit' className='mt-2 mb-5'>
             Submit Answer
           </Button>
         </Form>

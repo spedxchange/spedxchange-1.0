@@ -64,13 +64,13 @@ export class TagInput extends Component {
         <div className='input-tag'>
           <ul className='input-tag__tags'>
             {tagNames &&
-              tagNames.map((tag, i) => (
-                <li key={i}>
+              tagNames.map((tag, idx) => (
+                <li key={idx.toString()}>
                   {tag || ''}
                   <button
                     type='button'
                     onClick={() => {
-                      this.removeTag(i);
+                      this.removeTag(idx);
                     }}
                   >
                     +

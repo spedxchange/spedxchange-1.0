@@ -44,7 +44,7 @@ class QuestionPreview extends Component {
                   <div className='asked'>asked {moment(now).from()}</div>
                 </div>
                 <div className='grow'>
-                  <List horizontal>{question.tags && question.tags.split(',').map((tag, i) => <QuestionListTag key={i} tag={{ text: tag, _id: i }} />)}</List>
+                  <List horizontal>{question.tags && question.tags.split(',').map((tag, i) => <QuestionListTag key={i.toString()} tag={{ text: tag, _id: i }} />)}</List>
                 </div>
               </div>
             </div>

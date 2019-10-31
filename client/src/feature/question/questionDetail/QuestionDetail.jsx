@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { loadQuestionBySlugAsView, loadQuestionBySlug, likeQuestion, unlikeQuestion, likeAnswer, unlikeAnswer } from '../questionActions';
-import { Button } from 'semantic-ui-react';
+import { Button, List, Image } from 'semantic-ui-react';
 import moment from 'moment/moment.js';
 import PageLoader from '../../../app/layout/PageLoader';
 import AnswerForm from '../answerForm/AnswerForm';
@@ -30,19 +30,27 @@ class QuestionDetail extends Component {
   }
 
   handleLikeQuestion = questionId => {
-    this.props.likeQuestion(questionId);
+    if (this.props.auth.authenticated) {
+      this.props.likeQuestion(questionId);
+    }
   };
 
   handleUnlikeQuestion = questionId => {
-    this.props.unlikeQuestion(questionId);
+    if (this.props.auth.authenticated) {
+      this.props.unlikeQuestion(questionId);
+    }
   };
 
   handleLikeAnswer = answerId => {
-    this.props.likeQuestion(this.props.question._id, answerId);
+    if (this.props.auth.authenticated) {
+      this.props.likeAnswer(this.props.question._id, answerId);
+    }
   };
 
   handleUnlikeAnswer = answerId => {
-    this.props.unlikeQuestion(this.props.question._id, answerId);
+    if (this.props.auth.authenticated) {
+      this.props.unlikeAnswer(this.props.question._id, answerId);
+    }
   };
 
   render() {
@@ -50,7 +58,7 @@ class QuestionDetail extends Component {
     if (loading) return <PageLoader />;
     return (
       <>
-        {question && (
+        {!loading && question && (
           <div className='question-detail'>
             <div className='flex-box md'>
               <div className='grow info'>
@@ -71,8 +79,24 @@ class QuestionDetail extends Component {
                 {question.answers &&
                   question.answers.length > 0 &&
                   question.answers.map((answer, idx) => (
-                    <div key={idx}>
-                      <div className='mb-3' dangerouslySetInnerHTML={{ __html: answer.content }} />
+                    <div key={idx.toString()}>
+                      <div className='flex-box'>
+                        <VoteComponent item={answer} like={this.handleLikeAnswer} unlike={this.handleUnlikeAnswer} />
+                        <div className='grow'>
+                          <div className='mb-2' dangerouslySetInnerHTML={{ __html: answer.content }} />
+                          <div className='user mb-2'>
+                            <div>
+                              <List horizontal>
+                                <List.Item>
+                                  <Image avatar src={answer.user.avatar} />
+                                  <List.Content verticalAlign='middle'>{answer.user.screenName}</List.Content>
+                                </List.Item>
+                              </List>
+                            </div>
+                            {answer.updated && <div className='asked'>Answered {moment(answer.updated).from()}</div>}
+                          </div>
+                        </div>
+                      </div>
                       <hr />
                     </div>
                   ))}

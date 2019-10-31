@@ -38,7 +38,7 @@ class QuestionListItem extends Component {
                   {question.updated && <div className='asked'>asked {moment(question.updated).from()}</div>}
                 </div>
                 <div className='grow'>
-                  <List horizontal>{question.tags && Object.values(question.tags).map((tag, idx) => <QuestionListTag key={idx} tag={tag} />)}</List>
+                  <List horizontal>{question.tags && Object.values(question.tags).map((tag, idx) => <QuestionListTag key={idx.toString()} tag={tag} />)}</List>
                 </div>
               </div>
             </div>

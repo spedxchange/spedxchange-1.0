@@ -110,13 +110,16 @@ router.get('/:uid/:slug', async (req, res) => {
         select: 'type'
       })
       .populate({
-        path: 'answers'
+        path: 'answers',
+        populate: {
+          path: 'user',
+          select: ['displayName', 'screenName', 'avatar']
+        }
       });
 
     if (!question) {
       return res.status(404).json({ msg: 'Question not found' });
     }
-
     res.json(question);
   } catch (err) {
     console.error(err.message);
@@ -153,7 +156,11 @@ router.get('/view/:uid/:slug', async (req, res) => {
         select: 'type'
       })
       .populate({
-        path: 'answers'
+        path: 'answers',
+        populate: {
+          path: 'user',
+          select: ['displayName', 'screenName', 'avatar']
+        }
       });
 
     if (!question) {
@@ -162,7 +169,6 @@ router.get('/view/:uid/:slug', async (req, res) => {
 
     question.viewCount++;
     await question.save();
-    // console.log('question: ', question);
 
     res.json(question);
   } catch (err) {
@@ -465,10 +471,7 @@ router.put('/like/:question_id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Question not found' });
     }
 
-    if (question.likes.indexOf(req.user.id) > -1) {
-      // do nothing if user already like question
-      res.json(question);
-    } else {
+    if (question.likes.indexOf(req.user.id) < 0) {
       // check if user unliked the question
       if (question.unlikes.indexOf(req.user.id) > -1) {
         question.unlikes.pull(req.user.id);
@@ -479,8 +482,34 @@ router.put('/like/:question_id', auth, async (req, res) => {
       question.likeCount = question.likes.length + question.unlikes.length;
       question.rating = question.likes.length - question.unlikes.length;
       await question.save();
-      res.json(question);
     }
+
+    const updatedQuestion = await Question.findById(req.params.question_id)
+      .populate({
+        path: 'user',
+        select: ['displayName', 'screenName', 'avatar', 'roles']
+      })
+      .populate({
+        path: 'categories',
+        select: 'text'
+      })
+      .populate({
+        path: 'tags',
+        select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
+      })
+      .populate({
+        path: 'answers',
+        populate: {
+          path: 'user',
+          select: ['displayName', 'screenName', 'avatar']
+        }
+      });
+
+    res.json(updatedQuestion);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -498,11 +527,8 @@ router.put('/unlike/:question_id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Question not found' });
     }
 
-    if (question.unlikes.indexOf(req.user.id) > -1) {
-      // do nothing if user already unliked question
-      res.json(question);
-    } else {
-      // check if user liked the question
+    if (question.unlikes.indexOf(req.user.id) < 0) {
+      // check if user unliked the question
       if (question.likes.indexOf(req.user.id) > -1) {
         question.likes.pull(req.user.id);
       } else {
@@ -512,8 +538,34 @@ router.put('/unlike/:question_id', auth, async (req, res) => {
       question.likeCount = question.likes.length + question.unlikes.length;
       question.rating = question.likes.length - question.unlikes.length;
       await question.save();
-      res.json(question);
     }
+
+    const updatedQuestion = await Question.findById(req.params.question_id)
+      .populate({
+        path: 'user',
+        select: ['displayName', 'screenName', 'avatar', 'roles']
+      })
+      .populate({
+        path: 'categories',
+        select: 'text'
+      })
+      .populate({
+        path: 'tags',
+        select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
+      })
+      .populate({
+        path: 'answers',
+        populate: {
+          path: 'user',
+          select: ['displayName', 'screenName', 'avatar']
+        }
+      });
+
+    res.json(updatedQuestion);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -590,40 +642,56 @@ router.put('/answer/like/:question_id/:answer_id', auth, async (req, res) => {
   try {
     // Get Question
     const question = await Question.findById(req.params.question_id);
-
     if (!question) {
       return res.status(404).json({ msg: 'Question not found' });
     }
 
     // Get Answer
-    const answer = question.answers.find(answer => answer.id === req.params.answer_id);
+    const answer = await Answer.findById(req.params.answer_id);
 
     if (!answer) {
       return res.status(404).json({ msg: 'Answer not found' });
     }
 
-    // Check if the answer has already been liked by the user
-    if (answer.likes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
-      return res.status(400).json({ msg: 'Answer already liked by user' });
+    if (answer.likes.indexOf(req.user.id) < 0) {
+      // check if user unliked the answer
+      if (answer.unlikes.indexOf(req.user.id) > -1) {
+        answer.unlikes.pull(req.user.id);
+      } else {
+        answer.likes.unshift(req.user.id);
+      }
+      // recount likes and save answer
+      answer.likeCount = answer.likes.length + answer.unlikes.length;
+      answer.rating = answer.likes.length - answer.unlikes.length;
+      await answer.save();
     }
 
-    // Check if the answer has been uliked by the user
-    // If Yes: Remove Unlike
-    // If  No: Add Like
-    if (answer.unlikes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
-      // Remove Unlike
-      // answer.unlikes.pull({ user: req.user.id });
-      const removeIndex = answer.unlikes.map(vote => vote.user.toString()).indexOf(req.user.id);
-      answer.unlikes.splice(removeIndex, 1);
-    } else {
-      // Add Like
-      answer.likes.unshift({ user: req.user.id });
-    }
+    const updatedQuestion = await Question.findById(req.params.question_id)
+      .populate({
+        path: 'user',
+        select: ['displayName', 'screenName', 'avatar', 'roles']
+      })
+      .populate({
+        path: 'categories',
+        select: 'text'
+      })
+      .populate({
+        path: 'tags',
+        select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
+      })
+      .populate({
+        path: 'answers',
+        populate: {
+          path: 'user',
+          select: ['displayName', 'screenName', 'avatar']
+        }
+      });
 
-    // recount likes and save question
-    answer.likeCount = answer.likes.length + answer.unlikes.length;
-    await question.save();
-    res.json(question);
+    res.json(updatedQuestion);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -642,33 +710,51 @@ router.put('/answer/unlike/:question_id/:answer_id', auth, async (req, res) => {
     }
 
     // Get Answer
-    const answer = question.answers.find(answer => answer.id === req.params.answer_id);
+    const answer = await Answer.findById(req.params.answer_id);
+
     if (!answer) {
       return res.status(404).json({ msg: 'Answer not found' });
     }
 
-    // Check if the answer has already been liked by this user
-    if (answer.unlikes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
-      return res.status(400).json({ msg: 'Answer already unliked by user' });
+    if (answer.unlikes.indexOf(req.user.id) < 0) {
+      // check if user unliked the answer
+      if (answer.likes.indexOf(req.user.id) > -1) {
+        answer.likes.pull(req.user.id);
+      } else {
+        answer.unlikes.unshift(req.user.id);
+      }
+      // recount likes and save answer
+      answer.likeCount = answer.likes.length + answer.unlikes.length;
+      answer.rating = answer.likes.length - answer.unlikes.length;
+      await answer.save();
     }
 
-    // Check if the answer has been liked by this user
-    // If Yes: Remove the like
-    // If  No: Add the unlike
-    if (answer.likes.filter(vote => vote.user.toString() === req.user.id).length > 0) {
-      // Remove like
-      // answer.likes.pull({ user: req.user.id });
-      const removeIndex = answer.likes.map(vote => vote.user.toString()).indexOf(req.user.id);
-      answer.likes.splice(removeIndex, 1);
-    } else {
-      // Add unlike
-      answer.unlikes.unshift({ user: req.user.id });
-    }
+    const updatedQuestion = await Question.findById(req.params.question_id)
+      .populate({
+        path: 'user',
+        select: ['displayName', 'screenName', 'avatar', 'roles']
+      })
+      .populate({
+        path: 'categories',
+        select: 'text'
+      })
+      .populate({
+        path: 'tags',
+        select: 'text'
+      })
+      .populate({
+        path: 'roles',
+        select: 'type'
+      })
+      .populate({
+        path: 'answers',
+        populate: {
+          path: 'user',
+          select: ['displayName', 'screenName', 'avatar']
+        }
+      });
 
-    // recount likes and save question
-    answer.likeCount = answer.likes.length + answer.unlikes.length;
-    await question.save();
-    res.json(question);
+    res.json(updatedQuestion);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
