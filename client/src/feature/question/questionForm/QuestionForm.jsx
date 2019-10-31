@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
+import { withRouter } from 'react-router-dom';
+import { reduxForm, Field, reset } from 'redux-form';
 import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { createQuestion, updateQuestion } from '../questionActions';
 import { handleEditorUpdate } from './actions/questionFormActions';
 import { handleTabChange, handleSelectCategory, handleUpdateTagNames } from './actions/questionFormActions';
-// import { asyncActionStart } from '../../../app/common/async/asyncActions';
 import { loadQuestionCategories } from '../../../app/common/actions/category/categoryActions';
 import { loadQuestionBySlug } from '../questionActions';
 import { openModal } from '../../../app/layout/modal/ModalActions';
@@ -46,6 +46,7 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
+  reset,
   loadQuestionBySlug,
   loadQuestionCategories,
   handleEditorUpdate,
@@ -73,6 +74,9 @@ class QuestionForm extends Component {
     const {
       match: { params }
     } = this.props;
+
+    this.props.handleTabChange(1);
+    this.props.reset('questionForm');
 
     if (!this.props.hideAskModal) {
       this.props.openModal('AskQuestionModal');
@@ -103,6 +107,12 @@ class QuestionForm extends Component {
     setTimeout(() => {
       this.props.history.push(`/questions/${formValues.uid}/${formValues.slug}`);
     }, 150);
+  };
+
+  onCancel = () => {
+    this.props.handleTabChange(1);
+    this.props.reset('questionForm');
+    this.props.history.goBack();
   };
 
   createPreviewData = () => {
@@ -185,9 +195,23 @@ class QuestionForm extends Component {
                 <div>
                   {this.props.questionData && this.props.questionData.values && <QuestionPreview question={this.props.questionData.values} user={this.props.currentUser} />}
                 </div>
-                <Button type='submit' positive>
-                  Submit Question
-                </Button>
+                <hr />
+                <div className='flex-box between'>
+                  <Button type='button' onClick={() => handleTabChange(1)}>
+                    <Icon fitted name='left arrow' />
+                    &nbsp;&nbsp;Edit Question
+                  </Button>
+                  <div>
+                    <Button type='button' color='grey' className='mr-2' onClick={this.onCancel}>
+                      <Icon fitted name='times' />
+                      &nbsp;&nbsp;Cancel
+                    </Button>
+                    <Button type='submit' positive>
+                      <Icon fitted name='check' />
+                      &nbsp;&nbsp;Submit Question
+                    </Button>
+                  </div>
+                </div>
               </div>
             )}
           </Form>
@@ -198,7 +222,9 @@ class QuestionForm extends Component {
   }
 }
 
-export default connect(
-  mapState,
-  actions
-)(reduxForm({ form: 'questionForm', validate })(QuestionForm));
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(reduxForm({ form: 'questionForm', validate })(QuestionForm))
+);
