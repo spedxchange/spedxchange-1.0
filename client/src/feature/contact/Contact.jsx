@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-const mapState = state => {
-  return {};
-};
+const mapState = state => ({});
 
 const actions = {};
 
-const Contact = () => {
-  return <h1>Contact Us</h1>;
-};
+export class Contact extends Component {
+  render() {
+    return <div></div>;
+  }
+}
 
 export default connect(
   mapState,

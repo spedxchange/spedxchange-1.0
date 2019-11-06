@@ -4,12 +4,14 @@ import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import UnauthModal from './UnauthModal';
 import AskQuestionModal from './AskQuestionModal';
+import ContactModal from './ContactModal';
 
 const modalLookup = {
   LoginModal,
   RegisterModal,
   UnauthModal,
-  AskQuestionModal
+  AskQuestionModal,
+  ContactModal
 };
 
 const mapState = state => ({

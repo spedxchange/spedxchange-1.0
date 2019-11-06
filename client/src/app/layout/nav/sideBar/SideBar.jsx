@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
+import { openModal } from '../../modal/ModalActions';
 
+const actions = {
+  openModal
+};
 class SideBar extends Component {
   state = { activeItem: '/' + this.props.match.url.split('/')[1] };
 
@@ -21,6 +26,10 @@ class SideBar extends Component {
     this.props.history.push(path);
   };
 
+  openContactModal = () => {
+    this.props.openModal('ContactModal');
+  };
+
   render() {
     const { activeItem } = this.state;
 
@@ -30,7 +39,7 @@ class SideBar extends Component {
         <Menu.Item link name='Resources' path='/resources' active={activeItem === '/resources'} onClick={this.handleItemClick} />
         <Menu.Item link name='Scholarships' path='/scholarships' active={activeItem === '/scholarships'} onClick={this.handleItemClick} />
         <Menu.Item link name='About Us' path='/about' active={activeItem === '/about'} onClick={this.handleItemClick} />
-        <Menu.Item link name='Contact Us' path='/contact' active={activeItem === '/contact'} onClick={this.handleItemClick} />
+        <Menu.Item link name='Contact Us' path='/contact' active={activeItem === '/contact'} onClick={this.openContactModal} />
         <hr />
         <Menu.Item link name='Questions' path='/questions' active={activeItem === '/questions'} onClick={this.handleItemClick} />
         <Menu.Item link name='Categories' path='/categories' active={activeItem === '/categories'} onClick={this.handleItemClick} className='indent' />
@@ -42,4 +51,9 @@ class SideBar extends Component {
   }
 }
 
-export default withRouter(SideBar);
+export default withRouter(
+  connect(
+    null,
+    actions
+  )(SideBar)
+);

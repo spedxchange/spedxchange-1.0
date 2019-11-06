@@ -44,7 +44,7 @@ class NavMobile extends Component {
   render() {
     const navItems = NAV_ITEMS;
     const { auth } = this.props;
-    const authenticated = auth.authenticated && auth.currentUser;
+    const authenticated = auth.authenticated && auth.currentUser.displayName;
 
     return (
       <ScrollTo>

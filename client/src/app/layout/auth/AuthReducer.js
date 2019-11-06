@@ -5,7 +5,7 @@ const initialState = {
   token: localStorage.getItem('token'),
   authenticated: false,
   loading: true,
-  currentUser: null
+  currentUser: {}
 };
 
 const loadUser = (state, payload) => {
@@ -34,7 +34,7 @@ const logoutUser = state => {
     token: null,
     authenticated: false,
     loading: false,
-    currentUser: null
+    currentUser: {}
   };
 };
 

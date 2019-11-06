@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const User = require('../../models/User');
+const Contact = require('../../models/Contact');
 
 // @route    GET api/auth
 // @desc     Get User Record

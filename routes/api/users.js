@@ -1,36 +1,16 @@
 const express = require('express');
-const path = require('path');
 const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const hbs = require('nodemailer-express-handlebars');
 const auth = require('../../middleware/auth');
 const RouteUtil = require('../routeUtil');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const SpedEmail = require('./templates/templates');
 const User = require('../../models/User');
 const Role = require('../../models/Role');
-
-const smtpTransport = nodemailer.createTransport({
-  host: 'smtp.office365.com',
-  port: 587,
-  secureConnection: true,
-  auth: {
-    user: process.env.OUTLOOK_EMAIL,
-    pass: process.env.OUTLOOK_PASS
-  }
-});
-
-const handlebarsOptions = {
-  viewEngine: 'handlebars',
-  viewPath: path.resolve('../../templates/'),
-  extName: '.html'
-};
-
-smtpTransport.use('compile', hbs(handlebarsOptions));
 
 // @route    POST api/users
 // @desc     Register User
@@ -98,10 +78,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route    POST api/users/forgot
-// @desc     Send Reset Password Email Link
-// @access   Private
-router.post('/forgot', auth, async (req, res) => {
+// @route    POST api/users/update
+// @desc     Send Update Password Email Link
+// @access   Public
+router.post('/update', async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email: email });
@@ -116,18 +96,18 @@ router.post('/forgot', auth, async (req, res) => {
     user.reset_password_expires = Date.now() + 86400000;
     await user.save();
 
-    const data = {
-      to: user.email,
+    const resetLink = 'http://localhost:3000/user/reset?token=' + token;
+
+    const emailConfig = {
       from: 'SPEDxchange <content@spedxchange.com>',
-      template: 'forgot-password-email',
-      subject: 'SPEDxchange: Forgot Password',
-      context: {
-        url: 'http://localhost:3000/user/reset?token=' + token,
-        name: RouteUtil.toTitleCase(user.displayName.split(' ')[0])
-      }
+      to: `${user.displayName} <${email}`,
+      subject: 'SPEDxchange: Password Reset',
+      html: SpedEmail.contactUserEmail(user.displayName, resetLink)
     };
 
-    await smtpTransport.sendMail(data);
+    await SpedEmail.transporter.sendMail(emailConfig);
+
+    res.json({ success: true });
   } catch (error) {
     console.error(err.message);
     res.status(500).send('Server error');

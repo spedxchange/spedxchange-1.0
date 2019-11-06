@@ -44,7 +44,7 @@ class NavBar extends Component {
 
   render() {
     const { auth } = this.props;
-    const authenticated = auth.authenticated && auth.currentUser;
+    const authenticated = auth.authenticated && auth.currentUser.displayName;
     return (
       <div className='app-header'>
         <div className='flex-box'>
