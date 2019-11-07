@@ -15,8 +15,7 @@ const mapState = state => ({
     user: state.auth.currentUser._id,
     name: state.auth.currentUser.displayName,
     email: state.auth.currentUser.email
-  },
-  isContactMessageSent: state.app.isContactMessageSent
+  }
 });
 
 const actions = {

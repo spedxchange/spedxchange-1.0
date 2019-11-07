@@ -3,9 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
-import ContactForm from '../auth/contact/ContactForm';
+import Contact from '../../../feature/contact/Contact';
 import { closeModal } from './ModalActions';
-import { contact } from '../auth/AuthActions';
 
 const mapState = state => ({
   currentModal: state.modals,
@@ -13,8 +12,7 @@ const mapState = state => ({
 });
 
 const actions = {
-  closeModal,
-  contact
+  closeModal
 };
 
 class ContactModal extends Component {
@@ -41,7 +39,7 @@ class ContactModal extends Component {
         <Modal.Header>Contact SPEDxchange</Modal.Header>
         <Modal.Content>
           <Modal.Description>
-            <ContactForm />
+            <Contact />
           </Modal.Description>
         </Modal.Content>
       </Modal>

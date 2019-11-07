@@ -13,6 +13,7 @@ import CategoryReducer from '../common/actions/category/categoryReducer';
 import QuestionFormReducer from '../../feature/question/questionForm/actions/questionFormReducer';
 import TagInput from '../common/form/actions/tagInputReducer';
 import JobsReducer from '../../feature/jobs/actions/jobsReducer';
+import ContactReducer from '../../feature/contact/actions/contactReducer';
 
 const rootReducer = combineReducers({
   toastr: TaostrReducer,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   category: CategoryReducer,
   questionForm: QuestionFormReducer,
   tagInput: TagInput,
-  jobs: JobsReducer
+  jobs: JobsReducer,
+  contact: ContactReducer
 });
 
 export default rootReducer;
