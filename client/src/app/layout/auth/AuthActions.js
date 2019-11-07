@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SubmissionError, reset } from 'redux-form';
-import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_PROFILE, CONTACT_SUCCESS, CONTACT_FAIL } from './AuthContantants';
+import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_PROFILE } from './AuthContantants';
 import { HEADER_JSON } from '../../api/apiConstants';
 import { closeModal } from '../modal/ModalActions';
 import { toastr } from 'react-redux-toastr';
@@ -97,19 +97,4 @@ export const updatePassword = creds => async (dispatch, getState) => {
       _error: error.message
     });
   }
-};
-
-export const contact = form => {
-  return async (dispatch, getState) => {
-    try {
-      const config = HEADER_JSON;
-      const body = JSON.stringify(form);
-      await axios.post('/api/contact', body, config);
-      dispatch({ type: CONTACT_SUCCESS });
-      dispatch(closeModal());
-    } catch (error) {
-      console.log(error);
-      dispatch({ type: CONTACT_FAIL });
-    }
-  };
 };

@@ -9,5 +9,3 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 export const ACCOUNT_DELETED = 'ACCOUNT_DELETED';
 export const CLEAR_PROFILE = 'CLEAR_PROFILE';
-export const CONTACT_SUCCESS = 'CONTACT_SUCCESS';
-export const CONTACT_FAIL = 'CONTACT_SUCCESS';
