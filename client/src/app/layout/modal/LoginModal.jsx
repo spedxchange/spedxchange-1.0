@@ -7,7 +7,8 @@ import LoginForm from '../auth/login/LoginForm';
 import { closeModal } from './ModalActions';
 
 const mapState = state => ({
-  currentModal: state.modals
+  currentModal: state.modals,
+  isPasswordForgot: state.auth.isPasswordForgot
 });
 
 const actions = { closeModal };
@@ -31,9 +32,10 @@ class LoginModal extends Component {
   };
 
   render() {
+    const { isPasswordForgot } = this.props;
     return (
       <Modal size='mini' open={true} onClose={this.handleCloseModal}>
-        <Modal.Header>SPEDxchange Login</Modal.Header>
+        <Modal.Header>{!isPasswordForgot ? 'SPEDxchange Login' : 'SPEDxchange Password Reset'}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <LoginForm />

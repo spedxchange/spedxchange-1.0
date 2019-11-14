@@ -61,7 +61,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   app.get('*', (req, res) => {
     // console.log('req.url: ', req.url);
-    // console.log('req.headers: ', req.headers);
+    // console.log('req.headers.host: ', req.headers.host);
     const hasExtension = req.url.indexOf('.') > -1;
     const type = hasExtension ? mime.contentType(path.extname(req.url)) : null;
     if (hasExtension && type) {

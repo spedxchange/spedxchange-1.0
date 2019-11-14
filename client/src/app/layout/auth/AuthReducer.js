@@ -1,10 +1,11 @@
 import { createReducer } from '../../common/util/ReducerUtil';
-import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, ACCOUNT_DELETED } from './AuthContantants';
+import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, ACCOUNT_DELETED, TOGGLE_FORGOT_PASSWORD } from './AuthContantants';
 
 const initialState = {
   token: localStorage.getItem('token'),
   authenticated: false,
   loading: true,
+  isPasswordForgot: false,
   currentUser: {}
 };
 
@@ -13,6 +14,7 @@ const loadUser = (state, payload) => {
     ...state,
     authenticated: true,
     loading: false,
+    isPasswordForgot: false,
     currentUser: payload
   };
 };
@@ -23,7 +25,8 @@ const loginSuccess = (state, payload) => {
     ...state,
     ...payload,
     authenticated: true,
-    loading: false
+    loading: false,
+    isPasswordForgot: false
   };
 };
 
@@ -32,9 +35,17 @@ const logoutUser = state => {
   return {
     ...state,
     token: null,
+    isPasswordForgot: false,
     authenticated: false,
     loading: false,
     currentUser: {}
+  };
+};
+
+const toggleForgotPassword = state => {
+  return {
+    ...state,
+    isPasswordForgot: !state.isPasswordForgot
   };
 };
 
@@ -46,5 +57,6 @@ export default createReducer(initialState, {
   [AUTH_ERROR]: logoutUser,
   [LOGIN_FAIL]: logoutUser,
   [LOGOUT]: logoutUser,
-  [ACCOUNT_DELETED]: logoutUser
+  [ACCOUNT_DELETED]: logoutUser,
+  [TOGGLE_FORGOT_PASSWORD]: toggleForgotPassword
 });

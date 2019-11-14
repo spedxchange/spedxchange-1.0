@@ -1,6 +1,17 @@
 import axios from 'axios';
 import { SubmissionError, reset } from 'redux-form';
-import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_PROFILE } from './AuthContantants';
+import {
+  USER_LOADED,
+  AUTH_ERROR,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  CLEAR_PROFILE,
+  PASSWORD_RESET_SENT,
+  TOGGLE_FORGOT_PASSWORD
+} from './AuthContantants';
 import { HEADER_JSON } from '../../api/apiConstants';
 import { closeModal } from '../modal/ModalActions';
 import { toastr } from 'react-redux-toastr';
@@ -86,6 +97,22 @@ export const signOut = () => {
   };
 };
 
+// Request Reset Password Email
+export const requestResetInstructions = form => async (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    try {
+      const config = HEADER_JSON;
+      const body = JSON.stringify(form);
+      await axios.post('/api/auth/request-reset', body, config);
+      dispatch({ type: PASSWORD_RESET_SENT });
+    } catch (error) {
+      throw new SubmissionError({
+        _error: 'Request Failed'
+      });
+    }
+  };
+};
+
 // Update Password
 export const updatePassword = creds => async (dispatch, getState) => {
   try {
@@ -97,4 +124,10 @@ export const updatePassword = creds => async (dispatch, getState) => {
       _error: error.message
     });
   }
+};
+
+export const toggleForgotPassword = () => {
+  return dispatch => {
+    dispatch({ type: TOGGLE_FORGOT_PASSWORD });
+  };
 };
