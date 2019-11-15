@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ReCaptcha } from 'react-recaptcha-v3';
 import { Form, Button, Label } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
-import { login, toggleForgotPassword } from '../AuthActions';
+import { login, requestResetInstructions, toggleForgotPassword } from '../AuthActions';
 import TextInput from '../../../common/form/TextInput';
 
 const mapState = state => ({
@@ -12,15 +12,16 @@ const mapState = state => ({
 
 const actions = {
   login,
+  requestResetInstructions,
   toggleForgotPassword
 };
 
 export class LoginForm extends Component {
-  onSubmit = () => {
-    if (this.props.isPasswordForgot) {
-      console.log('do password reset');
+  onSubmit = values => {
+    if (!this.props.isPasswordForgot) {
+      this.props.login(values);
     } else {
-      console.log('do login');
+      this.props.requestResetInstructions(values);
     }
   };
 

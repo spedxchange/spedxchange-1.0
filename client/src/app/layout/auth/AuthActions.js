@@ -1,17 +1,6 @@
 import axios from 'axios';
 import { SubmissionError, reset } from 'redux-form';
-import {
-  USER_LOADED,
-  AUTH_ERROR,
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT,
-  CLEAR_PROFILE,
-  PASSWORD_RESET_SENT,
-  TOGGLE_FORGOT_PASSWORD
-} from './AuthContantants';
+import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_PROFILE, TOGGLE_FORGOT_PASSWORD } from './AuthContantants';
 import { HEADER_JSON } from '../../api/apiConstants';
 import { closeModal } from '../modal/ModalActions';
 import { toastr } from 'react-redux-toastr';
@@ -43,25 +32,27 @@ export const loadUser = () => {
 };
 
 // Register User
-export const registeredUser = user => async (dispatch, getState) => {
-  const config = HEADER_JSON;
-  const body = JSON.stringify(user);
-  try {
-    const res = await axios.post('/api/users', body, config);
-    dispatch({
-      type: REGISTER_SUCCESS,
-      payload: res.data
-    });
-    await dispatch(loadUser());
-    dispatch(closeModal());
-  } catch (error) {
-    dispatch({
-      type: REGISTER_FAIL
-    });
-    throw new SubmissionError({
-      _error: error.message
-    });
-  }
+export const registeredUser = user => {
+  return async (dispatch, getState) => {
+    const config = HEADER_JSON;
+    const body = JSON.stringify(user);
+    try {
+      const res = await axios.post('/api/users', body, config);
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      });
+      await dispatch(loadUser());
+      dispatch(closeModal());
+    } catch (error) {
+      dispatch({
+        type: REGISTER_FAIL
+      });
+      throw new SubmissionError({
+        _error: error.message
+      });
+    }
+  };
 };
 
 // Login User
@@ -71,7 +62,6 @@ export const login = creds => {
     const body = JSON.stringify(creds);
     try {
       const res = await axios.post('/api/auth', body, config);
-      // await setAuthToken(res.data.token);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
@@ -91,20 +81,28 @@ export const login = creds => {
 
 // Logout / Clear Profile
 export const signOut = () => {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch({ type: CLEAR_PROFILE });
     dispatch({ type: LOGOUT });
   };
 };
 
 // Request Reset Password Email
-export const requestResetInstructions = form => async (dispatch, getState) => {
-  return async (dispatch, getState) => {
+export const requestResetInstructions = form => {
+  return async dispatch => {
     try {
+      console.log('requestResetInstructions: form: ', form);
       const config = HEADER_JSON;
       const body = JSON.stringify(form);
-      await axios.post('/api/auth/request-reset', body, config);
-      dispatch({ type: PASSWORD_RESET_SENT });
+      const resp = await axios.post('/api/auth/request-reset', body, config);
+      const msg = `Check your email inbox at for the password reset instructions.`;
+      const err = `No account for ${form.email} was found.`;
+      const confirmMessage = !resp.success ? err : msg;
+      dispatch(closeModal());
+      toastr.confirm(confirmMessage, {
+        okText: 'Close',
+        disableCancel: true
+      });
     } catch (error) {
       throw new SubmissionError({
         _error: 'Request Failed'
@@ -114,16 +112,18 @@ export const requestResetInstructions = form => async (dispatch, getState) => {
 };
 
 // Update Password
-export const updatePassword = creds => async (dispatch, getState) => {
-  try {
-    // TODO: add call here
-    await dispatch(reset('account'));
-    toastr.success('Success', 'Your password has been updated');
-  } catch (error) {
-    throw new SubmissionError({
-      _error: error.message
-    });
-  }
+export const updatePassword = form => {
+  return async dispatch => {
+    try {
+      // TODO: add call here
+      await dispatch(reset('loginForm'));
+      toastr.success('Success', 'Your password has been updated');
+    } catch (error) {
+      throw new SubmissionError({
+        _error: error.message
+      });
+    }
+  };
 };
 
 export const toggleForgotPassword = () => {

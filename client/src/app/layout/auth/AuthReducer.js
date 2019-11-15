@@ -6,6 +6,7 @@ const initialState = {
   authenticated: false,
   loading: true,
   isPasswordForgot: false,
+  isPasswordSent: false,
   currentUser: {}
 };
 
@@ -15,6 +16,7 @@ const loadUser = (state, payload) => {
     authenticated: true,
     loading: false,
     isPasswordForgot: false,
+    isPasswordSent: false,
     currentUser: payload
   };
 };
@@ -26,7 +28,8 @@ const loginSuccess = (state, payload) => {
     ...payload,
     authenticated: true,
     loading: false,
-    isPasswordForgot: false
+    isPasswordForgot: false,
+    isPasswordSent: false
   };
 };
 
@@ -36,6 +39,7 @@ const logoutUser = state => {
     ...state,
     token: null,
     isPasswordForgot: false,
+    isPasswordSent: false,
     authenticated: false,
     loading: false,
     currentUser: {}
