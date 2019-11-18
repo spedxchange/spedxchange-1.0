@@ -68,8 +68,10 @@ router.post('/request-reset', async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email: email });
 
+    console.log('request-reset: user: ', user);
     if (!user) {
-      return res.status(400).json({ errors: [{ msg: 'User not found.' }] });
+      console.error('No User Found');
+      res.status(500).send('Server error');
     }
 
     const token = await bcrypt.genSalt(20);

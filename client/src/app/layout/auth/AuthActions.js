@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SubmissionError, reset } from 'redux-form';
-import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_PROFILE, TOGGLE_FORGOT_PASSWORD } from './AuthContantants';
+import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, CLEAR_PROFILE, TOGGLE_FORGOT_PASSWORD } from './AuthContantants';
 import { HEADER_JSON } from '../../api/apiConstants';
 import { closeModal } from '../modal/ModalActions';
 import { toastr } from 'react-redux-toastr';
@@ -45,9 +45,6 @@ export const registeredUser = user => {
       await dispatch(loadUser());
       dispatch(closeModal());
     } catch (error) {
-      dispatch({
-        type: REGISTER_FAIL
-      });
       throw new SubmissionError({
         _error: error.message
       });
@@ -58,9 +55,9 @@ export const registeredUser = user => {
 // Login User
 export const login = creds => {
   return async (dispatch, getState) => {
-    const config = HEADER_JSON;
-    const body = JSON.stringify(creds);
     try {
+      const config = HEADER_JSON;
+      const body = JSON.stringify(creds);
       const res = await axios.post('/api/auth', body, config);
       dispatch({
         type: LOGIN_SUCCESS,
@@ -69,9 +66,6 @@ export const login = creds => {
       await dispatch(loadUser());
       dispatch(closeModal());
     } catch (error) {
-      dispatch({
-        type: LOGIN_FAIL
-      });
       throw new SubmissionError({
         _error: 'Login Failed'
       });
@@ -91,18 +85,18 @@ export const signOut = () => {
 export const requestResetInstructions = form => {
   return async dispatch => {
     try {
-      console.log('requestResetInstructions: form: ', form);
       const config = HEADER_JSON;
       const body = JSON.stringify(form);
       const resp = await axios.post('/api/auth/request-reset', body, config);
       const msg = `Check your email inbox at for the password reset instructions.`;
       const err = `No account for ${form.email} was found.`;
-      const confirmMessage = !resp.success ? err : msg;
+      const confirmMessage = !resp.data || !resp.data.success ? err : msg;
       dispatch(closeModal());
       toastr.confirm(confirmMessage, {
         okText: 'Close',
         disableCancel: true
       });
+      dispatch({ type: TOGGLE_FORGOT_PASSWORD });
     } catch (error) {
       throw new SubmissionError({
         _error: 'Request Failed'
