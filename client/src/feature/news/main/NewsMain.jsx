@@ -8,7 +8,8 @@ import PageLoader from '../../../app/layout/PageLoader';
 
 const mapState = state => ({
   articles: state.news.articles,
-  loading: state.async.loading
+  loading: state.async.loading,
+  loadingName: state.async.elementName
 });
 
 const actions = {
@@ -33,8 +34,8 @@ class NewsMain extends Component {
   }
 
   render() {
-    const { articles, loading } = this.props;
-    if (loading) return <PageLoader />;
+    const { articles, loading, loadingName } = this.props;
+    if (loadingName === 'loadArticles' && loading) return <PageLoader />;
     return (
       <>
         <div className='flex-box-wrap'>

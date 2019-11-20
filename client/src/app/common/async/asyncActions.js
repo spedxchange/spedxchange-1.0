@@ -1,8 +1,9 @@
 import { ASYNC_ACTION_START, ASYNC_ACTION_FINISH, ASYNC_ACTION_ERROR } from './asyncConstants';
 
-export const asyncActionStart = () => {
+export const asyncActionStart = payload => {
   return {
-    type: ASYNC_ACTION_START
+    type: ASYNC_ACTION_START,
+    payload: payload
   };
 };
 

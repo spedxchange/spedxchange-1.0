@@ -114,12 +114,10 @@ export const requestResetInstructions = form => {
 export const updatePassword = form => {
   return async dispatch => {
     try {
-      console.log('Update Password');
       const config = HEADER_JSON;
       const body = JSON.stringify(form);
       dispatch({ type: ASYNC_ACTION_START, payload: 'update-password' });
-      const reset = await axios.post('/api/auth/reset', body, config);
-      console.log('sent reset email');
+      await axios.post('/api/auth/reset', body, config);
       dispatch({ type: ASYNC_ACTION_FINISH });
       dispatch(closeModal());
       toastr.success('Success', 'Your password has been updated');

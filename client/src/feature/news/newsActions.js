@@ -5,7 +5,7 @@ import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../app
 export const loadArticles = () => {
   return async dispatch => {
     try {
-      dispatch(asyncActionStart());
+      dispatch(asyncActionStart('loadArticles'));
       const articles = await axios.get('/api/news');
       dispatch({ type: FETCH_LATEST_NEWS, payload: articles.data });
       dispatch(asyncActionFinish());
