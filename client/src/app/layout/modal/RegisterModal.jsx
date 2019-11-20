@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
-import RegisterForm from '../auth/register/RegisterForm';
+import RegisterForm from '../../../feature/auth/register/RegisterForm';
 import { closeModal } from './ModalActions';
 
 const mapState = state => ({
@@ -44,9 +44,4 @@ class RegisterModal extends Component {
   }
 }
 
-export default withRouter(
-  connect(
-    mapState,
-    actions
-  )(RegisterModal)
-);
+export default withRouter(connect(mapState, actions)(RegisterModal));

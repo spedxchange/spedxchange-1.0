@@ -7,7 +7,7 @@ import BasicPage from './BasicPage';
 import AboutPage from './AboutPage';
 import PhotosPage from './PhotosPage';
 import AccountPage from './AccountPage';
-import { updatePassword } from '../../../app/layout/auth/AuthActions';
+import { updatePassword } from '../../auth/AuthActions';
 
 const actions = {
   updatePassword
@@ -32,7 +32,4 @@ const SettingsDashboard = ({ updatePassword }) => {
   );
 };
 
-export default connect(
-  null,
-  actions
-)(SettingsDashboard);
+export default connect(null, actions)(SettingsDashboard);

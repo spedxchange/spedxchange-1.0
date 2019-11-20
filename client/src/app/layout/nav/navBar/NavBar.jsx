@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import { toggleMobileNav, toggleSearchBar, navItemClick } from '../navActions';
 import { openModal } from '../../modal/ModalActions';
-import { signOut } from '../../auth/AuthActions';
+import { signOut } from '../../../../feature/auth/AuthActions';
 
 import GuestMenu from './menus/GuestMenu';
 import AuthMenu from './menus/AuthMenu';
@@ -66,9 +66,4 @@ class NavBar extends Component {
   }
 }
 
-export default withRouter(
-  connect(
-    mapState,
-    actions
-  )(NavBar)
-);
+export default withRouter(connect(mapState, actions)(NavBar));

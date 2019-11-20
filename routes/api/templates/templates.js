@@ -224,3 +224,4 @@ const contactUserEmail = name => {
 exports.transporter = transporter;
 exports.contactUserEmail = contactUserEmail;
 exports.contactNotifyEmail = contactNotifyEmail;
+exports.resetPasswordEmail = resetPasswordEmail;

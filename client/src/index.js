@@ -11,7 +11,7 @@ import store from './app/store/Store';
 import ScrollToTop from './app/common/util/ScrollToTop';
 import ReduxToastr from 'react-redux-toastr';
 import setAuthToken from './app/common/util/setAuthToken';
-import { loadUser } from './app/layout/auth/AuthActions';
+import { loadUser } from './feature/auth/AuthActions';
 
 const rooEl = document.getElementById('root');
 

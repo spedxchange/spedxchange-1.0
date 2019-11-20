@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Form, Button, Label } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
 import { combineValidators, isRequired, composeValidators, isAlphaNumeric, createValidator } from 'revalidate';
-import TextInput from '../../../common/form/TextInput';
+import TextInput from '../../../app/common/form/TextInput';
 import { registeredUser } from '../AuthActions';
-import CheckBoxInput from '../../../common/form/CheckBoxInput';
+import CheckBoxInput from '../../../app/common/form/CheckBoxInput';
 
 const actions = {
   registeredUser
@@ -78,7 +78,4 @@ const RegisterForm = ({ handleSubmit, registeredUser, error, invalid, subbmittin
   );
 };
 
-export default connect(
-  null,
-  actions
-)(reduxForm({ form: 'registerForm', validate, initialValues: {} })(RegisterForm));
+export default connect(null, actions)(reduxForm({ form: 'registerForm', validate, initialValues: {} })(RegisterForm));

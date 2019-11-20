@@ -1,4 +1,4 @@
-import { createReducer } from '../../common/util/ReducerUtil';
+import { createReducer } from '../../app/common/util/ReducerUtil';
 import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, ACCOUNT_DELETED, TOGGLE_FORGOT_PASSWORD } from './AuthContantants';
 
 const initialState = {

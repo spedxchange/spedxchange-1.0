@@ -19,7 +19,7 @@ import NavMobile from './nav/navMobile/NavMobile';
 import NewsMain from '../../feature/news/main/NewsMain';
 import NewsArticle from '../../feature/news/article/NewsArticle';
 import QuestionForm from '../../feature/question/questionForm/QuestionForm';
-import { UserIsAuthenticated } from './auth/AuthWrapper';
+import { UserIsAuthenticated } from '../../feature/auth/AuthWrapper';
 import QuestionCategoryPage from '../../feature/question/categories/QuestionCategoryPage';
 import Scholarships from '../../feature/scholarships/Scholarships';
 import Resources from '../../feature/resources/Resources';
@@ -37,6 +37,7 @@ class App extends Component {
   componentDidMount() {
     loadReCaptcha('6LdfOb8UAAAAAJg87yIa2NJwxwP8ZkJJg18XGG1M');
   }
+
   render() {
     return (
       <Fragment>
@@ -68,6 +69,7 @@ class App extends Component {
                     <Route path='/tags' component={Tags} />
                     <Route path='/people' component={People} />
                     <Route path='/jobs' component={Jobs} />
+                    <Route path='/user/reset/:token' component={NewsMain} />
                   </Switch>
                 </div>
               </Container>

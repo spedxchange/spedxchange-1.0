@@ -70,7 +70,6 @@ router.post('/request-reset', async (req, res) => {
 
     console.log('request-reset: user: ', user);
     if (!user) {
-      console.error('No User Found');
       res.status(500).send('Server error');
     }
 
@@ -80,13 +79,13 @@ router.post('/request-reset', async (req, res) => {
     user.reset_password_expires = Date.now() + 86400000;
     await user.save();
 
-    const resetLink = 'https://spedxchange.herokuapp.com/user/reset?token=' + token;
+    const resetLink = 'localhost:3000/user/reset/' + token;
 
     const emailConfig = {
       from: 'SPEDxchange <content@spedxchange.com>',
       to: `${user.displayName} <${email}`,
       subject: 'SPEDxchange: Password Reset',
-      html: SpedEmail.contactUserEmail(user.displayName, resetLink)
+      html: SpedEmail.resetPasswordEmail(user.displayName, resetLink)
     };
 
     await SpedEmail.transporter.sendMail(emailConfig);
@@ -103,6 +102,7 @@ router.post('/request-reset', async (req, res) => {
 // @access   Public
 router.post('/reset', async (req, res) => {
   try {
+    console.log('req.body: ', req.body);
     const { token, newPassword, verifyPassword } = req.body;
     const user = await User.findOne({
       reset_password_token: token,
@@ -112,6 +112,7 @@ router.post('/reset', async (req, res) => {
     });
 
     if (!user) {
+      console.log('user: not found.');
       return res.status(400).json({ errors: [{ msg: 'User not found.' }] });
     }
 
@@ -129,14 +130,14 @@ router.post('/reset', async (req, res) => {
           name: RouteUtil.toTitleCase(user.displayName.split(' ')[0])
         }
       };
-      await smtpTransport.sendMail(data);
+      await SpedEmail.transporter.sendMail(data);
     } else {
       return res.status(422).send({
         message: 'Passwords do not match.'
       });
     }
   } catch (error) {
-    console.error(err.message);
+    console.error(error.message);
     res.status(500).send('Server error');
   }
 });

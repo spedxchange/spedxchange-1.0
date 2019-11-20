@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as FormReducer } from 'redux-form';
 import { reducer as TaostrReducer } from 'react-redux-toastr';
-import AuthReducer from '../layout/auth/AuthReducer';
+import AuthReducer from '../../feature/auth/AuthReducer';
 import NavReducer from '../../app/layout/nav/navReducer';
 import SearchReducer from '../../app/layout/nav/searchBar/searchReducer';
 import QuestionReducer from '../../feature/question/questionReducer';

@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { loadArticles } from '../newsActions';
+import { openModal } from '../../../app/layout/modal/ModalActions';
 import PageLoader from '../../../app/layout/PageLoader';
 
 const mapState = state => ({
@@ -11,12 +12,16 @@ const mapState = state => ({
 });
 
 const actions = {
-  loadArticles
+  loadArticles,
+  openModal
 };
 
 class NewsMain extends Component {
   componentDidMount() {
     this.props.loadArticles();
+    if (this.props.match.params.token) {
+      this.props.openModal('ResetModal', { token: this.props.match.params.token });
+    }
   }
 
   createImageSrc = (uid, name) => {
@@ -55,9 +60,4 @@ class NewsMain extends Component {
   }
 }
 
-export default withRouter(
-  connect(
-    mapState,
-    actions
-  )(NewsMain)
-);
+export default withRouter(connect(mapState, actions)(NewsMain));

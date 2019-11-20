@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
-import LoginForm from '../auth/login/LoginForm';
+import LoginForm from '../../../feature/auth/login/LoginForm';
 import { closeModal } from './ModalActions';
 
 const mapState = state => ({
@@ -35,7 +35,7 @@ class LoginModal extends Component {
     const { isPasswordForgot } = this.props;
     return (
       <Modal size='mini' open={true} onClose={this.handleCloseModal}>
-        <Modal.Header>{!isPasswordForgot ? 'SPEDxchange Login' : 'SPEDxchange Password Reset'}</Modal.Header>
+        <Modal.Header>{!isPasswordForgot ? 'SPEDxchange Login' : 'SPEDxchange Forgot Password'}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <LoginForm />
@@ -46,9 +46,4 @@ class LoginModal extends Component {
   }
 }
 
-export default withRouter(
-  connect(
-    mapState,
-    actions
-  )(LoginModal)
-);
+export default withRouter(connect(mapState, actions)(LoginModal));

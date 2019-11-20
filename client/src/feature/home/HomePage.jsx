@@ -7,10 +7,6 @@ import SearchBar from '../../feature/search/searchBar/SearchBar';
 import AppFooter from '../../app/layout/footer/AppFooter';
 import NavMobile from '../../app/layout/nav/navMobile/NavMobile';
 
-// import { Segment, Container, Header, Icon, Button } from 'semantic-ui-react';
-
-// import HomeMasthead from './HomeMasthead';
-
 const HomePage = ({ history }) => {
   return (
     <>

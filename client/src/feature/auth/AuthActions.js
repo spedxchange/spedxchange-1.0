@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { SubmissionError, reset } from 'redux-form';
+import { SubmissionError } from 'redux-form';
+import { ASYNC_ACTION_START, ASYNC_ACTION_FINISH, ASYNC_ACTION_ERROR } from '../../app/common/async/asyncConstants';
 import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, CLEAR_PROFILE, TOGGLE_FORGOT_PASSWORD } from './AuthContantants';
-import { HEADER_JSON } from '../../api/apiConstants';
-import { closeModal } from '../modal/ModalActions';
+import { HEADER_JSON } from '../../app/api/apiConstants';
+import { closeModal } from '../../app/layout/modal/ModalActions';
 import { toastr } from 'react-redux-toastr';
-import setAuthToken from '../../common/util/setAuthToken';
+import setAuthToken from '../../app/common/util/setAuthToken';
 
 // Load User
 export const loadUser = () => {
@@ -87,17 +88,21 @@ export const requestResetInstructions = form => {
     try {
       const config = HEADER_JSON;
       const body = JSON.stringify(form);
+      dispatch({ type: ASYNC_ACTION_START, payload: 'request-password-reset' });
       const resp = await axios.post('/api/auth/request-reset', body, config);
       const msg = `Check your email inbox at for the password reset instructions.`;
       const err = `No account for ${form.email} was found.`;
       const confirmMessage = !resp.data || !resp.data.success ? err : msg;
       dispatch(closeModal());
+      dispatch({ type: ASYNC_ACTION_FINISH });
       toastr.confirm(confirmMessage, {
         okText: 'Close',
         disableCancel: true
       });
       dispatch({ type: TOGGLE_FORGOT_PASSWORD });
+      return null;
     } catch (error) {
+      dispatch({ type: ASYNC_ACTION_ERROR });
       throw new SubmissionError({
         _error: 'Request Failed'
       });
@@ -109,10 +114,16 @@ export const requestResetInstructions = form => {
 export const updatePassword = form => {
   return async dispatch => {
     try {
-      // TODO: add call here
-      await dispatch(reset('loginForm'));
+      const config = HEADER_JSON;
+      const body = JSON.stringify(form);
+      dispatch({ type: ASYNC_ACTION_START, payload: 'update-password' });
+      await axios.post('/api/auth/reset', body, config);
+      console.log('sent reset email');
+      dispatch(closeModal());
+      dispatch({ type: ASYNC_ACTION_FINISH });
       toastr.success('Success', 'Your password has been updated');
     } catch (error) {
+      dispatch({ type: ASYNC_ACTION_ERROR });
       throw new SubmissionError({
         _error: error.message
       });
