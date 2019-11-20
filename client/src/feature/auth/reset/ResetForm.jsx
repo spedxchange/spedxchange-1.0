@@ -5,7 +5,7 @@ import { ReCaptcha } from 'react-recaptcha-v3';
 import { Form, Button, Label } from 'semantic-ui-react';
 import { combineValidators, isRequired } from 'revalidate';
 import { Field, reduxForm } from 'redux-form';
-import { updatePassword } from '../../auth/AuthActions';
+import { updatePassword } from '../AuthActions';
 import TextInput from '../../../app/common/form/TextInput';
 import HiddenInput from '../../../app/common/form/HiddenInput';
 

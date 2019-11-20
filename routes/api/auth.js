@@ -29,7 +29,7 @@ router.get('/', auth, async (req, res) => {
 // @route    POST api/auth
 // @desc     Authenticate User & Get Token
 // @access   Public
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -68,7 +68,6 @@ router.post('/request-reset', async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email: email });
 
-    console.log('request-reset: user: ', user);
     if (!user) {
       res.status(500).send('Server error');
     }
@@ -97,12 +96,12 @@ router.post('/request-reset', async (req, res) => {
   }
 });
 
-// @route    GET api/users/forgot
-// @desc     Register User
+// @route    GET api/auth/reset
+// @desc     Reset User Password
 // @access   Public
 router.post('/reset', async (req, res) => {
   try {
-    console.log('req.body: ', req.body);
+    // console.log('req.body: ', req.body);
     const { token, newPassword, verifyPassword } = req.body;
     const user = await User.findOne({
       reset_password_token: token,
@@ -131,6 +130,7 @@ router.post('/reset', async (req, res) => {
         }
       };
       await SpedEmail.transporter.sendMail(data);
+      return res.json({ success: true });
     } else {
       return res.status(422).send({
         message: 'Passwords do not match.'

@@ -59,7 +59,7 @@ export const login = creds => {
     try {
       const config = HEADER_JSON;
       const body = JSON.stringify(creds);
-      const res = await axios.post('/api/auth', body, config);
+      const res = await axios.post('/api/auth/login', body, config);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
@@ -114,13 +114,14 @@ export const requestResetInstructions = form => {
 export const updatePassword = form => {
   return async dispatch => {
     try {
+      console.log('Update Password');
       const config = HEADER_JSON;
       const body = JSON.stringify(form);
       dispatch({ type: ASYNC_ACTION_START, payload: 'update-password' });
-      await axios.post('/api/auth/reset', body, config);
+      const reset = await axios.post('/api/auth/reset', body, config);
       console.log('sent reset email');
-      dispatch(closeModal());
       dispatch({ type: ASYNC_ACTION_FINISH });
+      dispatch(closeModal());
       toastr.success('Success', 'Your password has been updated');
     } catch (error) {
       dispatch({ type: ASYNC_ACTION_ERROR });
