@@ -6,6 +6,7 @@ import ResetModal from './ResetModal';
 import UnauthModal from './UnauthModal';
 import AskQuestionModal from './AskQuestionModal';
 import ContactModal from './ContactModal';
+import ScholarshipModal from './ScholarshipModal';
 
 const modalLookup = {
   LoginModal,
@@ -13,7 +14,8 @@ const modalLookup = {
   ResetModal,
   UnauthModal,
   AskQuestionModal,
-  ContactModal
+  ContactModal,
+  ScholarshipModal
 };
 
 const mapState = state => ({

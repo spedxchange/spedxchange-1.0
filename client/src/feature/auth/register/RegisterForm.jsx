@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, Label } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
-import { combineValidators, isRequired, composeValidators, isAlphaNumeric, createValidator } from 'revalidate';
+import { combineValidators, isRequired, composeValidators, createValidator } from 'revalidate';
 import TextInput from '../../../app/common/form/TextInput';
 import { registeredUser } from '../AuthActions';
 import CheckBoxInput from '../../../app/common/form/CheckBoxInput';

@@ -82,6 +82,13 @@ hr {
   height: 100%;
 }
 
+// resources
+.flex-box.resources {
+  > .grow {
+    min-width: 45%;
+  }
+}
+
 // tinyMCE branding
 .tox-statusbar__branding {
   display: none !important;

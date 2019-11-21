@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
 
 const scholarshipList = [
   {
@@ -254,7 +256,7 @@ export class Scholarships extends Component {
     return (
       <>
         <h1>Scholarships</h1>
-        <div className='flex-box sm pt-3'>
+        <div className='flex-box sm pt-3 resources'>
           <div className='grow'>
             <h5 className='section-head mb-3'>SPEDxchange Scholarships</h5>
             <div className='scholarship-link'>
@@ -293,7 +295,9 @@ export class Scholarships extends Component {
                   </em>
                 </p>
               </div>
-              <button className='btn btn-sm btn-primary mb-3'>Apply Here</button>
+              <Button color='green' className='my-3' onClick={() => this.props.history.push('/scholarships/clinical')}>
+                Apply Here
+              </Button>
             </div>
           </div>
           <div className='spacer' />
@@ -324,4 +328,4 @@ const mapState = state => ({});
 
 const actions = {};
 
-export default connect(mapState, actions)(Scholarships);
+export default withRouter(connect(mapState, actions)(Scholarships));

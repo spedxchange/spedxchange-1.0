@@ -10,7 +10,7 @@ import TextInput from '../../../app/common/form/TextInput';
 const mapState = state => ({
   loading: state.async.loading,
   loadingName: state.async.elementName,
-isPasswordForgot: state.auth.isPasswordForgot
+  isPasswordForgot: state.auth.isPasswordForgot
 });
 
 const actions = {
@@ -57,7 +57,7 @@ export class LoginForm extends Component {
         )}
         <div className='flex-box pt-2'>
           <div className='pr-3'>
-          <Button color='green' loading={loadingName === 'request-password-reset' && loading} content={!isPasswordForgot ? 'Login' : 'Reset Password'} />
+            <Button color='green' loading={loadingName === 'request-password-reset' && loading} content={!isPasswordForgot ? 'Login' : 'Reset Password'} />
           </div>
           <div className='grow pt-2 text-right'>
             <span className='link small' onClick={toggleForgotPassword}>

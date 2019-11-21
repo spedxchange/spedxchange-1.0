@@ -8,7 +8,19 @@ const actions = {
   openModal
 };
 class SideBar extends Component {
-  state = { activeItem: '/' + this.props.match.url.split('/')[1] };
+  state = {
+    activeItem: '/' + this.props.match.url.split('/')[1],
+    visible: true
+  };
+
+  componentDidMount() {
+    const pathRoot = '/' + this.props.match.url.split('/')[1];
+    if (pathRoot === '/user') {
+      this.setState({ visible: false });
+    } else {
+      this.setState({ visible: true });
+    }
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
@@ -18,6 +30,11 @@ class SideBar extends Component {
 
   onRouteChanged() {
     const pathRoot = '/' + this.props.match.url.split('/')[1];
+    if (pathRoot === '/user') {
+      this.setState({ visible: false });
+    } else {
+      this.setState({ visible: true });
+    }
     this.setState({ activeItem: pathRoot });
   }
 
@@ -31,10 +48,10 @@ class SideBar extends Component {
   };
 
   render() {
-    const { activeItem } = this.state;
+    const { activeItem, visible } = this.state;
 
     return (
-      <Menu text vertical className='app-sidebar'>
+      <Menu text vertical className={visible ? 'app-sidebar' : 'app-sidebar hidden'}>
         <Menu.Item link name='Eye On SPED' path='/news' active={activeItem === '/news'} onClick={this.handleItemClick} />
         <Menu.Item link name='Resources' path='/resources' active={activeItem === '/resources'} onClick={this.handleItemClick} />
         <Menu.Item link name='Scholarships' path='/scholarships' active={activeItem === '/scholarships'} onClick={this.handleItemClick} />
@@ -42,8 +59,7 @@ class SideBar extends Component {
         <Menu.Item link name='Contact Us' path='/contact' active={activeItem === '/contact'} onClick={this.openContactModal} />
         <hr />
         <Menu.Item link name='Questions' path='/questions' active={activeItem === '/questions'} onClick={this.handleItemClick} />
-        <Menu.Item link name='Categories' path='/categories' active={activeItem === '/categories'} onClick={this.handleItemClick} className='indent' />
-        <Menu.Item link name='Tags' path='/tags' active={activeItem === '/tags'} onClick={this.handleItemClick} className='indent' />
+        <Menu.Item link name='Categories' path='/categories' active={activeItem === '/categories'} onClick={this.handleItemClick} />
         <hr />
         <Menu.Item link name='Jobs' path='/jobs' active={activeItem === '/jobs'} onClick={this.handleItemClick} />
       </Menu>
@@ -51,9 +67,4 @@ class SideBar extends Component {
   }
 }
 
-export default withRouter(
-  connect(
-    null,
-    actions
-  )(SideBar)
-);
+export default withRouter(connect(null, actions)(SideBar));

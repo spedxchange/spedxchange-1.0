@@ -47,13 +47,13 @@ export class ScholarshipClinical extends Component {
 
   handleApply = () => {
     if (this.props.auth.authenticated) {
+      this.props.openModal('ScholarshipModal');
     } else {
+      this.props.openModal('UnauthModal');
     }
   };
 
   render() {
-    console.log('ScholarshipClinical: props: ', this.props);
-    const { auth } = this.props;
     return (
       <div className='article-wrap'>
         <div className='article'>
@@ -96,12 +96,9 @@ export class ScholarshipClinical extends Component {
               <strong>Award recipients will be announced January 15, 2020.</strong>
             </em>
           </p>
-          {auth.authenticated && (
-            <Button className='mb-3' onClick={this.handleApply}>
-              Apply Today
-            </Button>
-          )}
-          {!auth.authenticated && <Button className='mb-3' color='green' onClick={this.handleLogin} content='Login to Apply' />}
+          <Button className='mb-3' onClick={this.handleApply}>
+            Apply Today
+          </Button>
         </div>
       </div>
     );

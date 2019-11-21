@@ -73,9 +73,6 @@ class NavMobile extends Component {
               <li>
                 <span onClick={() => this.handleItemClick(navItems.categories)}>Categories</span>
               </li>
-              <li>
-                <span onClick={() => this.handleItemClick(navItems.tags)}>Tags</span>
-              </li>
               <li className='nav-spacer'></li>
               <li>
                 <span onClick={() => this.handleItemClick(navItems.jobs)}>Jobs</span>
@@ -99,9 +96,4 @@ class NavMobile extends Component {
   }
 }
 
-export default withRouter(
-  connect(
-    mapState,
-    actions
-  )(NavMobile)
-);
+export default withRouter(connect(mapState, actions)(NavMobile));

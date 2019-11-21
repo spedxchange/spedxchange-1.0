@@ -38,6 +38,10 @@ class NavBar extends Component {
     this.props.signOut();
   };
 
+  handleMenuNavigation = path => {
+    this.props.history.push(path);
+  };
+
   toggleNav = () => {
     this.props.toggleMobileNav();
   };
@@ -55,7 +59,11 @@ class NavBar extends Component {
             <button className='square' onClick={this.props.toggleSearchBar}>
               <Icon name='search' />
             </button>
-            {authenticated ? <AuthMenu profile={auth.currentUser} signOut={this.handleSignOut} /> : <GuestMenu login={this.handleLogin} register={this.handleSignUp} />}
+            {authenticated ? (
+              <AuthMenu profile={auth.currentUser} onNav={this.handleMenuNavigation} signOut={this.handleSignOut} />
+            ) : (
+              <GuestMenu login={this.handleLogin} register={this.handleSignUp} />
+            )}
             <button className='square mobile' onClick={this.toggleNav}>
               <Icon name='bars' />
             </button>

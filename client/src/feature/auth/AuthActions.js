@@ -135,3 +135,22 @@ export const toggleForgotPassword = () => {
     dispatch({ type: TOGGLE_FORGOT_PASSWORD });
   };
 };
+
+export const submitScholarshipApplication = form => {
+  return async dispatch => {
+    try {
+      dispatch({ type: ASYNC_ACTION_START, payload: 'submit-scholarship' });
+      const config = HEADER_JSON;
+      const body = JSON.stringify(form);
+      await axios.post('/api/auth/submit-scholarship', body, config);
+      dispatch({ type: ASYNC_ACTION_FINISH });
+      dispatch(closeModal());
+      toastr.success('Success', 'Your Application has been submitted!');
+    } catch (error) {
+      dispatch({ type: ASYNC_ACTION_ERROR });
+      throw new SubmissionError({
+        _error: error.message
+      });
+    }
+  };
+};

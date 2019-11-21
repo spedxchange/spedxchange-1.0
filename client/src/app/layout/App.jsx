@@ -57,7 +57,7 @@ class App extends Component {
                     <Route path='/questions/:uid/:slug' component={QuestionDetail} />
                     <Route path='/categories' component={QuestionCategoryPage} />
                     <Route path={['/ask', '/ask/:id', '/ask/:uid/:slug']} component={UserIsAuthenticated(QuestionForm)} />
-                    <Route exact path='/user' component={UserDashboard} />
+                    <Route exact path='/user' component={UserIsAuthenticated(UserDashboard)} />
                     <Route path='/profile/:id' component={UserIsAuthenticated(UserDetail)} />
                     <Route exact path='/settings' component={UserIsAuthenticated(SettingsDashboard)} />
                     <Route exact path='/test' component={TestComponent} />
