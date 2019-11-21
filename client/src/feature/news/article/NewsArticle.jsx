@@ -44,6 +44,7 @@ export class NewsArticle extends Component {
       '%20'
     );
   };
+
   render() {
     const { articles, currentArticle, loading } = this.props;
     if (loading) return <PageLoader />;

@@ -2,6 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ScholarshipSchema = new Schema({
+  applicants: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ],
   slug: {
     type: String
   },
@@ -43,6 +49,6 @@ const ScholarshipSchema = new Schema({
     type: Date,
     default: Date.now
   }
-}).index({ title: 'text', summary: 'text', description: 'text' });
+});
 
 module.exports = Tag = mongoose.model('scholarship', ScholarshipSchema);

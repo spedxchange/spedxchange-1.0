@@ -14,7 +14,7 @@ const Role = require('../../models/Role');
 // @access   Public
 router.post('/', async (req, res) => {
   try {
-    const { displayName, screenName, email, password, roles } = req.body;
+    const { screenName, email, password, roles } = req.body;
     let user = await User.findOne({ email });
     let screen = await User.findOne({ screenName });
 
@@ -30,7 +30,6 @@ router.post('/', async (req, res) => {
 
     user = new User({
       displayName: displayName,
-      screenName: screenName,
       email: email,
       avatar: avatar,
       password: password

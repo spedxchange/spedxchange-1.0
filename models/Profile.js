@@ -49,14 +49,13 @@ const ProfileSchema = new Schema({
         required: true
       },
       location: {
-        type: String,
-        required: true
+        type: String
       },
-      from: {
+      start: {
         type: Date,
         required: true
       },
-      to: {
+      end: {
         type: Date
       },
       current: {

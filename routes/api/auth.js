@@ -39,10 +39,20 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
+    if (user.password === 'sped-migrating') {
+      // Handle Password
+      /*
+       TODO: Check if password works on spedhunters
+             For now assuming password is correct
+       */
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+      await user.save();
+    } else {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
     }
 
     const payload = {

@@ -23,7 +23,6 @@ const isConfirmed = createValidator(
 
 const validate = combineValidators({
   displayName: isRequired({ message: 'Full Name is required' }),
-  screenName: composeValidators(isRequired({ message: 'Username is required' }), isAlphaNumeric({ message: 'Username may only contain letters and numbers' }))(),
   email: isRequired({ message: 'Email is required' }),
   password: isRequired({ message: 'Password is required' }),
   confirm: composeValidators(isConfirmed({ message: 'confirm' }))()
@@ -35,10 +34,6 @@ const RegisterForm = ({ handleSubmit, registeredUser, error, invalid, subbmittin
       <Form className='register-form' onSubmit={handleSubmit(registeredUser)} size='small' autoComplete='off'>
         <label>Full Name</label>
         <Field name='displayName' type='text' component={TextInput} />
-        <label>
-          Username&nbsp;&nbsp;&nbsp;&nbsp;<span>(16 Character Maximum)</span>
-        </label>
-        <Field name='screenName' type='text' component={TextInput} maxLength={16} />
         <label>Email</label>
         <Field name='email' type='text' component={TextInput} />
         <label>Password</label>

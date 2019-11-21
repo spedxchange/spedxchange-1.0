@@ -22,6 +22,7 @@ import QuestionForm from '../../feature/question/questionForm/QuestionForm';
 import { UserIsAuthenticated } from '../../feature/auth/AuthWrapper';
 import QuestionCategoryPage from '../../feature/question/categories/QuestionCategoryPage';
 import Scholarships from '../../feature/scholarships/Scholarships';
+import ScholarshipClinical from '../../feature/scholarships/ScholarshipClinical';
 import Resources from '../../feature/resources/Resources';
 import About from '../../feature/about/About';
 import Contact from '../../feature/contact/Contact';
@@ -62,7 +63,8 @@ class App extends Component {
                     <Route exact path='/test' component={TestComponent} />
                     <Route exact path='/news' component={NewsMain} />
                     <Route path='/news/:uid/:slug' component={NewsArticle} />
-                    <Route path='/scholarships' component={Scholarships} />
+                    <Route exact path='/scholarships' component={Scholarships} />
+                    <Route exact path='/scholarships/clinical' component={ScholarshipClinical} />
                     <Route path='/resources' component={Resources} />
                     <Route path='/about' component={About} />
                     <Route path='/contact' component={Contact} />
