@@ -8,6 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const RouteUtil = require('../routeUtil');
 const SpedEmail = require('./templates/templates');
 const User = require('../../models/User');
+const ScholarshipApplication = require('../../models/ScholarshipApplication');
 
 // @route    GET api/auth
 // @desc     Get User Record
@@ -149,6 +150,53 @@ router.post('/reset', async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server error');
+  }
+});
+
+// @route    POST api/auth/submit-scholarship
+// @desc     Create/Update Scholarship Application
+// @access   Private
+router.post('/submit-scholarship', auth, async (req, res) => {
+  try {
+    const { school, graduation, essay, scholarshipName } = req.body;
+    var application = await ScholarshipApplication.findOne({ user: req.user.id, scholarshipName: scholarshipName || 'clinical' });
+
+    if (!application) {
+      application = new ScholarshipApplication({
+        user: req.user.id,
+        scholarshipName: scholarshipName || 'clinical'
+      });
+    }
+
+    application.school = school;
+    application.graduation = graduation;
+    application.essay = essay;
+    application.updated = new Date();
+
+    await application.save();
+    res.json(application);
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    POST api/auth/scholarship-application
+// @desc     Get Users Scholarship Application
+// @access   Private
+router.post('/scholarship-application', auth, async (req, res) => {
+  try {
+    const { scholarshipName } = req.body;
+    var application = await ScholarshipApplication.findOne({ user: req.user.id, scholarshipName: scholarshipName || 'clinical' });
+    if (!application) {
+      application = {
+        school: '',
+        graduation: '',
+        essay: ''
+      };
+    }
+    res.json({ school: application.school, graduation: application.graduation, essay: application.essay });
+  } catch (err) {
+    res.status(500).send('Server Error');
   }
 });
 

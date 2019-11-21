@@ -96,7 +96,7 @@ export class ScholarshipClinical extends Component {
               <strong>Award recipients will be announced January 15, 2020.</strong>
             </em>
           </p>
-          <Button className='mb-3' onClick={this.handleApply}>
+          <Button color='green' className='mb-3' onClick={this.handleApply}>
             Apply Today
           </Button>
         </div>

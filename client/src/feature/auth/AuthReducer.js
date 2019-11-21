@@ -1,5 +1,16 @@
 import { createReducer } from '../../app/common/util/ReducerUtil';
-import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, ACCOUNT_DELETED, TOGGLE_FORGOT_PASSWORD } from './AuthContantants';
+import {
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  ACCOUNT_DELETED,
+  TOGGLE_FORGOT_PASSWORD,
+  FETCH_SCHOLARSHIP_APPLICATION
+} from './AuthContantants';
 
 const initialState = {
   token: localStorage.getItem('token'),
@@ -7,7 +18,12 @@ const initialState = {
   loading: true,
   isPasswordForgot: false,
   isPasswordSent: false,
-  currentUser: {}
+  currentUser: {},
+  scholarshipApplication: {
+    school: '',
+    graduation: '',
+    essay: ''
+  }
 };
 
 const loadUser = (state, payload) => {
@@ -53,6 +69,14 @@ const toggleForgotPassword = state => {
   };
 };
 
+const loadScholarshipApplication = (state, payload) => {
+  console.log('payload: ', payload);
+  return {
+    ...state,
+    scholarshipApplication: payload
+  };
+};
+
 export default createReducer(initialState, {
   [USER_LOADED]: loadUser,
   [REGISTER_SUCCESS]: loginSuccess,
@@ -62,5 +86,6 @@ export default createReducer(initialState, {
   [LOGIN_FAIL]: logoutUser,
   [LOGOUT]: logoutUser,
   [ACCOUNT_DELETED]: logoutUser,
-  [TOGGLE_FORGOT_PASSWORD]: toggleForgotPassword
+  [TOGGLE_FORGOT_PASSWORD]: toggleForgotPassword,
+  [FETCH_SCHOLARSHIP_APPLICATION]: loadScholarshipApplication
 });

@@ -4,7 +4,6 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const Scholarship = require('../../models/Scholarship');
-const Question = require('../../models/Question');
 
 // @route    GET api/scholarships
 // @desc     Get all Scholarships

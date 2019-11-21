@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SubmissionError } from 'redux-form';
 import { ASYNC_ACTION_START, ASYNC_ACTION_FINISH, ASYNC_ACTION_ERROR } from '../../app/common/async/asyncConstants';
-import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, CLEAR_PROFILE, TOGGLE_FORGOT_PASSWORD } from './AuthContantants';
+import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, CLEAR_PROFILE, TOGGLE_FORGOT_PASSWORD, FETCH_SCHOLARSHIP_APPLICATION } from './AuthContantants';
 import { HEADER_JSON } from '../../app/api/apiConstants';
 import { closeModal } from '../../app/layout/modal/ModalActions';
 import { toastr } from 'react-redux-toastr';
@@ -146,6 +146,28 @@ export const submitScholarshipApplication = form => {
       dispatch({ type: ASYNC_ACTION_FINISH });
       dispatch(closeModal());
       toastr.success('Success', 'Your Application has been submitted!');
+    } catch (error) {
+      dispatch({ type: ASYNC_ACTION_ERROR });
+      throw new SubmissionError({
+        _error: error.message
+      });
+    }
+  };
+};
+
+export const fetchScholarshipApplication = scholarshipName => {
+  return async dispatch => {
+    console.log('fetchScholarshipApplication in actions');
+    try {
+      dispatch({ type: ASYNC_ACTION_START, payload: 'fetch-scholarship' });
+      const config = HEADER_JSON;
+      const body = JSON.stringify({ scholarshipName: scholarshipName || 'clinical' });
+      const application = await axios.post('/api/auth/scholarship-application', body, config);
+      console.log('application in actions', application.data);
+      dispatch({ type: ASYNC_ACTION_FINISH });
+      if (application.data.essay) {
+        dispatch({ type: FETCH_SCHOLARSHIP_APPLICATION, payload: application.data });
+      }
     } catch (error) {
       dispatch({ type: ASYNC_ACTION_ERROR });
       throw new SubmissionError({

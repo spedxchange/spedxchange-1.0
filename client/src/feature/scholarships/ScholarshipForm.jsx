@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Button, Label } from 'semantic-ui-react';
 import { combineValidators, isRequired } from 'revalidate';
 import { Field, reduxForm } from 'redux-form';
-import { submitScholarshipApplication } from '../auth/AuthActions';
+import { submitScholarshipApplication, fetchScholarshipApplication } from '../auth/AuthActions';
 import { closeModal } from '../../app/layout/modal/ModalActions';
 import TextInput from '../../app/common/form/TextInput';
 import EditorInput from '../../app/common/form/EditorInput';
@@ -11,14 +11,13 @@ import EditorInput from '../../app/common/form/EditorInput';
 const mapState = state => ({
   loading: state.async.loading,
   loadingName: state.async.elementName,
-  initialValues: {
-    school: null,
-    graduation: null
-  }
+  auth: state.auth,
+  initialValues: state.auth.scholarshipApplication
 });
 
 const actions = {
   submitScholarshipApplication,
+  fetchScholarshipApplication,
   closeModal
 };
 
@@ -29,6 +28,14 @@ const validate = combineValidators({
 });
 
 export class ScholarshipForm extends Component {
+  componentDidMount() {
+    console.log('ScholarshipForm: componentDidMount');
+    if (this.props.auth.authenticated) {
+      console.log('fetchScholarshipApplication()');
+      this.props.fetchScholarshipApplication();
+    }
+  }
+
   render() {
     const { loading, loadingName, closeModal, submitScholarshipApplication, handleSubmit, error } = this.props;
 
@@ -37,7 +44,10 @@ export class ScholarshipForm extends Component {
         <label>University/School</label>
         <Field name='school' id='school' component={TextInput} type='text' />
         <label>Graduation Date</label>
-        <Field name='graduation' id='graduation' component={TextInput} type='text' />
+        <Field name='graduation' id='graduation' placeholder='MM/YYYY' component={TextInput} type='text' />
+        <label>
+          <strong>How do I intend on impacting the lives of my future students? (Maximum 250 Words)</strong>
+        </label>
         <Field name='essay' component={EditorInput} />
         {error && (
           <Label basic color='red'>
@@ -53,4 +63,4 @@ export class ScholarshipForm extends Component {
   }
 }
 
-export default connect(mapState, actions)(reduxForm({ form: 'scholarshipForm', validate })(ScholarshipForm));
+export default connect(mapState, actions)(reduxForm({ form: 'scholarshipForm', enableReinitialize: true, validate })(ScholarshipForm));
