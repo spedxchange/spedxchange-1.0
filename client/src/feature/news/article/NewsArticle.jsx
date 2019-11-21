@@ -25,11 +25,21 @@ export class NewsArticle extends Component {
   }
 
   handleSocialClick = type => {
-    console.log('type: ', type);
+    const url = window.location.protocol + '//' + window.location.host + this.props.match.url;
+    if (type === 'twitter') {
+      window.open(`https://twitter.com/intent/tweet?text=SPEDxchange:%20${this.props.currentArticle.title}&amp;url=${url}`, 'twitter-share-dialog', 'width=600,height=480');
+    }
+    if (type === 'linkedin') {
+      window.open(`https://www.linkedin.com/shareArticle?mini=true&amp;url=${url}&amp;title=${this.props.currentArticle.title}`, 'linkedin-share-dialog', 'width=600,height=480');
+    }
+    if (type === 'facebook') {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, 'facebook-share-dialog', 'width=600,height=480');
+    }
   };
 
   setEmailLink = () => {
-    return `mailto:?subject=${this.props.currentArticle.title}&body=I thought you might be interested in reading this SPED Talk article.%0D%0A%0D%0A${this.props.currentArticle.title}%0D%0Ahttps://localhost:3000${this.props.match.url}%0D%0A%0D%0A`.replace(
+    const url = window.location.protocol + '//' + window.location.host + this.props.match.url;
+    return `mailto:?subject=${this.props.currentArticle.title}&body=I thought you might be interested in reading this SPED Talk article.%0D%0A%0D%0A${this.props.currentArticle.title}%0D%0A${url}%0D%0A%0D%0A`.replace(
       / /g,
       '%20'
     );
@@ -55,7 +65,9 @@ export class NewsArticle extends Component {
                 <Icon link circular name='twitter' onClick={() => this.handleSocialClick('twitter')} />
                 <Icon link circular name='linkedin' onClick={() => this.handleSocialClick('linkedin')} />
                 <Icon link circular name='facebook' onClick={() => this.handleSocialClick('facebook')} />
-                <Icon link circular name='envelope outline' onClick={() => this.handleSocialClick('facebook')} />
+                <a href={this.setEmailLink()}>
+                  <Icon link circular name='envelope outline' />
+                </a>
               </div>
               <div dangerouslySetInnerHTML={{ __html: currentArticle.content }} />
             </div>
@@ -92,9 +104,4 @@ export class NewsArticle extends Component {
   }
 }
 
-export default withRouter(
-  connect(
-    mapState,
-    actions
-  )(NewsArticle)
-);
+export default withRouter(connect(mapState, actions)(NewsArticle));
