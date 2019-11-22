@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 const mime = require('mime-types');
+const sslRedirect = require('heroku-ssl-redirect');
 
 // configure environment
 // console.log('process: ', process.env.NODE_ENV);
@@ -33,6 +34,7 @@ if (!process.env.NODE_ENV) {
 //     }
 //   })
 // );
+app.use(sslRedirect());
 app.use(cors());
 
 // Connect Database
