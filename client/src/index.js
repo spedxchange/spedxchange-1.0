@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import HttpsRedirect from 'react-https-redirect';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import './theme.scss';
 import './index.scss';
@@ -25,14 +26,16 @@ const AppRoot = () => {
   }, []);
 
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <ScrollToTop>
-          <ReduxToastr position='bottom-right' transitionIn='fadeIn' transitionOut='fadeOut' />
-          <App />
-        </ScrollToTop>
-      </BrowserRouter>
-    </Provider>
+    <HttpsRedirect>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ScrollToTop>
+            <ReduxToastr position='bottom-right' transitionIn='fadeIn' transitionOut='fadeOut' />
+            <App />
+          </ScrollToTop>
+        </BrowserRouter>
+      </Provider>
+    </HttpsRedirect>
   );
 };
 
