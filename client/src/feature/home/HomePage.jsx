@@ -76,7 +76,7 @@ const HomePage = ({ history }) => {
       <section className='home-section resources'>
         <Container>
           <h2>SPED&nbsp;Resources You&nbsp;Need</h2>
-          <p>Check out what you can do by becoming a SPEDhunters member today!</p>
+          <p>Check out what you can do by becoming a SPEDxchange member today!</p>
           <div className='flex-box sm callout'>
             <div className='grow'>
               <i className='icon-present text-primary'></i>

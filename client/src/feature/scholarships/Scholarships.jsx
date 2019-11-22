@@ -265,10 +265,10 @@ export class Scholarships extends Component {
               </h4>
               <div className='content'>
                 <p>
-                  SPEDhunters is offering a $1,000 scholarship for undergraduate or graduate students that are pursuing a degree in a "clinical"&nbsp;special education related
+                  SPEDxchange is offering a $1,000 scholarship for undergraduate or graduate students that are pursuing a degree in a "clinical"&nbsp;special education related
                   field.
                 </p>
-                <p>SPEDhunters considers "clinical" special education to include the following professions:</p>
+                <p>SPEDxchange considers "clinical" special education to include the following professions:</p>
                 <p>
                   <strong>Audiologists</strong>
                   <br />

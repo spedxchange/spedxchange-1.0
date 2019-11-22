@@ -25,11 +25,11 @@ const AppFooter = () => {
           </div>
           <div className='social'>
             <h6>Connect</h6>
-            <a href='https://twitter.com/sped_hunters' target='_blank' rel='noopener noreferrer'>
+            <a href='https://twitter.com/SPEDxchange_llc' target='_blank' rel='noopener noreferrer'>
               <Icon fitted name='twitter' />
               &nbsp; Twitter
             </a>
-            <a href='https://www.facebook.com/SPEDhuntersLLC' target='_blank' rel='noopener noreferrer'>
+            <a href='https://www.facebook.com/SPEDxchange' target='_blank' rel='noopener noreferrer'>
               <Icon fitted name='facebook' />
               &nbsp; Facebook
             </a>
@@ -37,7 +37,7 @@ const AppFooter = () => {
               <Icon fitted name='linkedin' />
               &nbsp; LinkdIn
             </a>
-            <a href='https://www.instagram.com/spedhuntersllc/' target='_blank' rel='noopener noreferrer'>
+            <a href='https://www.instagram.com/SPEDxchange_llc/' target='_blank' rel='noopener noreferrer'>
               <Icon fitted name='instagram' />
               &nbsp; Instagram
             </a>
@@ -56,7 +56,7 @@ const AppFooter = () => {
           <div className='grow'>
             <strong>SPEDxchange</strong> | 1740 Ridge Ave, Suite 500 | Evanston Il, 60201 | <a href='tel:1-224-300-7990'>224.300.7790</a>
           </div>
-          <div>&copy; Copyright 2019 SPEDhunters, LLC</div>
+          <div>&copy; Copyright 2019 SPEDxchange</div>
         </div>
       </Container>
     </div>

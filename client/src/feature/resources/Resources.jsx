@@ -17,7 +17,7 @@ export class Resources extends Component {
               <strong>Special Educator Services</strong>
             </h5>
             <p>
-              SPEDhunters provides original and shared content that helps SPEDucators improve the quality of their services. For students that will be graduating soon we offer
+              SPEDxchange provides original and shared content that helps SPEDucators improve the quality of their services. For students that will be graduating soon we offer
               career coaching, valuable content, information on school districts and current open positions.
             </p>
             <p>
@@ -47,18 +47,18 @@ export class Resources extends Component {
               We believe in methods that increase successful outcomes.
             </p>
             <h5>
-              <strong>Spedhunters Connects your school district vacancies with the Precise Staff You need:</strong>
+              <strong>SPEDxchange Connects your school district vacancies with the Precise Staff You need:</strong>
             </h5>
             <p>
               You need to get your job vacancies in front of the candidates that matter, seasoned professionals and new graduates that are just getting ready to graduate. Hard to
               find candidates are making their plan to find their first jobs a priority. Don’t miss them!
             </p>
             <h5>
-              <strong>Spedhunters makes your school district become more social and more visible online and mobile:</strong>
+              <strong>SPEDxchange makes your school district become more social and more visible online and mobile:</strong>
             </h5>
             <p>
               Social media is constantly evolving, and it is imperative that your district uses social media to find hard to find licensed special education staff. This can be
-              overwhelming for a school district of any size. Spedhunters connects you to both active and passive candidates when they are online from Instagram, Facebook,
+              overwhelming for a school district of any size. SPEDxchange connects you to both active and passive candidates when they are online from Instagram, Facebook,
               LinkedIn, Twitter and our own specialized website using a comprehensive SEO strategy.
             </p>
             <p>
