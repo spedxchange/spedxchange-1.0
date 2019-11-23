@@ -1,7 +1,7 @@
 {
   "name": "SPEDxchange",
-  "version": "1.0.1",
-  "description": "Social Network for Special Education",
+  "version": "1.0.2",
+  "description": "The Community for Special Education Answers",
   "main": "server.js",
   "scripts": {
     "start": "node server",
