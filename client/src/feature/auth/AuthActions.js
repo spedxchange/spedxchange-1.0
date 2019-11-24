@@ -157,13 +157,11 @@ export const submitScholarshipApplication = form => {
 
 export const fetchScholarshipApplication = scholarshipName => {
   return async dispatch => {
-    console.log('fetchScholarshipApplication in actions');
     try {
       dispatch({ type: ASYNC_ACTION_START, payload: 'fetch-scholarship' });
       const config = HEADER_JSON;
       const body = JSON.stringify({ scholarshipName: scholarshipName || 'clinical' });
       const application = await axios.post('/api/auth/scholarship-application', body, config);
-      console.log('application in actions', application.data);
       dispatch({ type: ASYNC_ACTION_FINISH });
       if (application.data.essay) {
         dispatch({ type: FETCH_SCHOLARSHIP_APPLICATION, payload: application.data });

@@ -54,7 +54,7 @@ const AppFooter = () => {
         </div>
         <div className='flex-box sm legal'>
           <div className='grow'>
-            <strong>SPEDxchange</strong> | 1740 Ridge Ave, Suite 500 | Evanston Il, 60201 | <a href='tel:1-224-300-7990'>224.300.7790</a>
+            <strong>SPEDxchange</strong> | 1740 Ridge Ave, Suite 500 | Evanston Il, 60201 | <a href='tel:1-224-300-7733'>224.300.7733</a>
           </div>
           <div>&copy; Copyright 2019 SPEDxchange</div>
         </div>

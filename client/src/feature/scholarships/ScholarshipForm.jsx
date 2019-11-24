@@ -29,9 +29,7 @@ const validate = combineValidators({
 
 export class ScholarshipForm extends Component {
   componentDidMount() {
-    console.log('ScholarshipForm: componentDidMount');
     if (this.props.auth.authenticated) {
-      console.log('fetchScholarshipApplication()');
       this.props.fetchScholarshipApplication();
     }
   }

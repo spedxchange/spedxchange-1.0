@@ -70,7 +70,6 @@ const toggleForgotPassword = state => {
 };
 
 const loadScholarshipApplication = (state, payload) => {
-  console.log('payload: ', payload);
   return {
     ...state,
     scholarshipApplication: payload

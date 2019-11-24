@@ -190,7 +190,6 @@ export const unlikeQuestion = questionId => {
 };
 
 export const likeAnswer = (questionId, answerId) => {
-  console.log('likeAnswer');
   return async dispatch => {
     try {
       dispatch(asyncActionStart());

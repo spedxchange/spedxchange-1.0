@@ -122,7 +122,7 @@ router.post('/reset', async (req, res) => {
     });
 
     if (!user) {
-      console.log('user: not found.');
+      // console.log('user: not found.');
       return res.status(400).json({ errors: [{ msg: 'User not found.' }] });
     }
 
