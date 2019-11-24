@@ -6,35 +6,15 @@ const app = express();
 const mime = require('mime-types');
 const sslRedirect = require('heroku-ssl-redirect');
 
-// configure environment
-// console.log('process: ', process.env.NODE_ENV);
+if (process.env.NODE_ENV) {
+  app.use(sslRedirect());
+}
+
 if (!process.env.NODE_ENV) {
-  // console.log('do process...');
   const dotenv = require('dotenv');
   dotenv.config();
 }
-// Set cors
-// const allowedOrigins = [
-//   'http://localhost:3000/',
-//   'http://localhost:5000/',
-//   'https://spedxchange.herokuapp.com/',
-//   'http://spedxchange.herokuapp.com/',
-//   'https://spedxchange.com/',
-//   'https://spedxchange.com/'
-// ];
-// app.use(
-//   cors({
-//     origin: function(origin, callback) {
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.indexOf(origin) === -1) {
-//         var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-//         return callback(new Error(msg), false);
-//       }
-//       return callback(null, true);
-//     }
-//   })
-// );
-app.use(sslRedirect());
+
 app.use(cors());
 
 // Connect Database
@@ -62,13 +42,9 @@ app.use('/api/contact', require('./routes/api/contact'));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   app.get('*', (req, res) => {
-    // console.log('req.url: ', req.url);
-    // console.log('req.headers.host: ', req.headers.host);
     const hasExtension = req.url.indexOf('.') > -1;
     const type = hasExtension ? mime.contentType(path.extname(req.url)) : null;
     if (hasExtension && type) {
-      // res.set('Access-Control-Allow-Headers', 'Content-Type');
-      // res.set('Content-Type', type);
       res.header('Access-Control-Allow-Headers', 'Content-Type');
       res.header('Content-Type', type);
       res.sendFile(path.join(__dirname, req.url));

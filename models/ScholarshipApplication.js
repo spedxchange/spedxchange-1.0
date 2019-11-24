@@ -10,6 +10,9 @@ const ScholarshipApplicationSchema = new Schema({
     type: String,
     required: true
   },
+  referenceId: {
+    type: String
+  },
   school: {
     type: String
   },
