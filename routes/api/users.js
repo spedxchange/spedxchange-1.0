@@ -14,17 +14,17 @@ const Role = require('../../models/Role');
 // @access   Public
 router.post('/', async (req, res) => {
   try {
-    const { screenName, email, password, roles } = req.body;
+    const { displayName, email, password, roles } = req.body;
     let user = await User.findOne({ email });
-    let screen = await User.findOne({ screenName });
+    // let screen = await User.findOne({ screenName });
 
     if (user) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
 
-    if (screen) {
-      return res.status(400).json({ errors: [{ msg: 'UserName already exists' }] });
-    }
+    // if (screen) {
+    //   return res.status(400).json({ errors: [{ msg: 'UserName already exists' }] });
+    // }
 
     const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'mp' });
 
