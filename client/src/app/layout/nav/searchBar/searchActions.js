@@ -4,11 +4,11 @@ import { HEADER_JSON } from '../../../api/apiConstants';
 import { SEARCH_RESULTS } from './searchConstants';
 
 export const search = form => {
-  return async (dispatch, getState) => {
-    const config = HEADER_JSON;
+  return async dispatch => {
+    const header = HEADER_JSON;
     const body = JSON.stringify(form);
     try {
-      const results = await axios.post('/api/search', body, config);
+      const results = await axios.post('/api/search', body, header);
       dispatch({
         type: SEARCH_RESULTS,
         payload: {

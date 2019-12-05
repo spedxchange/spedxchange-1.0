@@ -7,14 +7,15 @@ import { CLEAR_TAGS } from '../../app/common/form/actions/tagInputConstants';
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../app/common/async/asyncActions';
 import { toastr } from 'react-redux-toastr';
 
+const header = HEADER_JSON;
+
 export const createQuestion = question => {
-  const config = HEADER_JSON;
   const body = JSON.stringify(question);
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
       await dispatch(reset('questionForm'));
-      await axios.post(`/api/questions`, body, config);
+      await axios.post(`/api/questions`, body, header);
       dispatch({
         type: CREATE_QUESTION,
         payload: {
@@ -36,7 +37,6 @@ export const createQuestion = question => {
 };
 
 export const updateQuestion = question => {
-  const config = HEADER_JSON;
   const body = JSON.stringify(question);
   return async dispatch => {
     try {
@@ -47,7 +47,7 @@ export const updateQuestion = question => {
       dispatch({
         type: CLEAR_TAGS
       });
-      await axios.put(`/api/questions/${question._id}`, body, config);
+      await axios.put(`/api/questions/${question._id}`, body, header);
       dispatch({
         type: UPDATE_QUESTION,
         payload: {
@@ -143,13 +143,12 @@ export const loadQuestionById = id => {
 };
 
 export const answerQuestion = (id, answer) => {
-  const config = HEADER_JSON;
   const body = JSON.stringify(answer);
 
   return async dispatch => {
     try {
       dispatch(asyncActionStart());
-      const question = await axios.post(`/api/questions/answer/${id}`, body, config);
+      const question = await axios.post(`/api/questions/answer/${id}`, body, header);
       dispatch({ type: ANSWER_QUESTION, payload: question.data });
       dispatch(asyncActionFinish());
     } catch (error) {

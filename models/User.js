@@ -10,6 +10,12 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  firstName: {
+    type: String
+  },
+  lastName: {
+    type: String
+  },
   screenName: {
     type: String,
     unique: true

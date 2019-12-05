@@ -270,7 +270,7 @@ const welcomeEmail = name => {
       <!-- Visually Hidden Preheader Text : BEGIN -->
       <div style="display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;font-family: sans-serif;">
         <p><b>${name}</b></p>
-        <p>Congratulations and welcome!  You have successfully joined our special education community; we are glad you are here!  SPEDxchange is dedicated to helping you connect with others in the special education field to discover and grow in your specific areas of interest.  By signing up and joining our community, you now have access to up-to-date curated postings related to numerous topics in special education.  Whether you are a student preparing to enter the special education field, a seasoned professional, or a parent looking for support and answers, we are confident that you will find our information beneficial and informative.  Be sure to connect with SPEDxchange on social media to stay up-to-date on the happenings within our special education community.</p>
+        <p>Congratulations and welcome! You have successfully joined our special education community; we are glad you are here!  SPEDxchange is dedicated to helping you connect with others in the special education field to discover and grow in your specific areas of interest.  By signing up and joining our community, you now have access to up-to-date curated postings related to numerous topics in special education.  Whether you are a student preparing to enter the special education field, a seasoned professional, or a parent looking for support and answers, we are confident that you will find our information beneficial and informative.  Be sure to connect with SPEDxchange on social media to stay up-to-date on the happenings within our special education community.</p>
         <p>We look forward to connecting with you on our site.</p>
         <p>Sincerely,<br>The SPEDxchange Team</p>
       </div>
@@ -288,8 +288,84 @@ const welcomeEmail = name => {
   `;
 };
 
+const newUserNotifyEmail = (name, email) => {
+  return `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>FYI: New User</title>
+  <style>
+    * {
+      font-family: sans-serif !important;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+    html,
+    body {
+      margin: 0 auto !important;
+      padding: 0 !important;
+      height: 100% !important;
+      width: 100% !important;
+    }
+    *[x-apple-data-detectors],
+    .x-gmail-data-detectors,
+    .x-gmail-data-detectors *,
+    .aBn {
+      border-bottom: 0 !important;
+      cursor: default !important;
+      color: inherit !important;
+      text-decoration: none !important;
+      font-size: inherit !important;
+      font-family: inherit !important;
+      font-weight: inherit !important;
+      line-height: inherit !important;
+    }
+    td {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #ddd;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 413px) { /* iPhone 6 and 6+ */
+      .email-container {
+        min-width: 375px !important;
+      }
+    }
+  </style>
+</head>
+<body width="100%" bgcolor="#ffffff" style="margin: 0, padding:16px; mso-line-height-rule: exactly;">
+  <div style="width: 100%; background: #ffffff; text-align: left;">
+
+    <!-- Visually Hidden Preheader Text : BEGIN -->
+    <div style="display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;font-family: sans-serif;">
+      New User
+    </div>
+    <!-- Visually Hidden Preheader Text : END -->
+
+    <div style="margin-bottom: 16px;">
+      <h3>New User</h3>
+      <table width="90%">
+        <tr>
+          <td>Name:</td>
+          <td width="90%">${name}</td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td>
+          ${email}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>`;
+};
+
 exports.transporter = transporter;
 exports.contactUserEmail = contactUserEmail;
 exports.contactNotifyEmail = contactNotifyEmail;
 exports.resetPasswordEmail = resetPasswordEmail;
 exports.welcomeEmail = welcomeEmail;
+exports.newUserNotifyEmail = newUserNotifyEmail;

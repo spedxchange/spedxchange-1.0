@@ -16,20 +16,24 @@ router.post('/', async (req, res) => {
   try {
     const { displayName, email, password, roles } = req.body;
     let user = await User.findOne({ email });
-    // let screen = await User.findOne({ screenName });
 
     if (user) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
 
-    // if (screen) {
-    //   return res.status(400).json({ errors: [{ msg: 'UserName already exists' }] });
-    // }
+    const names = displayName
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ');
+    const firstName = names[0];
+    const lastName = names.length > 1 ? names[names.length - 1] : '';
 
     const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'mp' });
 
     user = new User({
       displayName: displayName,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       avatar: avatar,
       password: password

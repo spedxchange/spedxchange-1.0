@@ -42,7 +42,8 @@
     "nodemailer": "^6.3.1",
     "nodemailer-express-handlebars": "^3.1.0",
     "pug": "^2.0.4",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8"
   },
   "devDependencies": {
     "concurrently": "^4.1.2",

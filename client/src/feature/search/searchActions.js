@@ -12,13 +12,12 @@ export const doSearch = q => {
     });
   };
   /*
-  return async (dispatch, getState) => {
+  return async dispatch => {
     console.log('search: query: ', q);
-    const config = HEADER_JSON;
     const body = JSON.stringify(q);
     console.log(config, body);
     try {
-      //const res = await axios.post('/api/search', body, config);
+      //const res = await axios.post('/api/search', body, header);
       const res = {
         data: 'results'
       };

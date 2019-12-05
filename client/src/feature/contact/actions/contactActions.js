@@ -5,13 +5,14 @@ import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../../
 import { MODAL_CLOSE } from '../../../app/layout/modal/ModalConstants';
 import { HEADER_JSON } from '../../../app/api/apiConstants';
 
+const header = HEADER_JSON;
+
 export const submitContact = form => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
-      const config = HEADER_JSON;
       const body = JSON.stringify(form);
       dispatch(asyncActionStart());
-      await axios.post('/api/contact', body, config);
+      await axios.post('/api/contact', body, header);
       dispatch({ type: CONTACT_SUCCESS });
       dispatch(asyncActionFinish());
     } catch (error) {
@@ -23,7 +24,7 @@ export const submitContact = form => {
 };
 
 export const closeContactModal = () => {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch(reset('contactForm'));
     dispatch({ type: CONTACT_CLOSE });
     dispatch({ type: MODAL_CLOSE });

@@ -1,6 +1,5 @@
 import { createReducer } from '../../app/common/util/ReducerUtil';
 import {
-  REGISTER_SUCCESS,
   REGISTER_FAIL,
   USER_LOADED,
   AUTH_ERROR,
@@ -78,7 +77,6 @@ const loadScholarshipApplication = (state, payload) => {
 
 export default createReducer(initialState, {
   [USER_LOADED]: loadUser,
-  [REGISTER_SUCCESS]: loginSuccess,
   [LOGIN_SUCCESS]: loginSuccess,
   [REGISTER_FAIL]: logoutUser,
   [AUTH_ERROR]: logoutUser,

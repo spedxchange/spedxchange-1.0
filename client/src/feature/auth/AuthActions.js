@@ -1,15 +1,17 @@
 import axios from 'axios';
 import { SubmissionError } from 'redux-form';
 import { ASYNC_ACTION_START, ASYNC_ACTION_FINISH, ASYNC_ACTION_ERROR } from '../../app/common/async/asyncConstants';
-import { USER_LOADED, AUTH_ERROR, REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, CLEAR_PROFILE, TOGGLE_FORGOT_PASSWORD, FETCH_SCHOLARSHIP_APPLICATION } from './AuthContantants';
+import { USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGOUT, CLEAR_PROFILE, TOGGLE_FORGOT_PASSWORD, FETCH_SCHOLARSHIP_APPLICATION } from './AuthContantants';
 import { HEADER_JSON } from '../../app/api/apiConstants';
 import { closeModal } from '../../app/layout/modal/ModalActions';
 import { toastr } from 'react-redux-toastr';
 import setAuthToken from '../../app/common/util/setAuthToken';
 
+const header = HEADER_JSON;
+
 // Load User
 export const loadUser = () => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
     } else {
@@ -19,10 +21,10 @@ export const loadUser = () => {
       return;
     }
     try {
-      const res = await axios.get('/api/auth');
+      const userInfo = await axios.get('/api/auth');
       dispatch({
         type: USER_LOADED,
-        payload: res.data
+        payload: userInfo.data
       });
     } catch (err) {
       dispatch({
@@ -34,17 +36,14 @@ export const loadUser = () => {
 
 // Register User
 export const registeredUser = user => {
-  return async (dispatch, getState) => {
-    const config = HEADER_JSON;
+  return async dispatch => {
     const body = JSON.stringify(user);
     try {
-      const res = await axios.post('/api/users', body, config);
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data
-      });
+      const userToken = await axios.post('/api/users', body, header);
+      dispatch({ type: LOGIN_SUCCESS, payload: userToken.data });
       await dispatch(loadUser());
       dispatch(closeModal());
+      dispatch(welcomeUser());
     } catch (error) {
       throw new SubmissionError({
         _error: error.message
@@ -53,16 +52,37 @@ export const registeredUser = user => {
   };
 };
 
+export const transformUserInfo = data => {
+  return {
+    firstname: data.firstName,
+    lastname: data.lastName,
+    displayName: data.displayName,
+    email: data.email
+  };
+};
+
+export const welcomeUser = () => {
+  return async () => {
+    try {
+      const userInfo = await axios.get('/api/auth');
+      const crmInfo = transformUserInfo(userInfo.data);
+      const body = JSON.stringify(crmInfo);
+      await axios.post('/api/crm/contact', body, header);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+};
+
 // Login User
 export const login = creds => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
-      const config = HEADER_JSON;
       const body = JSON.stringify(creds);
-      const res = await axios.post('/api/auth/login', body, config);
+      const userToken = await axios.post('/api/auth/login', body, header);
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data
+        payload: userToken.data
       });
       await dispatch(loadUser());
       dispatch(closeModal());
@@ -86,10 +106,9 @@ export const signOut = () => {
 export const requestResetInstructions = form => {
   return async dispatch => {
     try {
-      const config = HEADER_JSON;
       const body = JSON.stringify(form);
       dispatch({ type: ASYNC_ACTION_START, payload: 'request-password-reset' });
-      const resp = await axios.post('/api/auth/request-reset', body, config);
+      const resp = await axios.post('/api/auth/request-reset', body, header);
       const msg = `Check your email inbox at for the password reset instructions.`;
       const err = `No account for ${form.email} was found.`;
       const confirmMessage = !resp.data || !resp.data.success ? err : msg;
@@ -114,10 +133,9 @@ export const requestResetInstructions = form => {
 export const updatePassword = form => {
   return async dispatch => {
     try {
-      const config = HEADER_JSON;
       const body = JSON.stringify(form);
       dispatch({ type: ASYNC_ACTION_START, payload: 'update-password' });
-      await axios.post('/api/auth/reset', body, config);
+      await axios.post('/api/auth/reset', body, header);
       dispatch({ type: ASYNC_ACTION_FINISH });
       dispatch(closeModal());
       toastr.success('Success', 'Your password has been updated');
@@ -140,9 +158,8 @@ export const submitScholarshipApplication = form => {
   return async dispatch => {
     try {
       dispatch({ type: ASYNC_ACTION_START, payload: 'submit-scholarship' });
-      const config = HEADER_JSON;
       const body = JSON.stringify(form);
-      await axios.post('/api/auth/submit-scholarship', body, config);
+      await axios.post('/api/auth/submit-scholarship', body, header);
       dispatch({ type: ASYNC_ACTION_FINISH });
       dispatch(closeModal());
       toastr.success('Success', 'Your Application has been submitted!');
@@ -159,9 +176,8 @@ export const fetchScholarshipApplication = scholarshipName => {
   return async dispatch => {
     try {
       dispatch({ type: ASYNC_ACTION_START, payload: 'fetch-scholarship' });
-      const config = HEADER_JSON;
       const body = JSON.stringify({ scholarshipName: scholarshipName || 'clinical' });
-      const application = await axios.post('/api/auth/scholarship-application', body, config);
+      const application = await axios.post('/api/auth/scholarship-application', body, header);
       dispatch({ type: ASYNC_ACTION_FINISH });
       if (application.data.essay) {
         dispatch({ type: FETCH_SCHOLARSHIP_APPLICATION, payload: application.data });
