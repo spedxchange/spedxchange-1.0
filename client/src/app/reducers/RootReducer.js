@@ -14,6 +14,7 @@ import QuestionFormReducer from '../../feature/question/questionForm/actions/que
 import TagInput from '../common/form/actions/tagInputReducer';
 import JobsReducer from '../../feature/jobs/actions/jobsReducer';
 import ContactReducer from '../../feature/contact/actions/contactReducer';
+import AccountReducer from '../../feature/account/accountReducer';
 
 const rootReducer = combineReducers({
   toastr: TaostrReducer,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   questionForm: QuestionFormReducer,
   tagInput: TagInput,
   jobs: JobsReducer,
-  contact: ContactReducer
+  contact: ContactReducer,
+  account: AccountReducer
 });
 
 export default rootReducer;
