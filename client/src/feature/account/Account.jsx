@@ -22,7 +22,7 @@ export class Account extends Component {
     console.log('values: ', values);
   };
   render() {
-    const { step, nextStep, prevStep } = this.props;
+    const { step, nextStep, prevStep, setStep } = this.props;
     return (
       <>
         <div className='account-form'>
@@ -30,7 +30,7 @@ export class Account extends Component {
           {step === 2 && <AccountStep2Admin onSubmit={nextStep} prevStep={prevStep} />}
           {step === 3 && <AccountStep3Address onSubmit={nextStep} prevStep={prevStep} />}
           {step === 4 && <AccountStep4Review onSubmit={nextStep} prevStep={prevStep} />}
-          {step === 5 && <AccountStep5Welcome onSubmit={this.handleSubmit} prevStep={prevStep} />}
+          {step === 5 && <AccountStep5Welcome onSubmit={this.handleSubmit} setStep={setStep} />}
         </div>
       </>
     );
