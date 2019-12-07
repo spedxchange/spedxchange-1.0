@@ -15,7 +15,7 @@ const AccountStep1Type = props => {
       <div onClick={onSubmit}>next</div>
       <hr />
       <form onSubmit={onSubmit}>
-        <Field name='type' component={FormSelectField} options={typeOptions} />
+        <Field name='type' component={FormSelectField} options={typeOptions} placeholder='Select Type...' />
         <Field name='size' component={FormSelectField} options={sizeOptions} />
         <div>
           <Button type='submit'>Next</Button>

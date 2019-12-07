@@ -1,9 +1,16 @@
 import { combineValidators, isRequired } from 'revalidate';
 
-const validate = combineValidators({
-  type: isRequired({ message: 'Company Type is required' }),
-  size: isRequired({ message: 'Company Size is required' })
-});
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const validate = async () => {
+  console.log('start sleep');
+  await sleep(1000);
+  console.log('start validate');
+  return combineValidators({
+    type: isRequired({ message: 'Company Type is required' }),
+    size: isRequired({ message: 'Company Size is required' })
+  });
+};
 
 export default validate;
 
