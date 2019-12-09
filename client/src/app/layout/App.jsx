@@ -29,7 +29,7 @@ import Contact from '../../feature/contact/Contact';
 import Tags from '../../feature/tags/Tags';
 import People from '../../feature/people/People';
 import Jobs from '../../feature/jobs/Jobs';
-import Account from '../../feature/account/Account';
+import AccountForm from '../../feature/account/component/AccountForm';
 
 const mapState = state => ({
   auth: state.auth
@@ -73,7 +73,7 @@ class App extends Component {
                     <Route path='/people' component={People} />
                     <Route path='/jobs' component={Jobs} />
                     <Route path='/user/reset/:token' component={NewsMain} />
-                    <Route exact path='/account' component={Account} />
+                    <Route exact path='/account' component={AccountForm} />
                   </Switch>
                 </div>
               </Container>

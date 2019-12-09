@@ -2,29 +2,14 @@ import React from 'react';
 import PlacesAutoComplete from 'react-places-autocomplete';
 import { Form, Label, Segment, List } from 'semantic-ui-react';
 
-const PlaceInput = ({
-  input: { value, onChange, onBlur },
-  width,
-  options,
-  placeholder,
-  onSelect,
-  meta: { touched, error }
-}) => {
+const PlaceInput = ({ input: { value, onChange, onBlur }, width, options, placeholder, onSelect, meta: { touched, error } }) => {
   return (
-    <PlacesAutoComplete
-      value={value}
-      onChange={onChange}
-      searchOptions={options}
-      onSelect={onSelect}
-    >
+    <PlacesAutoComplete clearItemsOnError={true} value={value} onChange={onChange} searchOptions={options} onSelect={onSelect}>
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <Form.Field error={touched && !!error}>
-          <input
-            placeholder={placeholder}
-            {...getInputProps({ placeholder, onBlur })}
-          />
+          <input placeholder={placeholder} {...getInputProps({ placeholder, onBlur })} />
           {touched && error && (
-            <Label basic color="red">
+            <Label basic color='red'>
               {error}
             </Label>
           )}
@@ -41,12 +26,8 @@ const PlaceInput = ({
               <List selection>
                 {suggestions.map(suggestion => (
                   <List.Item {...getSuggestionItemProps(suggestion)}>
-                    <List.Header>
-                      {suggestion.formattedSuggestion.mainText}
-                    </List.Header>
-                    <List.Description>
-                      {suggestion.formattedSuggestion.secondaryText}
-                    </List.Description>
+                    <List.Header>{suggestion.formattedSuggestion.mainText}</List.Header>
+                    <List.Description>{suggestion.formattedSuggestion.secondaryText}</List.Description>
                   </List.Item>
                 ))}
               </List>
