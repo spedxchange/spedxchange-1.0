@@ -45,6 +45,9 @@ const UserSchema = new Schema({
   reset_password_token: {
     type: String
   },
+  stripeId: {
+    type: String
+  },
   reset_password_expires: {
     type: Date
   },

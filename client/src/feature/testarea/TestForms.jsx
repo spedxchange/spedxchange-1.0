@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
+import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { combineValidators, isRequired } from 'revalidate';
+import { combineValidators, isRequired, composeValidators, createValidator, hasLengthGreaterThan } from 'revalidate';
 import { Field, reduxForm } from 'redux-form';
 import { Form, Button } from 'semantic-ui-react';
 import SelectInput from '../../app/common/form/SelectInput';
 import TextField from '../../app/common/form/TextField';
+import BuyBasic from './BuyBasic';
+// import './cardElement.css';
+
+// basic: prod_GKovdKbn2RxViK
 
 const mapState = state => ({});
 
@@ -22,17 +27,45 @@ const sizeOptions = [
   { text: 'Small', value: '2' }
 ];
 
+const isValidEmail = createValidator(
+  message => value => {
+    if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      return message;
+    }
+  },
+  'Invalid email address'
+);
+
 const validate = combineValidators({
   type: isRequired({ message: 'Type is required' }),
   size: isRequired({ message: 'Size is required' }),
-  displayName: isRequired({ message: 'name is required' }),
-  email: isRequired({ message: 'email is required' }),
-  password: isRequired({ message: 'Password is required' })
+  displayName: isRequired({ message: 'Your Name is required' }),
+  email: composeValidators(
+    isRequired({ message: 'Email is required' }),
+    isValidEmail({
+      message: 'Email is Invalid'
+    })
+  )(),
+  password: composeValidators(
+    isRequired({ message: 'Password is required' }),
+    hasLengthGreaterThan(7)({
+      message: 'Password must be 8 characters minimum'
+    })
+  )()
 });
 
 export class TestForms extends Component {
   onSubmit = values => {
     console.log('onSubmit: values: ', values);
+  };
+
+  onToken = (token, addresses) => {
+    // TODO: Send the token information and any other
+    // relevant information to your payment process
+    // server, wait for the response, and update the UI
+    // accordingly. How this is done is up to you. Using
+    // XHR, fetch, or a GraphQL mutation is typical.
+    alert(token, addresses);
   };
   render() {
     const { handleSubmit, values } = this.props;
@@ -52,12 +85,17 @@ export class TestForms extends Component {
           <section>
             <h4>signup</h4>
             <hr />
-            <Field name='displayName' label={'Full Name'} component={TextField} />
+            <Field name='displayName' label={'Your Name'} component={TextField} />
             <Field name='email' label={'Email'} hint={'Candidates that apply to your job will be sent to this email'} component={TextField} />
             <Field name='password' label={'Create Password'} hint={'Minimum 8 characters'} component={TextField} />
             <hr />
           </section>
-          <hr />
+          <section>
+            <h4>payment</h4>
+            <hr />
+            <BuyBasic />
+            <hr />
+          </section>
           <Button>Submit</Button>
           <pre>{JSON.stringify(values, null, 2)}</pre>
           <hr />

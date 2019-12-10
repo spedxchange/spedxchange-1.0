@@ -5,7 +5,9 @@
     margin: 1.5rem 0;
   }
   .field.input-wrap {
-    font-family: Arial, Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif !important;
+    font-family: Arial, Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+      sans-serif !important;
+    transition: all 0.3s ease-out;
     position: relative;
     margin-bottom: 26px;
     font-weight: normal;
@@ -62,7 +64,7 @@
     }
     &.error {
       margin-bottom: 8px;
-      
+
       .hint {
         margin-top: 0;
       }

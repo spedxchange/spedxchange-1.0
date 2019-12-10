@@ -31,6 +31,7 @@ import Tags from '../../feature/tags/Tags';
 import People from '../../feature/people/People';
 import Jobs from '../../feature/jobs/Jobs';
 import AccountForm from '../../feature/account/component/AccountForm';
+import CheckoutStore from '../../feature/testarea/CheckoutStore';
 
 const mapState = state => ({
   auth: state.auth
@@ -76,6 +77,7 @@ class App extends Component {
                     <Route exact path='/account' component={AccountForm} />
                     <Route exact path='/testarea' component={TestComponent} />
                     <Route exact path='/testform' component={TestForms} />
+                    <Route exact path='/checkout' component={CheckoutStore} />
                   </Switch>
                 </div>
               </Container>

@@ -38,6 +38,7 @@ app.use('/api/category', require('./routes/api/category'));
 app.use('/api/roles', require('./routes/api/roles'));
 app.use('/api/contact', require('./routes/api/contact'));
 app.use('/api/crm', require('./routes/api/hubspot'));
+app.use('/api/payment', require('./routes/api/payment'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
