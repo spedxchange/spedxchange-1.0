@@ -12,6 +12,7 @@ import UserDashboard from '../../feature/user/userDashboard/UserDashboard';
 import UserDetail from '../../feature/user/userDetail/UserDetail';
 import SettingsDashboard from '../../feature/user/settings/SettingsDashboard';
 import TestComponent from '../../feature/testarea/TestComponent';
+import TestForms from '../../feature/testarea/TestForms';
 import ModalManager from './modal/ModalManager';
 import SearchBar from '../../feature/search/searchBar/SearchBar';
 import Appfooter from './footer/AppFooter';
@@ -61,7 +62,6 @@ class App extends Component {
                     <Route exact path='/user' component={UserIsAuthenticated(UserDashboard)} />
                     <Route path='/profile/:id' component={UserIsAuthenticated(UserDetail)} />
                     <Route exact path='/settings' component={UserIsAuthenticated(SettingsDashboard)} />
-                    <Route exact path='/test' component={TestComponent} />
                     <Route exact path='/news' component={NewsMain} />
                     <Route path='/news/:uid/:slug' component={NewsArticle} />
                     <Route exact path='/scholarships' component={Scholarships} />
@@ -74,6 +74,8 @@ class App extends Component {
                     <Route path='/jobs' component={Jobs} />
                     <Route path='/user/reset/:token' component={NewsMain} />
                     <Route exact path='/account' component={AccountForm} />
+                    <Route exact path='/testarea' component={TestComponent} />
+                    <Route exact path='/testform' component={TestForms} />
                   </Switch>
                 </div>
               </Container>

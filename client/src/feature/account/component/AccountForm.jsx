@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
-import { Form, Button, Icon } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import { nextStep, prevStep, setStep } from '../accountActions';
-import { geocodeByAddress } from 'react-places-autocomplete';
+// import { geocodeByAddress } from 'react-places-autocomplete';
 import validate from './validate';
 import SelectInput from '../../../app/common/form/SelectInput';
 import TextInput from '../../../app/common/form/TextInput';
-import PlaceInput from '../../../app/common/form/PlaceInput';
+// import PlaceInput from '../../../app/common/form/PlaceInput';
 
 // const typeOptions = ['type 1', 'type 2', 'type 3', 'type 4', 'type 5', 'type 6', 'type 7'];
 // const sizeOptions = ['big', 'small'];
@@ -44,7 +44,7 @@ export class AccountForm extends Component {
     return (
       <>
         <h1>Form</h1>
-        <Form onSubmit={this.props.handleSubmit(this.onSubmit)} size='small' autoComplete='off'>
+        <Form onSubmit={this.handleSubmit(this.onSubmit)} size='small' autoComplete='off'>
           {step === 1 && (
             <>
               <label>Type</label>
@@ -89,16 +89,16 @@ export class AccountForm extends Component {
           {step === 5 && <div>step 5</div>}
           <div className='flex-box between'>
             {step > 1 && step < 5 && (
-              <button type='button' onClick={prevStep}>
+              <Button type='button' onClick={prevStep}>
                 prev
-              </button>
+              </Button>
             )}
             {step < 4 && (
-              <button type='button' onClick={nextStep}>
+              <Button type='button' onClick={nextStep}>
                 next
-              </button>
+              </Button>
             )}
-            {step === 5 && <button type='submit'>submit</button>}
+            {step === 5 && <Button type='submit'>submit</Button>}
           </div>
         </Form>
       </>
