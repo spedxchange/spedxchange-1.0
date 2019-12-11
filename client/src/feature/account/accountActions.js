@@ -1,4 +1,8 @@
-import { NEXT_STEP, PREV_STEP, SET_STEP } from './accountContants';
+import axios from 'axios';
+// import { HEADER_JSON } from '../../app/api/apiConstants';
+import { NEXT_STEP, PREV_STEP, SET_STEP, SUBSCRIBE_SUCCESS, SET_PRODUCT } from './accountContants';
+import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../app/common/async/asyncActions';
+import { toastr } from 'react-redux-toastr';
 
 export const nextStep = () => {
   console.log('nextStep');
@@ -11,4 +15,28 @@ export const prevStep = () => {
 
 export const setStep = step => {
   return { type: SET_STEP, payload: step };
+};
+
+export const setProduct = productId => {
+  return { type: SET_PRODUCT, payload: productId };
+};
+
+export const paySubscription = productId => {
+  return async dispatch => {
+    try {
+      dispatch(asyncActionStart());
+      const subscription = await axios.get(`/api/subscribe/${productId}`);
+      console.log('subscription: ', subscription.data);
+      /*
+       * Send reciept to user
+       * Schedule future recipts
+       */
+      dispatch({ type: SUBSCRIBE_SUCCESS });
+      dispatch(asyncActionFinish());
+      toastr.success('Success!', 'Subscription Success');
+    } catch (error) {
+      dispatch(asyncActionError());
+      toastr.error('Error!', 'error');
+    }
+  };
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Step } from 'semantic-ui-react';
 import { nextStep, prevStep, setStep } from '../accountActions';
 // import { geocodeByAddress } from 'react-places-autocomplete';
 import validate from './validate';
@@ -12,6 +12,8 @@ import TextInput from '../../../app/common/form/TextInput';
 
 // const typeOptions = ['type 1', 'type 2', 'type 3', 'type 4', 'type 5', 'type 6', 'type 7'];
 // const sizeOptions = ['big', 'small'];
+
+import './account.scss';
 
 const typeOptions = [
   { key: 'm', text: 'Type 1', value: '1' },
@@ -40,11 +42,37 @@ export class AccountForm extends Component {
   };
 
   render() {
-    const { step, nextStep, prevStep } = this.props;
+    const { step, nextStep, prevStep, handleSubmit } = this.props;
     return (
       <>
-        <h1>Form</h1>
-        <Form onSubmit={this.handleSubmit(this.onSubmit)} size='small' autoComplete='off'>
+        <h1>Account Setup</h1>
+        <Step.Group className='account-steps' size='mini' ordered>
+          <Step active={step === 1} completed={step > 1}>
+            <Step.Content>
+              <Step.Title>Company Info</Step.Title>
+            </Step.Content>
+          </Step>
+
+          <Step active={step === 2} completed={step > 2}>
+            <Step.Content>
+              <Step.Title>Contact Info</Step.Title>
+            </Step.Content>
+          </Step>
+
+          <Step active={step === 3} completed={step > 3}>
+            <Step.Content>
+              <Step.Title>Plan Selection</Step.Title>
+            </Step.Content>
+          </Step>
+
+          <Step active={step === 4} completed={step > 4}>
+            <Step.Content>
+              <Step.Title>Review</Step.Title>
+            </Step.Content>
+          </Step>
+        </Step.Group>
+        <hr />
+        <Form onSubmit={handleSubmit(this.onSubmit)} className='form-container my-5' autoComplete='off'>
           {step === 1 && (
             <>
               <label>Type</label>
@@ -65,7 +93,7 @@ export class AccountForm extends Component {
           )}
           {step === 3 && (
             <>
-              <label>Business Name</label>
+              <label>Company Name</label>
               <Field name='company' type='text' component={TextInput} />
               <label>Address</label>
               <Field name='address' type='text' component={TextInput} />
@@ -83,9 +111,17 @@ export class AccountForm extends Component {
                   <Field name='zip' type='text' component={TextInput} />
                 </div>
               </div>
+              <label>Phone</label>
+              <Field name='phone' type='text' component={TextInput} />
             </>
           )}
-          {step === 4 && <div>step 4</div>}
+          {step === 4 && (
+            <>
+              <div>
+                School/District Size: <Field name='student' type='text' component={TextInput} /> students
+              </div>
+            </>
+          )}
           {step === 5 && <div>step 5</div>}
           <div className='flex-box between'>
             {step > 1 && step < 5 && (

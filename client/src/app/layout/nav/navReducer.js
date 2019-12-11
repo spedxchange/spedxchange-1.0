@@ -1,5 +1,5 @@
 import { createReducer } from '../../common/util/ReducerUtil';
-import { ACTIVATE_NAV_ITEM, TOGGLE_MOBILE_NAV, TOGGLE_SEARCH_BAR } from './navConstants';
+import { ACTIVATE_NAV_ITEM, TOGGLE_MOBILE_NAV, TOGGLE_SEARCH_BAR, TOGGLE_SIDE_BAR } from './navConstants';
 
 const initialState = {
   isMobileNavOpen: false,
@@ -22,8 +22,13 @@ const toggleSearchBar = state => {
   return { ...state, isSearchBarOpen: !state.isSearchBarOpen };
 };
 
+const toggleSideBar = state => {
+  return { ...state, isSideBarOpen: !state.isSideBarOpen };
+};
+
 export default createReducer(initialState, {
   [ACTIVATE_NAV_ITEM]: onNavItemClick,
   [TOGGLE_MOBILE_NAV]: toggleMobileNav,
-  [TOGGLE_SEARCH_BAR]: toggleSearchBar
+  [TOGGLE_SEARCH_BAR]: toggleSearchBar,
+  [TOGGLE_SIDE_BAR]: toggleSideBar
 });

@@ -7,8 +7,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET);
 // @route    GET api/subscribe/:productPlan
 // @desc     GET Get/Create Stripe Customer and Subscribe to Plan
 // @access   Public
-router.post('/subscribe/:productPlan', auth, async (req, res) => {
-  const { productPlan } = req.body;
+router.get('/subscribe/:productId', auth, async (req, res) => {
+  const { productId } = req.params;
   let customer;
   try {
     const user = await User.findById(req.user.id);
@@ -27,10 +27,15 @@ router.post('/subscribe/:productPlan', auth, async (req, res) => {
       await user.save();
     }
 
+    console.log('customer.id: ', customer.id);
+
     const subscription = await stripe.subscriptions.create({
       customer: user.stripeId,
-      items: [{ plan: productPlan }]
+      items: [{ plan: productId }]
     });
+
+    console.log('customer: ', customer);
+    console.log('subscription: ', subscription);
 
     res.json({
       customer: customer,
